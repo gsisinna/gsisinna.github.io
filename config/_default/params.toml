@@ -6,13 +6,14 @@ description = "Unusual notes from a robotic engineer"
 profilePicture = "images/profile.jpeg"
 keywords = "robotics, programming, software, engineering, electronics, automation, control, machine learning, artificial intelligence, AI, robotics, ROS, Python, C++, C, Matlab, Simulink, SolidWorks, CAD, 3D printing, Arduino, Raspberry Pi, electronics, sensors, actuators, motors, control systems, automation, machine learning, artificial intelligence, AI, robotics, ROS, Python, C++, C, Matlab, Simulink, SolidWorks, CAD, 3D printing, Arduino, Raspberry Pi, electronics, sensors, actuators, motors, control systems, automation"
 favicon = "favicons/"
+displayMode = "light"
 #example ["css/custom.css"]
 customCss = []
 # example ["js/custom.js"]
 customJs = [] 
 mainSections = ["post"]
 images = ["images/site-feature-image.png"]
-doNotLoadAnimations = false
+doNotLoadAnimations = true
 # Form Spree Contact Form
 #contactFormAction = "https://formspree.io/f/your-form-hash-here"
 #contactFormReCaptcha = "your-site-key-here"
