@@ -4,6 +4,8 @@ import { getPublishedJournalEntries, formatDate } from "../lib/content";
 
 const entries = await getPublishedJournalEntries();
 const latest = entries.slice(0, 3);
+const featured = latest[0];
+const totalPosts = entries.length;
 ---
 
 <BaseLayout
@@ -15,16 +17,20 @@ const latest = entries.slice(0, 3);
       <p class="term-label">init personal-space</p>
       <h1 class="term-headline">Notes, projects, ideas, and the work behind them.</h1>
       <p class="muted" style="font-size:1.02rem; max-width:46ch;">
-        A clean, minimal space to document what I am building, learning, noticing, and
-        thinking about. Part journal, part lab notes, part personal archive.
+        A personal blog for notes I want to keep: projects, process, experiments,
+        small updates, and ideas that are easier to understand once they are written down.
       </p>
       <div class="command">
         <span class="prompt">gsisinna@blog:~$</span>
-        <code>ls ./notes --latest 3</code>
+        <code>open ./notes/about-this-blog.md</code>
       </div>
       <div style="display:flex; gap:0.6rem; flex-wrap:wrap;">
-        <a href="/journal/" class="button button-primary">Read notes</a>
-        <a href="#recent" class="button button-secondary">Latest posts</a>
+        {featured ? (
+          <a href={`/journal/${featured.slug}/`} class="button button-primary">Start here</a>
+        ) : (
+          <a href="/journal/" class="button button-primary">Open notes</a>
+        )}
+        <a href="/journal/" class="button button-secondary">Open archive</a>
       </div>
       <div class="meta-row">
         <span class="pill">Writing</span>
@@ -35,33 +41,33 @@ const latest = entries.slice(0, 3);
       <div class="divider" />
       <div class="mini-stat-grid">
         <div class="mini-tile">
-          <p class="eyebrow">Focus</p>
-          <p style="margin-top:0.2rem;">Notes + snapshots</p>
+          <p class="eyebrow">Posts</p>
+          <p style="margin-top:0.2rem;">{totalPosts}</p>
         </div>
         <div class="mini-tile">
-          <p class="eyebrow">Style</p>
-          <p style="margin-top:0.2rem;">Minimal + polished</p>
+          <p class="eyebrow">Format</p>
+          <p style="margin-top:0.2rem;">Markdown notes</p>
         </div>
         <div class="mini-tile">
-          <p class="eyebrow">Goal</p>
-          <p style="margin-top:0.2rem;">Create + reflect</p>
+          <p class="eyebrow">Theme</p>
+          <p style="margin-top:0.2rem;">Terminal style</p>
         </div>
       </div>
     </div>
 
     <aside class="panel panel-elevated tilt-card" style="display:grid; gap:0.8rem; align-content:start; position:relative; overflow:hidden;">
       <div aria-hidden="true" class="orb-3d" style="inset:auto -22px -18px auto;" />
-      <p class="term-label">why this exists</p>
-      <h2 style="font-size:1.25rem;" class="term-headline">A small terminal for memory and work</h2>
+      <p class="term-label">what this site is</p>
+      <h2 style="font-size:1.25rem;" class="term-headline">A personal archive with a terminal shell</h2>
       <div class="terminal-card">
         <div class="bar">
           <span class="traffic" aria-hidden="true"><span></span><span></span><span></span></span>
-          <span class="title">journal.log</span>
+          <span class="title">README</span>
         </div>
         <div class="body" style="display:grid; gap:0.55rem;">
-          <div class="command"><span class="prompt">[01]</span><code>capture moments + progress</code></div>
-          <div class="command"><span class="prompt">[02]</span><code>keep context around decisions</code></div>
-          <div class="command"><span class="prompt">[03]</span><code>build a useful personal archive</code></div>
+          <div class="command"><span class="prompt">[01]</span><code>write things down while they are fresh</code></div>
+          <div class="command"><span class="prompt">[02]</span><code>keep context around projects + decisions</code></div>
+          <div class="command"><span class="prompt">[03]</span><code>leave a clear trail for future me</code></div>
         </div>
       </div>
     </aside>
@@ -70,10 +76,10 @@ const latest = entries.slice(0, 3);
   <section id="recent" style="display:grid; gap:0.9rem;">
     <div class="panel panel-soft section-head">
       <div>
-        <p class="term-label">recent output</p>
-        <h2 class="term-headline">Latest notes</h2>
+        <p class="term-label">start here</p>
+        <h2 class="term-headline">Current post</h2>
       </div>
-      <a href="/journal/" class="button button-secondary" style="padding:0.55rem 0.8rem;">See all</a>
+      <a href="/journal/" class="button button-secondary" style="padding:0.55rem 0.8rem;">View archive</a>
     </div>
 
     <div class="stagger" style="display:grid; gap:0.75rem;">
