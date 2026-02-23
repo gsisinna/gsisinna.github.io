@@ -520,6 +520,155 @@ const pathName = Astro.url.pathname;
         padding: 0.7rem;
       }
 
+      .timeline {
+        position: relative;
+        display: grid;
+        gap: 0.7rem;
+      }
+
+      .timeline::before {
+        content: "";
+        position: absolute;
+        left: 0.9rem;
+        top: 0.35rem;
+        bottom: 0.35rem;
+        width: 1px;
+        background: linear-gradient(
+          to bottom,
+          rgba(82,255,168,0.35),
+          rgba(82,255,168,0.16),
+          rgba(115,217,255,0.2)
+        );
+      }
+
+      .timeline-item {
+        position: relative;
+        display: grid;
+        grid-template-columns: 1.9rem 1fr;
+        gap: 0.7rem;
+        align-items: start;
+      }
+
+      .timeline-marker {
+        position: relative;
+        width: 1.9rem;
+        height: 100%;
+        display: grid;
+        place-items: start center;
+        padding-top: 0.15rem;
+      }
+
+      .timeline-dot {
+        width: 0.8rem;
+        height: 0.8rem;
+        border-radius: 999px;
+        border: 1px solid rgba(82,255,168,0.34);
+        background:
+          radial-gradient(circle at 35% 35%, rgba(255,255,255,0.25), transparent 45%),
+          radial-gradient(circle at 50% 50%, rgba(82,255,168,0.32), rgba(82,255,168,0.06) 72%, transparent 74%);
+        box-shadow:
+          0 0 0 4px rgba(82,255,168,0.035),
+          0 0 16px rgba(82,255,168,0.12);
+      }
+
+      .timeline-dot.current {
+        border-color: rgba(255,209,102,0.45);
+        background:
+          radial-gradient(circle at 35% 35%, rgba(255,255,255,0.28), transparent 42%),
+          radial-gradient(circle at 50% 50%, rgba(255,209,102,0.35), rgba(255,209,102,0.06) 72%, transparent 74%);
+        box-shadow:
+          0 0 0 4px rgba(255,209,102,0.04),
+          0 0 18px rgba(255,209,102,0.14);
+      }
+
+      .timeline-card {
+        position: relative;
+        border: 1px solid rgba(82,255,168,0.09);
+        border-radius: 11px;
+        background:
+          linear-gradient(to bottom, rgba(255,255,255,0.018), rgba(255,255,255,0.006));
+        padding: 0.75rem;
+        display: grid;
+        gap: 0.4rem;
+      }
+
+      .timeline-card.current {
+        border-color: rgba(255,209,102,0.16);
+        background:
+          linear-gradient(to bottom, rgba(255,209,102,0.03), rgba(255,255,255,0.008));
+      }
+
+      .timeline-card::before {
+        content: "";
+        position: absolute;
+        left: -7px;
+        top: 0.75rem;
+        width: 10px;
+        height: 10px;
+        transform: rotate(45deg);
+        border-left: 1px solid rgba(82,255,168,0.09);
+        border-bottom: 1px solid rgba(82,255,168,0.09);
+        background: rgba(13,16,20,0.95);
+      }
+
+      .timeline-card.current::before {
+        border-left-color: rgba(255,209,102,0.16);
+        border-bottom-color: rgba(255,209,102,0.16);
+      }
+
+      .timeline-top {
+        display: flex;
+        justify-content: space-between;
+        gap: 0.75rem;
+        align-items: center;
+        flex-wrap: wrap;
+      }
+
+      .timeline-role {
+        color: var(--ink-strong);
+        font-weight: 600;
+        font-size: 0.9rem;
+      }
+
+      .timeline-place {
+        color: var(--muted);
+        font-size: 0.78rem;
+      }
+
+      .timeline-role-row {
+        display: flex;
+        align-items: center;
+        gap: 0.55rem;
+        min-width: 0;
+      }
+
+      .timeline-icon {
+        width: 1.7rem;
+        height: 1.7rem;
+        border-radius: 8px;
+        display: inline-grid;
+        place-items: center;
+        border: 1px solid rgba(82,255,168,0.12);
+        background:
+          linear-gradient(to bottom, rgba(82,255,168,0.06), rgba(82,255,168,0.015));
+        color: var(--accent);
+        box-shadow: inset 0 1px 0 rgba(255,255,255,0.03);
+        flex-shrink: 0;
+      }
+
+      .timeline-card.current .timeline-icon {
+        border-color: rgba(255,209,102,0.18);
+        background:
+          linear-gradient(to bottom, rgba(255,209,102,0.08), rgba(255,209,102,0.02));
+        color: var(--accent-warm);
+      }
+
+      .timeline-icon svg {
+        width: 0.95rem;
+        height: 0.95rem;
+        display: block;
+      }
+
       .divider {
         height: 1px;
         background: linear-gradient(

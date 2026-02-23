@@ -7,41 +7,70 @@ const latest = entries.slice(0, 3);
 const featured = latest[0];
 const totalPosts = entries.length;
 
+function timelineIcon(kind: string) {
+  const common = 'viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"';
+
+  switch (kind) {
+    case "factory":
+      return `<svg ${common}><path d="M3 21V9l7-3v4l7-3v14"/><path d="M3 21h18"/><path d="M7 21v-3"/><path d="M12 21v-3"/><path d="M17 21v-3"/></svg>`;
+    case "cube":
+      return `<svg ${common}><path d="m12 3 8 4.5-8 4.5-8-4.5Z"/><path d="M4 7.5V16.5L12 21l8-4.5V7.5"/><path d="M12 12v9"/></svg>`;
+    case "robot":
+      return `<svg ${common}><rect x="6" y="7" width="12" height="10" rx="2"/><path d="M12 4v3"/><path d="M9 11h.01"/><path d="M15 11h.01"/><path d="M9 17v2"/><path d="M15 17v2"/></svg>`;
+    case "thesis":
+      return `<svg ${common}><path d="M6 3h9l3 3v15H6z"/><path d="M15 3v4h4"/><path d="M9 12h6"/><path d="M9 16h6"/></svg>`;
+    case "academy":
+      return `<svg ${common}><path d="m3 10 9-5 9 5-9 5-9-5Z"/><path d="M7 12.5v3.5c0 .9 2.2 2 5 2s5-1.1 5-2v-3.5"/><path d="M21 10v6"/></svg>`;
+    default:
+      return `<svg ${common}><circle cx="12" cy="12" r="7"/></svg>`;
+  }
+}
+
 const storyline = [
   {
     period: "2024 -> now",
     place: "FlexLink · Bologna",
     role: "Robotics Software Engineer",
+    icon: "factory",
+    current: true,
     note:
-      "Designing modular C++/Python software for autonomous and collaborative robotics, with reusable components, CI/CD, and industrial system integration."
+      "I work on modular C++/Python software for autonomous and collaborative robotics, with a strong focus on reusable components, CI/CD, and system integration."
   },
   {
     period: "2022 -> 2023",
     place: "Lab0 · Genova",
     role: "Robotics Engineer",
+    icon: "cube",
+    current: false,
     note:
-      "Robotics simulation, middleware, C++/Python development, Docker/Git workflows, hardware integration, and prototyping."
+      "This was a hands-on role across simulation, middleware, C++/Python development, Docker/Git workflows, hardware integration, and prototyping."
   },
   {
     period: "2021 -> 2022",
     place: "Istituto Italiano di Tecnologia · Genova",
     role: "Robotics Technician / Robotics Software Engineer",
+    icon: "robot",
+    current: false,
     note:
-      "iCub assembly, testing, diagnostics, YARP-based test work, Docker deployments, and technical support for public demos and events."
+      "I worked on iCub assembly, testing, diagnostics, YARP-based test activities, Docker deployments, and technical support for demos and public events."
   },
   {
     period: "2021",
     place: "Università di Pisa",
     role: "Master Thesis",
+    icon: "thesis",
+    current: false,
     note:
-      "Master thesis on a bio-inspired control system for social humanoid robots (Abel), with a ROS-based architecture in Python."
+      "My master thesis focused on a bio-inspired control system for the humanoid robot Abel, with a ROS-based architecture written in Python."
   },
   {
     period: "2020 -> 2021",
     place: "Scuola Superiore Sant'Anna · Pisa",
     role: "Lab Training - Robotics",
+    icon: "academy",
+    current: false,
     note:
-      "7DOF KUKA simulation with ROS/MoveIt/Gazebo, CLIK, PID control, trajectory planning, and Linux robotics workflows."
+      "Training work on a 7DOF KUKA simulation using ROS/MoveIt/Gazebo, CLIK, PID control, trajectory planning, and Linux-based robotics workflows."
   }
 ];
 
@@ -51,6 +80,53 @@ const certifications = [
   "Linear Algebra with Matlab",
   "Onshape Introduction to Part Design",
   "Became a good Matlab programmer in 30 days"
+];
+
+const skillGroups = [
+  {
+    title: "Software",
+    items: ["C++", "Python", "CMake", "Software Architecture", "Unit Testing", "CI/CD"]
+  },
+  {
+    title: "Robotics",
+    items: ["ROS", "Simulation", "Control Systems", "Industrial Manipulators", "Middleware", "System Integration"]
+  },
+  {
+    title: "Tools",
+    items: ["Linux", "Docker", "Git / GitLab", "Agile", "DevOps", "3D Prototyping"]
+  }
+];
+
+const education = [
+  {
+    title: "MSc in Bionics Engineering (Biorobotics)",
+    school: "Scuola Superiore Sant'Anna",
+    period: "2018-2021"
+  },
+  {
+    title: "BSc in Biomedical Engineering",
+    school: "Università di Pisa",
+    period: "2014-2018"
+  }
+];
+
+const hobbies = [
+  {
+    label: "Guitar",
+    value: "My favorite way to switch gears. It keeps me patient and reminds me that progress often comes from repetition."
+  },
+  {
+    label: "Motorcycle",
+    value: "It gives me a sense of freedom and focus. Riding clears my head and brings me back to the present."
+  },
+  {
+    label: "Photography",
+    value: "It helps me slow down and notice details. I like capturing places, light, and everyday moments."
+  },
+  {
+    label: "Trekking",
+    value: "Walking in the mountains is how I reset. It gives me space, quiet, and perspective."
+  }
 ];
 ---
 
@@ -66,8 +142,8 @@ const certifications = [
         Senior Robotics Software Engineer | C++ · Python · Software Architecture
       </p>
       <p class="muted" style="font-size:1.02rem; max-width:46ch;">
-        Based in Bologna. I build robotics software focused on simulation, control
-        systems, integration, and maintainable architectures that can move from research to production.
+        I am based in Bologna and I work on robotics software, mainly around simulation,
+        control, integration, and software architecture. I care a lot about building systems that stay clean as they grow.
       </p>
       <div class="command">
         <span class="prompt">gabriele@gsisinna:~$</span>
@@ -128,7 +204,7 @@ const certifications = [
         </div>
         <div class="body" style="display:grid; gap:0.45rem;">
           <p class="muted">
-            Industrial robotics software, simulation, control systems, and software architecture.
+            Most of my work sits at the intersection of robotics software, simulation, control, and architecture.
           </p>
         </div>
       </div>
@@ -139,7 +215,7 @@ const certifications = [
     <div class="section-head">
       <div>
         <p class="term-label">career timeline</p>
-        <h2 class="term-headline">Path: robotics labs -> industrial software</h2>
+        <h2 class="term-headline">How I got here</h2>
       </div>
       <span class="pill">Bologna / Genova / Pisa</span>
     </div>
@@ -149,17 +225,30 @@ const certifications = [
         <span class="traffic" aria-hidden="true"><span></span><span></span><span></span></span>
         <span class="title">timeline.log</span>
       </div>
-      <div class="body" style="display:grid; gap:0.6rem;">
+      <div class="body">
+        <div class="timeline">
         {storyline.map((step, index) => (
-          <div class="panel" style="padding:0.75rem; border-radius:10px; display:grid; gap:0.35rem;">
-            <div style="display:flex; justify-content:space-between; gap:0.8rem; flex-wrap:wrap; align-items:center;">
-              <span class="pill">#{String(index + 1).padStart(2, "0")} · {step.period}</span>
-              <span class="muted" style="font-size:0.78rem;">{step.place}</span>
+          <div class="timeline-item">
+            <div class="timeline-marker" aria-hidden="true">
+              <span class:list={["timeline-dot", step.current && "current"]}></span>
             </div>
-            <p style="color:var(--ink-strong); font-weight:600; font-size:0.9rem;">{step.role}</p>
-            <p class="muted" style="font-size:0.84rem;">{step.note}</p>
+            <div class:list={["timeline-card", step.current && "current"]}>
+              <div class="timeline-top">
+                <span class="pill">
+                  #{String(index + 1).padStart(2, "0")} · {step.period}
+                  {step.current ? " · current" : ""}
+                </span>
+                <span class="timeline-place">{step.place}</span>
+              </div>
+              <div class="timeline-role-row">
+                <span class="timeline-icon" aria-hidden="true" set:html={timelineIcon(step.icon)}></span>
+                <p class="timeline-role">{step.role}</p>
+              </div>
+              <p class="muted" style="font-size:0.84rem;">{step.note}</p>
+            </div>
           </div>
         ))}
+        </div>
       </div>
     </div>
   </section>
@@ -168,7 +257,7 @@ const certifications = [
     <div class="section-head">
       <div>
         <p class="term-label">toolbox</p>
-        <h2 class="term-headline">Core skills, education, and certifications</h2>
+        <h2 class="term-headline">What I work with (and where I learned it)</h2>
       </div>
       <span class="pill">robotics + software</span>
     </div>
@@ -179,23 +268,25 @@ const certifications = [
           <span class="traffic" aria-hidden="true"><span></span><span></span><span></span></span>
           <span class="title">skills.txt</span>
         </div>
-        <div class="body" style="display:grid; gap:0.55rem;">
-          <div class="meta-row">
-            <span class="pill">Robotica</span>
-            <span class="pill">C++</span>
-            <span class="pill">Python</span>
-            <span class="pill">ROS</span>
-            <span class="pill">CMake</span>
-            <span class="pill">Docker</span>
-            <span class="pill">Git / GitLab</span>
-            <span class="pill">CI/CD</span>
-            <span class="pill">Simulation</span>
-            <span class="pill">Control Systems</span>
+        <div class="body" style="display:grid; gap:0.7rem;">
+          {skillGroups.map((group) => (
+            <div class="panel" style="padding:0.7rem; border-radius:10px; display:grid; gap:0.45rem;">
+              <div style="display:flex; justify-content:space-between; gap:0.5rem; align-items:center; flex-wrap:wrap;">
+                <p style="color:var(--ink-strong); font-size:0.82rem;">{group.title}</p>
+                <span class="pill">{group.items.length} items</span>
+              </div>
+              <div class="meta-row">
+                {group.items.map((item) => <span class="pill">{item}</span>)}
+              </div>
+            </div>
+          ))}
+
+          <div class="panel" style="padding:0.7rem; border-radius:10px; display:grid; gap:0.35rem;">
+            <p style="color:var(--ink-strong); font-size:0.82rem;">Languages</p>
+            <p class="muted" style="font-size:0.82rem;">
+              Italiano (native/bilingual) · English (professional working)
+            </p>
           </div>
-          <div class="divider" />
-          <p class="muted" style="font-size:0.84rem;">
-            Languages: Italiano (native), Inglese (professional working).
-          </p>
         </div>
       </div>
 
@@ -204,21 +295,92 @@ const certifications = [
           <span class="traffic" aria-hidden="true"><span></span><span></span><span></span></span>
           <span class="title">education_and_certs.md</span>
         </div>
-        <div class="body" style="display:grid; gap:0.6rem;">
-          <div class="panel" style="padding:0.7rem; border-radius:10px; display:grid; gap:0.25rem;">
-            <p style="color:var(--ink-strong); font-size:0.86rem;">MSc in Bionics Engineering (Biorobotics)</p>
-            <p class="muted" style="font-size:0.78rem;">Scuola Superiore Sant'Anna · 2018-2021</p>
-          </div>
-          <div class="panel" style="padding:0.7rem; border-radius:10px; display:grid; gap:0.25rem;">
-            <p style="color:var(--ink-strong); font-size:0.86rem;">BSc in Biomedical Engineering</p>
-            <p class="muted" style="font-size:0.78rem;">Università di Pisa · 2014-2018</p>
-          </div>
-          <div class="panel" style="padding:0.7rem; border-radius:10px; display:grid; gap:0.35rem;">
-            <p style="color:var(--ink-strong); font-size:0.82rem;">Selected certifications</p>
-            <div class="meta-row">
-              {certifications.map((cert) => <span class="pill">{cert}</span>)}
+        <div class="body" style="display:grid; gap:0.7rem;">
+          <div class="panel" style="padding:0.7rem; border-radius:10px; display:grid; gap:0.5rem;">
+            <div style="display:flex; justify-content:space-between; gap:0.5rem; align-items:center; flex-wrap:wrap;">
+              <p style="color:var(--ink-strong); font-size:0.82rem;">Education</p>
+              <span class="pill">{education.length} entries</span>
+            </div>
+            <div style="display:grid; gap:0.45rem;">
+              {education.map((item) => (
+                <div class="panel" style="padding:0.65rem; border-radius:9px; display:grid; gap:0.2rem;">
+                  <div style="display:flex; justify-content:space-between; gap:0.5rem; align-items:center; flex-wrap:wrap;">
+                    <p style="color:var(--ink-strong); font-size:0.82rem;">{item.title}</p>
+                    <span class="pill">{item.period}</span>
+                  </div>
+                  <p class="muted" style="font-size:0.78rem;">{item.school}</p>
+                </div>
+              ))}
             </div>
           </div>
+
+          <div class="panel" style="padding:0.7rem; border-radius:10px; display:grid; gap:0.5rem;">
+            <div style="display:flex; justify-content:space-between; gap:0.5rem; align-items:center; flex-wrap:wrap;">
+              <p style="color:var(--ink-strong); font-size:0.82rem;">Selected certifications</p>
+              <span class="pill">{certifications.length}</span>
+            </div>
+            <div style="display:grid; gap:0.4rem;">
+              {certifications.map((cert, idx) => (
+                <div class="command" style="padding:0.45rem 0.6rem;">
+                  <span class="prompt">[{String(idx + 1).padStart(2, "0")}]</span>
+                  <code>{cert}</code>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="panel panel-elevated stagger tilt-card" style="display:grid; gap:0.85rem;">
+    <div class="section-head">
+      <div>
+        <p class="term-label">about me</p>
+        <h2 class="term-headline">A few things I enjoy outside work</h2>
+      </div>
+      <span class="pill">life outside robotics</span>
+    </div>
+
+    <div class="grid-2">
+      <div class="terminal-card">
+        <div class="bar">
+          <span class="traffic" aria-hidden="true"><span></span><span></span><span></span></span>
+          <span class="title">about_me.md</span>
+        </div>
+        <div class="body" style="display:grid; gap:0.65rem;">
+          <p class="muted" style="font-size:0.84rem;">
+            Outside robotics and software, I try to keep space for things that are slower,
+            more physical, or just different. They help me reset and come back to work with a clearer head.
+          </p>
+          <div class="divider" />
+          <div style="display:grid; gap:0.45rem;">
+            <div class="command"><span class="prompt">$</span><code>play guitar</code></div>
+            <div class="command"><span class="prompt">$</span><code>ride motorcycle</code></div>
+            <div class="command"><span class="prompt">$</span><code>shoot photos</code></div>
+            <div class="command"><span class="prompt">$</span><code>go trekking</code></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="terminal-card">
+        <div class="bar">
+          <span class="traffic" aria-hidden="true"><span></span><span></span><span></span></span>
+          <span class="title">hobbies.log</span>
+        </div>
+        <div class="body" style="display:grid; gap:0.55rem;">
+          {hobbies.map((item, index) => (
+            <div class="panel" style="padding:0.7rem; border-radius:10px; display:grid; gap:0.25rem;">
+              <div style="display:flex; justify-content:space-between; gap:0.5rem; flex-wrap:wrap; align-items:center;">
+                <p style="color:var(--ink-strong); font-size:0.82rem;">{item.label}</p>
+                <span class="pill">#{String(index + 1).padStart(2, "0")}</span>
+              </div>
+              <p class="muted" style="font-size:0.82rem;">{item.value}</p>
+            </div>
+          ))}
+          <p class="muted" style="font-size:0.76rem;">
+            I may turn this into photo notes, ride logs, or trekking entries over time.
+          </p>
         </div>
       </div>
     </div>
