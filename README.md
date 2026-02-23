@@ -1,64 +1,74 @@
-# [Astro](https://astro.build) Blog Template
+# gsisinna.github.io
 
-[![Screenshot](screenshot.png)](https://astro-blog-template.netlify.app/)
+Personal blog built with Astro, styled like a Linux terminal app.
 
-## 👉 Check out the ✨ [Live Demo](https://astro-blog-template.netlify.app/) ✨
+## Stack
 
-## 👩‍🚀 Getting Started
+- Astro
+- Markdown content (Astro content collections)
+- GitHub Pages (via GitHub Actions)
 
-### Locally
+## Local Development
 
-```
-npm init astro -- --template Charca/astro-blog-template
-```
-
-### On StackBlitz
-
-[![Open in StackBlitz](https://developer.stackblitz.com/img/open_in_stackblitz.svg)](https://stackblitz.com/github/charca/astro-blog-template)
-
-## ✨ Features:
-
-- ✅ Astro 4.0
-- ✅ Dark Mode
-- ✅ Full Markdown support
-- ✅ SEO-friendly setup with canonical URLs and OpenGraph data
-- ✅ RSS 2.0 generation
-- ✅ Sitemap.xml generation
-
-## 🚀 Project Structure
-
-Inside of your Astro project, you'll see the following folders and files:
-
-```
-/
-├── public/
-│   ├── robots.txt
-│   └── favicon.ico
-├── src/
-│   ├── components/
-│   │   └── Tour.astro
-│   └── pages/
-│       └── index.astro
-└── package.json
+```bash
+npm install
+npm run dev
 ```
 
-Astro looks for `.astro` or `.md` files in the `src/pages/` directory. Each page is exposed as a route based on its file name.
+Build locally:
 
-There's nothing special about `src/components/`, but that's where we like to put any Astro/React/Vue/Svelte/Preact components.
+```bash
+npm run build
+```
 
-Any static assets, like images, can be placed in the `public/` directory.
+## Content
 
-## 🧞 Commands
+Posts live in:
 
-All commands are run from the root of the project, from a terminal:
+- `src/content/journal/`
 
-| Command           | Action                                       |
-| :---------------- | :------------------------------------------- |
-| `npm install`     | Installs dependencies                        |
-| `npm run dev`     | Starts local dev server at `localhost:3030`  |
-| `npm run build`   | Build your production site to `./dist/`      |
-| `npm run preview` | Preview your build locally, before deploying |
+Current setup is intentionally minimal and keeps a single article explaining the blog's purpose and style.
 
-## 👀 Want to learn more?
+## Editing the Main Article
 
-Feel free to check [Astro's documentation](https://github.com/withastro/astro) or jump into Astro's [Discord server](https://astro.build/chat).
+Update:
+
+- `src/content/journal/first-week-reset.md`
+
+You can change:
+
+- `title`
+- `excerpt`
+- `date`
+- `tags`
+- markdown body content
+
+## Design / UI
+
+Main terminal-style UI and theme live in:
+
+- `src/layouts/BaseLayout.astro`
+
+Pages:
+
+- Home: `src/pages/index.astro`
+- Notes list: `src/pages/journal/index.astro`
+- Post page: `src/pages/journal/[slug].astro`
+
+## Deployment (GitHub Pages)
+
+This repo is configured to deploy with GitHub Actions:
+
+- Workflow: `.github/workflows/deploy.yml`
+
+Requirements:
+
+1. Repository name is `gsisinna.github.io`
+2. GitHub Pages source is set to `GitHub Actions`
+3. Push to `main` branch
+
+## Notes
+
+- `astro.config.mjs` uses `site: "https://gsisinna.github.io"` (correct for a user/org Pages site)
+- No `base` path is needed for `gsisinna.github.io`
+

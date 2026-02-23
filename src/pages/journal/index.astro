@@ -1,0 +1,58 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import { getPublishedJournalEntries, formatDate } from "../../lib/content";
+
+const entries = await getPublishedJournalEntries();
+---
+
+<BaseLayout
+  title="Notes | gsisinna"
+  description="Personal notes, project updates, experiments, and learnings."
+>
+  <section class="panel panel-soft stagger" style="display:grid; gap:0.8rem; position:relative; overflow:hidden;">
+    <div
+      aria-hidden="true"
+      style="position:absolute; inset:auto auto -38px -26px; width:140px; height:140px; border-radius:999px; background:radial-gradient(circle, rgba(185,109,52,0.16), rgba(185,109,52,0));"
+    />
+    <p class="term-label">notes index</p>
+    <h1 class="term-headline" style="font-size:clamp(1.8rem,4vw,3rem);">All posts</h1>
+    <p class="muted" style="max-width:58ch;">
+      A running collection of project notes, thoughts, learnings, and personal writing.
+      Clear, lightweight, and easy to revisit.
+    </p>
+    <div class="command">
+      <span class="prompt">gsisinna@blog:~/notes$</span>
+      <code>find . -type f | sort -r</code>
+    </div>
+  </section>
+
+  <section style="display:grid; gap:0.75rem;" class="stagger">
+    {entries.map((entry, index) => (
+      <article class="panel panel-elevated tilt-card" style="display:grid; gap:0.55rem; position:relative; overflow:hidden;">
+        <div
+          aria-hidden="true"
+          style={`position:absolute; inset:0 auto 0 0; width:4px; background:${
+            index % 3 === 0 ? "#0f766e" : index % 3 === 1 ? "#9a5f2d" : "#4f46e5"
+          }; opacity:0.6;`}
+        />
+        <div style="display:flex; justify-content:space-between; gap:1rem; align-items:flex-start; flex-wrap:wrap; padding-left:0.35rem;">
+          <div style="display:grid; gap:0.3rem;">
+            <h2 style="font-size:1.08rem;">
+              <a href={`/journal/${entry.slug}/`} style="text-decoration:none;">
+                <span class="term-headline">{entry.data.title}</span>
+              </a>
+            </h2>
+            <p class="muted">{entry.data.excerpt}</p>
+          </div>
+          <div style="display:grid; gap:0.35rem; justify-items:end;">
+            <span class="pill">{formatDate(entry.data.date)}</span>
+            {entry.data.readingTime && <span class="pill">{entry.data.readingTime}</span>}
+          </div>
+        </div>
+        <div class="meta-row" style="padding-left:0.35rem;">
+          {entry.data.tags.map((tag) => <span class="pill">#{tag}</span>)}
+        </div>
+      </article>
+    ))}
+  </section>
+</BaseLayout>
