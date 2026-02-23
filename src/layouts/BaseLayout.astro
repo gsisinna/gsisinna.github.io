@@ -681,6 +681,9 @@ const pathName = Astro.url.pathname;
             >
               notes
             </a>
+            <a href="/contact/" aria-current={pathName.startsWith("/contact") ? "page" : undefined}>
+              contact
+            </a>
           </nav>
         </header>
         <main>

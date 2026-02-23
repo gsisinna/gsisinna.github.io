@@ -6,23 +6,72 @@ const entries = await getPublishedJournalEntries();
 const latest = entries.slice(0, 3);
 const featured = latest[0];
 const totalPosts = entries.length;
+
+const storyline = [
+  {
+    period: "2024 -> now",
+    place: "FlexLink · Bologna",
+    role: "Robotics Software Engineer",
+    note:
+      "C++/Python software architecture for autonomous and collaborative robotics, industrial manipulators, CI/CD, and reusable robotics components."
+  },
+  {
+    period: "2022 -> 2023",
+    place: "Lab0 · Genova",
+    role: "Robotics Engineer",
+    note:
+      "Simulation, middleware, C++/Python development, Docker/Git workflows, hardware integration, and rapid prototyping."
+  },
+  {
+    period: "2021 -> 2022",
+    place: "Istituto Italiano di Tecnologia · Genova",
+    role: "Robotics Technician / Robotics Software Engineer",
+    note:
+      "iCub assembly, testing, diagnostics, RTF and icub-tests work, YARP-based testing, Docker deployments, and live demo support."
+  },
+  {
+    period: "2021",
+    place: "Università di Pisa",
+    role: "Master Thesis",
+    note:
+      "Bio-inspired control system for social humanoid robots (Abel), with ROS-based architecture in Python."
+  },
+  {
+    period: "2020 -> 2021",
+    place: "Scuola Superiore Sant'Anna · Pisa",
+    role: "Lab Training - Robotics",
+    note:
+      "7DOF KUKA simulation, ROS/MoveIt/Gazebo, CLIK, PID control, trajectory planning, and Linux-based robotics workflows."
+  }
+];
+
+const certifications = [
+  "Simscape Onramp",
+  "Control Design Onramp with Simulink",
+  "Linear Algebra with Matlab",
+  "Onshape Introduction to Part Design",
+  "Became a good Matlab programmer in 30 days"
+];
 ---
 
 <BaseLayout
-  title="gsisinna | Personal Blog"
-  description="A minimal personal blog for notes, projects, ideas, and progress."
+  title="Gabriele Sisinna | Personal Blog"
+  description="Senior Robotics Software Engineer (C++/Python) sharing notes, projects, and process in a terminal-style personal blog."
 >
   <section class="panel panel-soft stagger hero-grid tilt-card">
     <div style="display:grid; gap:0.9rem; align-content:start; min-width:0;">
-      <p class="term-label">init personal-space</p>
-      <h1 class="term-headline">Notes, projects, ideas, and the work behind them.</h1>
+      <p class="term-label">whoami</p>
+      <h1 class="term-headline">Gabriele Sisinna</h1>
+      <p style="color:var(--ink-strong); font-size:0.95rem;">
+        Senior Robotics Software Engineer | C++ · Python · Software Architecture
+      </p>
       <p class="muted" style="font-size:1.02rem; max-width:46ch;">
-        A personal blog for notes I want to keep: projects, process, experiments,
-        small updates, and ideas that are easier to understand once they are written down.
+        Based in Bologna. I work on robotics software with a focus on simulation, control
+        systems, integration, and maintainable architectures that move from research to real systems.
       </p>
       <div class="command">
-        <span class="prompt">gsisinna@blog:~$</span>
-        <code>open ./notes/about-this-blog.md</code>
+        <span class="prompt">gabriele@gsisinna:~$</span>
+        <code>cat profile.txt</code>
       </div>
       <div style="display:flex; gap:0.6rem; flex-wrap:wrap;">
         {featured ? (
@@ -31,55 +80,154 @@ const totalPosts = entries.length;
           <a href="/journal/" class="button button-primary">Open notes</a>
         )}
         <a href="/journal/" class="button button-secondary">Open archive</a>
+        <a href="/contact/" class="button button-secondary">Contact</a>
       </div>
       <div class="meta-row">
-        <span class="pill">Writing</span>
-        <span class="pill">Projects</span>
-        <span class="pill">Learning</span>
-        <span class="pill">Ideas</span>
+        <span class="pill">Robotica</span>
+        <span class="pill">C++</span>
+        <span class="pill">Python</span>
+        <span class="pill">ROS</span>
       </div>
       <div class="divider" />
       <div class="mini-stat-grid">
         <div class="mini-tile">
+          <p class="eyebrow">Base</p>
+          <p style="margin-top:0.2rem;">Bologna, IT</p>
+        </div>
+        <div class="mini-tile">
+          <p class="eyebrow">Languages</p>
+          <p style="margin-top:0.2rem;">IT · EN</p>
+        </div>
+        <div class="mini-tile">
           <p class="eyebrow">Posts</p>
           <p style="margin-top:0.2rem;">{totalPosts}</p>
-        </div>
-        <div class="mini-tile">
-          <p class="eyebrow">Format</p>
-          <p style="margin-top:0.2rem;">Markdown notes</p>
-        </div>
-        <div class="mini-tile">
-          <p class="eyebrow">Theme</p>
-          <p style="margin-top:0.2rem;">Terminal style</p>
         </div>
       </div>
     </div>
 
     <aside class="panel panel-elevated tilt-card" style="display:grid; gap:0.8rem; align-content:start; position:relative; overflow:hidden;">
       <div aria-hidden="true" class="orb-3d" style="inset:auto -22px -18px auto;" />
-      <p class="term-label">what this site is</p>
-      <h2 style="font-size:1.25rem;" class="term-headline">A personal archive with a terminal shell</h2>
+      <p class="term-label">how to reach me</p>
+      <h2 style="font-size:1.12rem;" class="term-headline">Use the contact form</h2>
       <div class="terminal-card">
         <div class="bar">
           <span class="traffic" aria-hidden="true"><span></span><span></span><span></span></span>
-          <span class="title">README</span>
+          <span class="title">contact.sh</span>
         </div>
         <div class="body" style="display:grid; gap:0.55rem;">
-          <div class="command"><span class="prompt">[01]</span><code>write things down while they are fresh</code></div>
-          <div class="command"><span class="prompt">[02]</span><code>keep context around projects + decisions</code></div>
-          <div class="command"><span class="prompt">[03]</span><code>leave a clear trail for future me</code></div>
+          <div class="command"><span class="prompt">$</span><code>open /contact</code></div>
+          <div class="command"><span class="prompt">$</span><code>fill form && send message</code></div>
+          <div class="command"><span class="prompt">$</span><code>wait for reply</code></div>
+        </div>
+      </div>
+      <div class="terminal-card">
+        <div class="bar">
+          <span class="traffic" aria-hidden="true"><span></span><span></span><span></span></span>
+          <span class="title">focus.cfg</span>
+        </div>
+        <div class="body" style="display:grid; gap:0.45rem;">
+          <p class="muted">Industrial robotics software, simulation, control, and architecture.</p>
         </div>
       </div>
     </aside>
   </section>
 
+  <section class="panel panel-elevated stagger tilt-card" style="display:grid; gap:0.85rem;">
+    <div class="section-head">
+      <div>
+        <p class="term-label">career timeline</p>
+        <h2 class="term-headline">From robotics labs to industrial software</h2>
+      </div>
+      <span class="pill">Bologna / Genova / Pisa</span>
+    </div>
+
+    <div class="terminal-card">
+      <div class="bar">
+        <span class="traffic" aria-hidden="true"><span></span><span></span><span></span></span>
+        <span class="title">timeline.log</span>
+      </div>
+      <div class="body" style="display:grid; gap:0.6rem;">
+        {storyline.map((step, index) => (
+          <div class="panel" style="padding:0.75rem; border-radius:10px; display:grid; gap:0.35rem;">
+            <div style="display:flex; justify-content:space-between; gap:0.8rem; flex-wrap:wrap; align-items:center;">
+              <span class="pill">#{String(index + 1).padStart(2, "0")} · {step.period}</span>
+              <span class="muted" style="font-size:0.78rem;">{step.place}</span>
+            </div>
+            <p style="color:var(--ink-strong); font-weight:600; font-size:0.9rem;">{step.role}</p>
+            <p class="muted" style="font-size:0.84rem;">{step.note}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="panel panel-soft stagger" style="display:grid; gap:0.85rem;">
+    <div class="section-head">
+      <div>
+        <p class="term-label">toolbox</p>
+        <h2 class="term-headline">Core skills, education, and certifications</h2>
+      </div>
+      <span class="pill">robotics + software</span>
+    </div>
+
+    <div class="grid-2">
+      <div class="terminal-card">
+        <div class="bar">
+          <span class="traffic" aria-hidden="true"><span></span><span></span><span></span></span>
+          <span class="title">skills.txt</span>
+        </div>
+        <div class="body" style="display:grid; gap:0.55rem;">
+          <div class="meta-row">
+            <span class="pill">Robotica</span>
+            <span class="pill">C++</span>
+            <span class="pill">Python</span>
+            <span class="pill">ROS</span>
+            <span class="pill">CMake</span>
+            <span class="pill">Docker</span>
+            <span class="pill">Git / GitLab</span>
+            <span class="pill">CI/CD</span>
+            <span class="pill">Simulation</span>
+            <span class="pill">Control Systems</span>
+          </div>
+          <div class="divider" />
+          <p class="muted" style="font-size:0.84rem;">
+            Languages: Italiano (native), Inglese (professional working).
+          </p>
+        </div>
+      </div>
+
+      <div class="terminal-card">
+        <div class="bar">
+          <span class="traffic" aria-hidden="true"><span></span><span></span><span></span></span>
+          <span class="title">education_and_certs.md</span>
+        </div>
+        <div class="body" style="display:grid; gap:0.6rem;">
+          <div class="panel" style="padding:0.7rem; border-radius:10px; display:grid; gap:0.25rem;">
+            <p style="color:var(--ink-strong); font-size:0.86rem;">MSc in Bionics Engineering (Biorobotics)</p>
+            <p class="muted" style="font-size:0.78rem;">Scuola Superiore Sant'Anna · 2018-2021</p>
+          </div>
+          <div class="panel" style="padding:0.7rem; border-radius:10px; display:grid; gap:0.25rem;">
+            <p style="color:var(--ink-strong); font-size:0.86rem;">BSc in Biomedical Engineering</p>
+            <p class="muted" style="font-size:0.78rem;">Università di Pisa · 2014-2018</p>
+          </div>
+          <div class="panel" style="padding:0.7rem; border-radius:10px; display:grid; gap:0.35rem;">
+            <p style="color:var(--ink-strong); font-size:0.82rem;">Selected certifications</p>
+            <div class="meta-row">
+              {certifications.map((cert) => <span class="pill">{cert}</span>)}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
   <section id="recent" style="display:grid; gap:0.9rem;">
     <div class="panel panel-soft section-head">
       <div>
-        <p class="term-label">start here</p>
-        <h2 class="term-headline">Current post</h2>
+        <p class="term-label">blog notes</p>
+        <h2 class="term-headline">Start here</h2>
       </div>
-      <a href="/journal/" class="button button-secondary" style="padding:0.55rem 0.8rem;">View archive</a>
+      <a href="/journal/" class="button button-secondary" style="padding:0.55rem 0.8rem;">Open notes</a>
     </div>
 
     <div class="stagger" style="display:grid; gap:0.75rem;">

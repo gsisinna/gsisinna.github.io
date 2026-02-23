@@ -1,0 +1,95 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+---
+
+<BaseLayout
+  title="Contact | Gabriele Sisinna"
+  description="Send a message through the contact form."
+>
+  <section class="panel panel-soft stagger" style="display:grid; gap:0.8rem;">
+    <p class="term-label">contact</p>
+    <h1 class="term-headline" style="font-size:clamp(1.8rem,4vw,3rem);">Send a message</h1>
+    <p class="muted" style="max-width:62ch;">
+      If you want to get in touch, use the form below. This site is static, so the form is
+      prepared for a form service endpoint (for example Formspree).
+    </p>
+    <div class="command">
+      <span class="prompt">gsisinna@blog:~/contact$</span>
+      <code>submit message --subject "hello"</code>
+    </div>
+  </section>
+
+  <section class="panel panel-elevated tilt-card" style="display:grid; gap:0.9rem;">
+    <div class="terminal-card">
+      <div class="bar">
+        <span class="traffic" aria-hidden="true"><span></span><span></span><span></span></span>
+        <span class="title">compose_message.form</span>
+      </div>
+      <div class="body">
+        <form
+          method="POST"
+          action="https://formspree.io/f/xzdakabw"
+          style="display:grid; gap:0.75rem;"
+        >
+          <input type="hidden" name="_subject" value="New message from gsisinna.github.io" />
+          <input type="hidden" name="_next" value="https://gsisinna.github.io/contact/" />
+
+          <label style="display:grid; gap:0.35rem;">
+            <span class="eyebrow">Name</span>
+            <input
+              type="text"
+              name="name"
+              required
+              autocomplete="name"
+              placeholder="Your name"
+              style="width:100%; background:rgba(255,255,255,0.015); color:var(--ink-strong); border:1px solid var(--line); border-radius:9px; padding:0.75rem; font:inherit;"
+            />
+          </label>
+
+          <label style="display:grid; gap:0.35rem;">
+            <span class="eyebrow">Email</span>
+            <input
+              type="email"
+              name="email"
+              required
+              autocomplete="email"
+              placeholder="you@example.com"
+              style="width:100%; background:rgba(255,255,255,0.015); color:var(--ink-strong); border:1px solid var(--line); border-radius:9px; padding:0.75rem; font:inherit;"
+            />
+          </label>
+
+          <label style="display:grid; gap:0.35rem;">
+            <span class="eyebrow">Subject</span>
+            <input
+              type="text"
+              name="subject"
+              required
+              placeholder="Project, collaboration, question..."
+              style="width:100%; background:rgba(255,255,255,0.015); color:var(--ink-strong); border:1px solid var(--line); border-radius:9px; padding:0.75rem; font:inherit;"
+            />
+          </label>
+
+          <label style="display:grid; gap:0.35rem;">
+            <span class="eyebrow">Message</span>
+            <textarea
+              name="message"
+              required
+              rows="7"
+              placeholder="Write your message..."
+              style="width:100%; resize:vertical; min-height:10rem; background:rgba(255,255,255,0.015); color:var(--ink-strong); border:1px solid var(--line); border-radius:9px; padding:0.75rem; font:inherit;"
+            ></textarea>
+          </label>
+
+          <div style="display:flex; gap:0.6rem; flex-wrap:wrap; align-items:center;">
+            <button type="submit" class="button button-primary" style="cursor:pointer;">
+              Send message
+            </button>
+            <span class="muted" style="font-size:0.78rem;">
+              Messages are sent securely through Formspree.
+            </span>
+          </div>
+        </form>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
