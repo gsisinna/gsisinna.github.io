@@ -1,0 +1,55 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#090b0e" />
+      <stop offset="100%" stop-color="#0f141a" />
+    </linearGradient>
+    <radialGradient id="glow1" cx="0.15" cy="0.2" r="0.5">
+      <stop offset="0%" stop-color="#52ffa8" stop-opacity="0.25" />
+      <stop offset="100%" stop-color="#52ffa8" stop-opacity="0" />
+    </radialGradient>
+    <radialGradient id="glow2" cx="0.88" cy="0.18" r="0.4">
+      <stop offset="0%" stop-color="#73d9ff" stop-opacity="0.2" />
+      <stop offset="100%" stop-color="#73d9ff" stop-opacity="0" />
+    </radialGradient>
+  </defs>
+
+  <rect width="1200" height="630" fill="url(#bg)" />
+  <rect width="1200" height="630" fill="url(#glow1)" />
+  <rect width="1200" height="630" fill="url(#glow2)" />
+
+  <g opacity="0.08">
+    <path d="M0 90h1200M0 180h1200M0 270h1200M0 360h1200M0 450h1200M0 540h1200" stroke="#ffffff" />
+  </g>
+
+  <rect x="72" y="62" width="1056" height="506" rx="16" fill="#0b0f13" stroke="rgba(82,255,168,0.25)" />
+  <rect x="72" y="62" width="1056" height="44" rx="16" fill="#0d1218" />
+  <circle cx="102" cy="84" r="8" fill="#ff5f56" />
+  <circle cx="126" cy="84" r="8" fill="#ffbd2e" />
+  <circle cx="150" cy="84" r="8" fill="#27c93f" />
+
+  <text x="190" y="90" fill="#8fb09d" font-family="JetBrains Mono, monospace" font-size="20">gsisinna — personal blog</text>
+
+  <text x="104" y="190" fill="#ffd166" font-family="JetBrains Mono, monospace" font-size="22">$</text>
+  <text x="128" y="190" fill="#52ffa8" font-family="JetBrains Mono, monospace" font-size="22">whoami</text>
+
+  <text x="104" y="270" fill="#ecfff2" font-family="JetBrains Mono, monospace" font-size="56" font-weight="700">Gabriele Sisinna</text>
+  <text x="104" y="322" fill="#d7ffe4" font-family="JetBrains Mono, monospace" font-size="28">
+    Senior Robotics Software Engineer · C++ · Python · Software Architecture
+  </text>
+  <text x="104" y="382" fill="#8fb09d" font-family="IBM Plex Mono, monospace" font-size="22">
+    Notes, projects, robotics software, and process — in a terminal-style personal blog.
+  </text>
+
+  <rect x="104" y="432" width="480" height="54" rx="10" fill="#11171d" stroke="rgba(82,255,168,0.18)" />
+  <text x="126" y="466" fill="#52ffa8" font-family="JetBrains Mono, monospace" font-size="22">gabriele@gsisinna:~$</text>
+  <text x="390" y="466" fill="#ecfff2" font-family="JetBrains Mono, monospace" font-size="22">open notes</text>
+
+  <rect x="796" y="162" width="252" height="280" rx="14" fill="#0f1419" stroke="rgba(82,255,168,0.14)" />
+  <text x="820" y="202" fill="#8fb09d" font-family="JetBrains Mono, monospace" font-size="18">timeline.log</text>
+  <text x="820" y="244" fill="#52ffa8" font-family="JetBrains Mono, monospace" font-size="16">[01] FlexLink</text>
+  <text x="820" y="280" fill="#73d9ff" font-family="JetBrains Mono, monospace" font-size="16">[02] Lab0</text>
+  <text x="820" y="316" fill="#8fb09d" font-family="JetBrains Mono, monospace" font-size="16">[03] IIT</text>
+  <text x="820" y="352" fill="#8fb09d" font-family="JetBrains Mono, monospace" font-size="16">[04] Pisa / Sant'Anna</text>
+</svg>
+

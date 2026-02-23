@@ -6,6 +6,54 @@ const entries = await getPublishedJournalEntries();
 const latest = entries.slice(0, 3);
 const featured = latest[0];
 const totalPosts = entries.length;
+const siteUrl = Astro.site?.toString() ?? "https://gsisinna.github.io";
+const homeUrl = new URL("/", siteUrl).toString();
+const notesUrl = new URL("/journal/", siteUrl).toString();
+const contactUrl = new URL("/contact/", siteUrl).toString();
+const homeJsonLd = [
+  {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    name: "gsisinna",
+    url: homeUrl,
+    description:
+      "Personal blog of Gabriele Sisinna about robotics software, projects, and notes.",
+    inLanguage: "en"
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "Person",
+    name: "Gabriele Sisinna",
+    url: homeUrl,
+    jobTitle: "Senior Robotics Software Engineer",
+    address: {
+      "@type": "PostalAddress",
+      addressLocality: "Bologna",
+      addressCountry: "IT"
+    },
+    knowsAbout: [
+      "Robotics",
+      "C++",
+      "Python",
+      "ROS",
+      "Robotics Simulation",
+      "Control Systems",
+      "Software Architecture"
+    ],
+    sameAs: [],
+    mainEntityOfPage: homeUrl
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "ItemList",
+    name: "Main site sections",
+    itemListElement: [
+      { "@type": "ListItem", position: 1, name: "Home", url: homeUrl },
+      { "@type": "ListItem", position: 2, name: "Notes", url: notesUrl },
+      { "@type": "ListItem", position: 3, name: "Contact", url: contactUrl }
+    ]
+  }
+];
 
 function timelineIcon(kind: string) {
   const common = 'viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"';
@@ -133,6 +181,7 @@ const hobbies = [
 <BaseLayout
   title="Gabriele Sisinna | Personal Blog"
   description="Senior Robotics Software Engineer (C++/Python) sharing notes, projects, and process in a terminal-style personal blog."
+  jsonLd={homeJsonLd}
 >
   <section class="panel panel-soft stagger hero-grid tilt-card">
     <div style="display:grid; gap:0.9rem; align-content:start; min-width:0;">

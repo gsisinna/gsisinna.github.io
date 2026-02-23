@@ -1,10 +1,22 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
+
+const siteUrl = Astro.site?.toString() ?? "https://gsisinna.github.io";
+const contactUrl = new URL("/contact/", siteUrl).toString();
+const contactJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "ContactPage",
+  name: "Contact | Gabriele Sisinna",
+  url: contactUrl,
+  description: "Contact form for reaching Gabriele Sisinna.",
+  inLanguage: "en"
+};
 ---
 
 <BaseLayout
   title="Contact | Gabriele Sisinna"
   description="Send a message through the contact form."
+  jsonLd={contactJsonLd}
 >
   <section class="panel panel-soft stagger" style="display:grid; gap:0.8rem;">
     <p class="term-label">contact</p>

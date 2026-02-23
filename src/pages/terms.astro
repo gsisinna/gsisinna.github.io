@@ -1,0 +1,68 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+
+const siteUrl = Astro.site?.toString() ?? "https://gsisinna.github.io";
+const termsUrl = new URL("/terms/", siteUrl).toString();
+const termsJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  name: "Terms | Gabriele Sisinna",
+  url: termsUrl,
+  description: "Terms and content usage notice for gsisinna.github.io.",
+  inLanguage: "en"
+};
+---
+
+<BaseLayout
+  title="Terms | Gabriele Sisinna"
+  description="Terms and content usage notice for gsisinna.github.io."
+  jsonLd={termsJsonLd}
+>
+  <section class="panel panel-soft stagger" style="display:grid; gap:0.8rem;">
+    <p class="term-label">terms</p>
+    <h1 class="term-headline" style="font-size:clamp(1.8rem,4vw,3rem);">Terms of use</h1>
+    <p class="muted" style="max-width:68ch;">
+      Simple rules for using this website and its content.
+    </p>
+  </section>
+
+  <section class="panel panel-elevated tilt-card" style="display:grid; gap:0.9rem;">
+    <div class="terminal-card">
+      <div class="bar">
+        <span class="traffic" aria-hidden="true"><span></span><span></span><span></span></span>
+        <span class="title">terms.md</span>
+      </div>
+      <div class="body prose">
+        <h2>Content ownership</h2>
+        <p>
+          Unless otherwise stated, the content on this website (text, design, and original
+          materials) is owned by Gabriele Sisinna.
+        </p>
+
+        <h2>Personal use and sharing</h2>
+        <p>
+          You may read, reference, and share links to this site. If you quote or reuse parts of
+          the content, please provide clear attribution.
+        </p>
+
+        <h2>No warranty</h2>
+        <p>
+          Content is provided for general information and personal writing purposes. I do my best
+          to keep it accurate, but I do not guarantee completeness or suitability for any specific use.
+        </p>
+
+        <h2>External services and links</h2>
+        <p>
+          This site may link to third-party websites or use third-party services (for example the
+          contact form provider). I am not responsible for their content or policies.
+        </p>
+
+        <h2>Changes</h2>
+        <p>
+          These terms may be updated over time as the website evolves.
+        </p>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+

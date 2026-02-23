@@ -4,11 +4,31 @@ import { getPublishedJournalEntries, formatDate } from "../../lib/content";
 
 const entries = await getPublishedJournalEntries();
 const totalPosts = entries.length;
+const siteUrl = Astro.site?.toString() ?? "https://gsisinna.github.io";
+const notesUrl = new URL("/journal/", siteUrl).toString();
+const notesJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "CollectionPage",
+  name: "Notes Archive | gsisinna",
+  url: notesUrl,
+  description: "Archive of personal notes, project logs, and writing by Gabriele Sisinna.",
+  inLanguage: "en",
+  mainEntity: {
+    "@type": "ItemList",
+    itemListElement: entries.map((entry, index) => ({
+      "@type": "ListItem",
+      position: index + 1,
+      url: new URL(`/journal/${entry.slug}/`, siteUrl).toString(),
+      name: entry.data.title
+    }))
+  }
+};
 ---
 
 <BaseLayout
   title="Notes | gsisinna"
   description="Personal notes, project updates, experiments, and learnings."
+  jsonLd={notesJsonLd}
 >
   <section class="panel panel-soft stagger" style="display:grid; gap:0.8rem; position:relative; overflow:hidden;">
     <div

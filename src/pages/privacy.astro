@@ -1,0 +1,68 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+
+const siteUrl = Astro.site?.toString() ?? "https://gsisinna.github.io";
+const privacyUrl = new URL("/privacy/", siteUrl).toString();
+const privacyJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  name: "Privacy Policy | Gabriele Sisinna",
+  url: privacyUrl,
+  description: "Privacy information for gsisinna.github.io, including contact form usage.",
+  inLanguage: "en"
+};
+---
+
+<BaseLayout
+  title="Privacy | Gabriele Sisinna"
+  description="Privacy information for gsisinna.github.io."
+  jsonLd={privacyJsonLd}
+>
+  <section class="panel panel-soft stagger" style="display:grid; gap:0.8rem;">
+    <p class="term-label">privacy</p>
+    <h1 class="term-headline" style="font-size:clamp(1.8rem,4vw,3rem);">Privacy policy</h1>
+    <p class="muted" style="max-width:68ch;">
+      This is a personal website. I collect as little information as possible and only use
+      what is needed to receive and reply to messages sent through the contact form.
+    </p>
+  </section>
+
+  <section class="panel panel-elevated tilt-card" style="display:grid; gap:0.9rem;">
+    <div class="terminal-card">
+      <div class="bar">
+        <span class="traffic" aria-hidden="true"><span></span><span></span><span></span></span>
+        <span class="title">privacy.md</span>
+      </div>
+      <div class="body prose">
+        <h2>Contact form data</h2>
+        <p>
+          When you send a message through the contact form, the data you submit (for example
+          name, email, subject, and message) is processed by Formspree to deliver the message.
+        </p>
+        <p>
+          I use that information only to read your message and reply to you. I do not sell your
+          data and I do not use it for marketing lists.
+        </p>
+
+        <h2>Third-party service</h2>
+        <p>
+          The contact form is powered by Formspree. Their processing of form submissions is
+          governed by their own terms and privacy policy.
+        </p>
+
+        <h2>Analytics and tracking</h2>
+        <p>
+          This site does not intentionally use invasive tracking scripts or advertising cookies.
+          If analytics are added in the future, this page will be updated.
+        </p>
+
+        <h2>Changes</h2>
+        <p>
+          I may update this page when the website changes (for example if new services or
+          features are added).
+        </p>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
