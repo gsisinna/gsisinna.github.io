@@ -1,0 +1,45 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+
+const siteUrl = Astro.site?.toString() ?? "https://gsisinna.github.io";
+const notFoundUrl = new URL("/404", siteUrl).toString();
+const notFoundJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  name: "404 | gsisinna",
+  url: notFoundUrl,
+  description: "Page not found on gsisinna.github.io.",
+  inLanguage: "en"
+};
+---
+
+<BaseLayout
+  title="404 | gsisinna"
+  description="Page not found."
+  noindex={true}
+  jsonLd={notFoundJsonLd}
+>
+  <section class="panel panel-soft stagger" style="display:grid; gap:0.85rem; position:relative; overflow:hidden;">
+    <div
+      aria-hidden="true"
+      class="orb-3d"
+      style="width:150px; height:150px; inset:auto -28px -34px auto; opacity:0.7;"
+    />
+    <p class="term-label">error</p>
+    <h1 class="term-headline" style="font-size:clamp(1.7rem,3.2vw,2.5rem); max-width:100%; text-wrap:pretty;">
+      Page not found
+    </h1>
+    <p class="muted" style="max-width:78ch;">
+      The page you requested does not exist, may have moved, or the URL may be mistyped.
+    </p>
+    <div class="command">
+      <span class="prompt">gsisinna@blog:~$</span>
+      <code>ls / && cd /journal</code>
+    </div>
+    <div style="display:flex; gap:0.6rem; flex-wrap:wrap;">
+      <a href="/" class="button button-primary">Go home</a>
+      <a href="/journal/" class="button button-secondary">Browse notes</a>
+      <a href="/contact/" class="button button-secondary">Contact</a>
+    </div>
+  </section>
+</BaseLayout>
