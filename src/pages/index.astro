@@ -11,6 +11,8 @@ const siteUrl = Astro.site?.toString() ?? "https://gsisinna.github.io";
 const homeUrl = new URL("/", siteUrl).toString();
 const notesUrl = new URL("/journal/", siteUrl).toString();
 const contactUrl = new URL("/contact/", siteUrl).toString();
+const githubUrl = "https://github.com/gsisinna";
+const linkedInUrl = "https://www.linkedin.com/in/gabriele-sisinna-4a6081109/";
 const homeJsonLd = [
   {
     "@context": "https://schema.org",
@@ -46,7 +48,7 @@ const homeJsonLd = [
       "Control Systems",
       "Software Architecture"
     ],
-    sameAs: [],
+    sameAs: [githubUrl, contactUrl, linkedInUrl].filter(Boolean),
     mainEntityOfPage: homeUrl
   },
   {
@@ -214,6 +216,35 @@ const hobbies = [
         on software architecture. I also work hands-on with Linux systems, Arduino, electronics, 3D printing,
         and rapid prototyping when projects need real hardware and fast iteration.
       </p>
+      <div class="social-links" aria-label="Social links">
+        <a class="social-link" href={githubUrl} target="_blank" rel="noreferrer noopener" aria-label="GitHub profile">
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path
+              fill="currentColor"
+              d="M12 2C6.48 2 2 6.58 2 12.23c0 4.52 2.87 8.36 6.84 9.71.5.1.68-.22.68-.5 0-.24-.01-1.03-.01-1.87-2.78.62-3.37-1.21-3.37-1.21-.46-1.2-1.11-1.52-1.11-1.52-.91-.64.07-.63.07-.63 1 .08 1.53 1.06 1.53 1.06.9 1.57 2.35 1.12 2.92.86.09-.67.35-1.12.64-1.38-2.22-.26-4.56-1.14-4.56-5.07 0-1.12.39-2.04 1.03-2.76-.1-.26-.45-1.31.1-2.74 0 0 .84-.28 2.75 1.05A9.3 9.3 0 0 1 12 6.84c.85 0 1.71.12 2.52.37 1.91-1.33 2.75-1.05 2.75-1.05.55 1.43.2 2.48.1 2.74.64.72 1.03 1.64 1.03 2.76 0 3.94-2.34 4.8-4.57 5.06.36.32.68.94.68 1.9 0 1.37-.01 2.47-.01 2.81 0 .28.18.61.69.5A10.26 10.26 0 0 0 22 12.23C22 6.58 17.52 2 12 2Z"
+            />
+          </svg>
+          <span>GitHub</span>
+        </a>
+        <a class="social-link" href={linkedInUrl} target="_blank" rel="noreferrer noopener" aria-label="LinkedIn profile">
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path
+              fill="currentColor"
+              d="M6.94 8.5A1.56 1.56 0 1 0 6.9 5.38a1.56 1.56 0 0 0 .04 3.12ZM5.6 9.67h2.62V18H5.6V9.67Zm4.27 0h2.51v1.14h.03c.35-.66 1.2-1.35 2.47-1.35 2.64 0 3.12 1.78 3.12 4.1V18h-2.61v-3.91c0-.93-.02-2.13-1.27-2.13-1.28 0-1.48 1.03-1.48 2.06V18H9.87V9.67Z"
+            />
+          </svg>
+          <span>LinkedIn</span>
+        </a>
+        <a class="social-link" href={contactUrl} aria-label="Contact page">
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path
+              fill="currentColor"
+              d="M3 6.75A2.75 2.75 0 0 1 5.75 4h12.5A2.75 2.75 0 0 1 21 6.75v10.5A2.75 2.75 0 0 1 18.25 20H5.75A2.75 2.75 0 0 1 3 17.25V6.75Zm2 .17v.16l7 4.88 7-4.88v-.16a.75.75 0 0 0-.75-.75H5.75a.75.75 0 0 0-.75.75Zm14 2.59-6.43 4.48a1 1 0 0 1-1.14 0L5 9.51v7.74c0 .41.34.75.75.75h12.5c.41 0 .75-.34.75-.75V9.51Z"
+            />
+          </svg>
+          <span>Contact</span>
+        </a>
+      </div>
       <div class="command command-typing" style="--type-ch:14; --type-delay:220ms; --type-duration:1s;">
         <span class="prompt">gabriele@gsisinna:~$</span>
         <code>cat profile.md</code>
@@ -679,6 +710,49 @@ const hobbies = [
       font-size: 0.76rem;
     }
 
+    .social-links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.55rem;
+      align-items: center;
+    }
+
+    .social-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.45rem;
+      padding: 0.45rem 0.65rem;
+      border-radius: 10px;
+      border: 1px solid rgba(82,255,168,0.12);
+      background:
+        linear-gradient(to bottom, rgba(255,255,255,0.018), rgba(255,255,255,0.006));
+      color: var(--ink);
+      text-decoration: none;
+      font-size: 0.78rem;
+      line-height: 1;
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.02);
+      transition: 160ms ease;
+    }
+
+    .social-link:hover {
+      color: var(--ink-strong);
+      border-color: rgba(82,255,168,0.2);
+      background:
+        linear-gradient(to bottom, rgba(82,255,168,0.05), rgba(255,255,255,0.008));
+      transform: translateY(-1px);
+    }
+
+    .social-link svg {
+      width: 0.95rem;
+      height: 0.95rem;
+      color: var(--accent);
+      flex-shrink: 0;
+    }
+
+    .social-link span {
+      white-space: nowrap;
+    }
+
     .jumpbar {
       position: sticky;
       top: 0.7rem;
@@ -840,6 +914,14 @@ const hobbies = [
         flex-direction: column;
       }
 
+      .social-links {
+        gap: 0.45rem;
+      }
+
+      .social-link {
+        padding: 0.45rem 0.55rem;
+      }
+
       .home-progress {
         margin-top: 0;
       }
@@ -862,6 +944,24 @@ const hobbies = [
     }
 
     @media (max-width: 520px) {
+      .social-links {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        width: 100%;
+      }
+
+      .social-link {
+        justify-content: center;
+        min-width: 0;
+        gap: 0.35rem;
+        padding: 0.45rem 0.4rem;
+      }
+
+      .social-link span {
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+
       .jumpbar {
         padding: 0.45rem;
         gap: 0.35rem;

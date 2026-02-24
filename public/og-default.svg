@@ -1,55 +1,91 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630" role="img" aria-label="Terminal-style blog preview">
   <defs>
     <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
       <stop offset="0%" stop-color="#090b0e" />
+      <stop offset="55%" stop-color="#0b0f13" />
       <stop offset="100%" stop-color="#0f141a" />
     </linearGradient>
-    <radialGradient id="glow1" cx="0.15" cy="0.2" r="0.5">
-      <stop offset="0%" stop-color="#52ffa8" stop-opacity="0.25" />
+    <radialGradient id="glowA" cx="0.12" cy="0.14" r="0.58">
+      <stop offset="0%" stop-color="#52ffa8" stop-opacity="0.18" />
       <stop offset="100%" stop-color="#52ffa8" stop-opacity="0" />
     </radialGradient>
-    <radialGradient id="glow2" cx="0.88" cy="0.18" r="0.4">
-      <stop offset="0%" stop-color="#73d9ff" stop-opacity="0.2" />
+    <radialGradient id="glowB" cx="0.9" cy="0.18" r="0.42">
+      <stop offset="0%" stop-color="#73d9ff" stop-opacity="0.16" />
       <stop offset="100%" stop-color="#73d9ff" stop-opacity="0" />
     </radialGradient>
+    <linearGradient id="frameStroke" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="rgba(82,255,168,0.14)" />
+      <stop offset="50%" stop-color="rgba(255,255,255,0.08)" />
+      <stop offset="100%" stop-color="rgba(115,217,255,0.14)" />
+    </linearGradient>
   </defs>
 
   <rect width="1200" height="630" fill="url(#bg)" />
-  <rect width="1200" height="630" fill="url(#glow1)" />
-  <rect width="1200" height="630" fill="url(#glow2)" />
+  <rect width="1200" height="630" fill="url(#glowA)" />
+  <rect width="1200" height="630" fill="url(#glowB)" />
 
-  <g opacity="0.08">
-    <path d="M0 90h1200M0 180h1200M0 270h1200M0 360h1200M0 450h1200M0 540h1200" stroke="#ffffff" />
+  <g opacity="0.05">
+    <path d="M0 70h1200M0 140h1200M0 210h1200M0 280h1200M0 350h1200M0 420h1200M0 490h1200M0 560h1200" stroke="#ffffff" />
+    <path d="M90 0v630M180 0v630M270 0v630M360 0v630M450 0v630M540 0v630M630 0v630M720 0v630M810 0v630M900 0v630M990 0v630M1080 0v630" stroke="#ffffff" />
   </g>
 
-  <rect x="72" y="62" width="1056" height="506" rx="16" fill="#0b0f13" stroke="rgba(82,255,168,0.25)" />
-  <rect x="72" y="62" width="1056" height="44" rx="16" fill="#0d1218" />
-  <circle cx="102" cy="84" r="8" fill="#ff5f56" />
-  <circle cx="126" cy="84" r="8" fill="#ffbd2e" />
-  <circle cx="150" cy="84" r="8" fill="#27c93f" />
+  <rect x="64" y="56" width="1072" height="518" rx="18" fill="#0b0f13" stroke="rgba(82,255,168,0.12)" />
+  <rect x="64.5" y="56.5" width="1071" height="518" rx="17.5" fill="none" stroke="rgba(255,255,255,0.03)" />
+  <rect x="64" y="56" width="1072" height="48" rx="18" fill="#0d1218" />
+  <rect x="64" y="90" width="1072" height="1" fill="rgba(82,255,168,0.08)" />
 
-  <text x="190" y="90" fill="#8fb09d" font-family="JetBrains Mono, monospace" font-size="20">gsisinna — personal blog</text>
+  <circle cx="96" cy="80" r="7" fill="#ff5f56" />
+  <circle cx="118" cy="80" r="7" fill="#ffbd2e" />
+  <circle cx="140" cy="80" r="7" fill="#27c93f" />
 
-  <text x="104" y="190" fill="#ffd166" font-family="JetBrains Mono, monospace" font-size="22">$</text>
-  <text x="128" y="190" fill="#52ffa8" font-family="JetBrains Mono, monospace" font-size="22">whoami</text>
+  <text x="176" y="86" fill="#8fb09d" font-family="JetBrains Mono, monospace" font-size="18">gsisinna / terminal session</text>
 
-  <text x="104" y="270" fill="#ecfff2" font-family="JetBrains Mono, monospace" font-size="56" font-weight="700">Gabriele Sisinna</text>
-  <text x="104" y="322" fill="#d7ffe4" font-family="JetBrains Mono, monospace" font-size="28">
-    Senior Robotics Software Engineer · C++ · Python · Software Architecture
-  </text>
-  <text x="104" y="382" fill="#8fb09d" font-family="IBM Plex Mono, monospace" font-size="22">
-    Notes, projects, robotics software, and process — in a terminal-style personal blog.
-  </text>
+  <g>
+    <rect x="94" y="130" width="698" height="352" rx="14" fill="#0d1116" stroke="rgba(82,255,168,0.1)" />
+    <text x="118" y="167" fill="#8fb09d" font-family="JetBrains Mono, monospace" font-size="16">~/blog</text>
 
-  <rect x="104" y="432" width="480" height="54" rx="10" fill="#11171d" stroke="rgba(82,255,168,0.18)" />
-  <text x="126" y="466" fill="#52ffa8" font-family="JetBrains Mono, monospace" font-size="22">gabriele@gsisinna:~$</text>
-  <text x="390" y="466" fill="#ecfff2" font-family="JetBrains Mono, monospace" font-size="22">open notes</text>
+    <text x="118" y="212" fill="#52ffa8" font-family="JetBrains Mono, monospace" font-size="18">gsisinna@site:~$</text>
+    <text x="275" y="212" fill="#ecfff2" font-family="JetBrains Mono, monospace" font-size="18">ls pages/</text>
 
-  <rect x="796" y="162" width="252" height="280" rx="14" fill="#0f1419" stroke="rgba(82,255,168,0.14)" />
-  <text x="820" y="202" fill="#8fb09d" font-family="JetBrains Mono, monospace" font-size="18">timeline.log</text>
-  <text x="820" y="244" fill="#52ffa8" font-family="JetBrains Mono, monospace" font-size="16">[01] FlexLink</text>
-  <text x="820" y="280" fill="#73d9ff" font-family="JetBrains Mono, monospace" font-size="16">[02] Lab0</text>
-  <text x="820" y="316" fill="#8fb09d" font-family="JetBrains Mono, monospace" font-size="16">[03] IIT</text>
-  <text x="820" y="352" fill="#8fb09d" font-family="JetBrains Mono, monospace" font-size="16">[04] Pisa / Sant'Anna</text>
+    <text x="118" y="252" fill="#73d9ff" font-family="JetBrains Mono, monospace" font-size="16">index</text>
+    <text x="182" y="252" fill="#73d9ff" font-family="JetBrains Mono, monospace" font-size="16">journal</text>
+    <text x="265" y="252" fill="#73d9ff" font-family="JetBrains Mono, monospace" font-size="16">contact</text>
+    <text x="354" y="252" fill="#73d9ff" font-family="JetBrains Mono, monospace" font-size="16">privacy</text>
+    <text x="440" y="252" fill="#73d9ff" font-family="JetBrains Mono, monospace" font-size="16">terms</text>
+
+    <text x="118" y="310" fill="#52ffa8" font-family="JetBrains Mono, monospace" font-size="18">gsisinna@site:~$</text>
+    <text x="275" y="310" fill="#ecfff2" font-family="JetBrains Mono, monospace" font-size="18">cat about.txt</text>
+
+    <text x="118" y="352" fill="#ecfff2" font-family="JetBrains Mono, monospace" font-size="32" font-weight="700">Personal notes, projects, and engineering logs.</text>
+    <text x="118" y="390" fill="#8fb09d" font-family="IBM Plex Mono, monospace" font-size="18">Robotics software, experiments, architecture thinking, and practical build notes.</text>
+
+    <rect x="118" y="422" width="440" height="36" rx="8" fill="#10161c" stroke="rgba(82,255,168,0.14)" />
+    <text x="134" y="445" fill="#ffd166" font-family="JetBrains Mono, monospace" font-size="15">$</text>
+    <text x="152" y="445" fill="#52ffa8" font-family="JetBrains Mono, monospace" font-size="15">open /journal/latest</text>
+    <rect x="339" y="432" width="8" height="14" fill="#52ffa8" opacity="0.75" />
+  </g>
+
+  <g>
+    <rect x="818" y="130" width="286" height="168" rx="14" fill="#0f1419" stroke="rgba(115,217,255,0.12)" />
+    <text x="842" y="164" fill="#8fb09d" font-family="JetBrains Mono, monospace" font-size="15">status.json</text>
+    <text x="842" y="204" fill="#ecfff2" font-family="JetBrains Mono, monospace" font-size="14">{</text>
+    <text x="858" y="228" fill="#8fb09d" font-family="JetBrains Mono, monospace" font-size="14">"theme":</text>
+    <text x="942" y="228" fill="#52ffa8" font-family="JetBrains Mono, monospace" font-size="14">"terminal"</text>
+    <text x="858" y="252" fill="#8fb09d" font-family="JetBrains Mono, monospace" font-size="14">"mode":</text>
+    <text x="934" y="252" fill="#73d9ff" font-family="JetBrains Mono, monospace" font-size="14">"notes"</text>
+    <text x="858" y="276" fill="#8fb09d" font-family="JetBrains Mono, monospace" font-size="14">"stack":</text>
+    <text x="942" y="276" fill="#ffd166" font-family="JetBrains Mono, monospace" font-size="14">"astro"</text>
+    <text x="842" y="296" fill="#ecfff2" font-family="JetBrains Mono, monospace" font-size="14">}</text>
+  </g>
+
+  <g>
+    <rect x="818" y="316" width="286" height="166" rx="14" fill="#0f1419" stroke="rgba(82,255,168,0.1)" />
+    <text x="842" y="350" fill="#8fb09d" font-family="JetBrains Mono, monospace" font-size="15">recent.log</text>
+    <rect x="842" y="372" width="238" height="1" fill="rgba(255,255,255,0.05)" />
+    <text x="842" y="402" fill="#52ffa8" font-family="JetBrains Mono, monospace" font-size="14">[ok] build static pages</text>
+    <text x="842" y="428" fill="#73d9ff" font-family="JetBrains Mono, monospace" font-size="14">[ok] publish notes archive</text>
+    <text x="842" y="454" fill="#8fb09d" font-family="JetBrains Mono, monospace" font-size="14">[..] write next article</text>
+  </g>
+
+  <rect x="64.5" y="56.5" width="1071" height="518" rx="17.5" fill="none" stroke="url(#frameStroke)" opacity="0.35" />
 </svg>
-

@@ -8,9 +8,9 @@ const journal = defineCollection({
     date: z.coerce.date(),
     tags: z.array(z.string()).default([]),
     draft: z.boolean().default(false),
-    readingTime: z.string().optional()
+    readingTime: z.string().optional(),
+    image: z.string().optional()
   })
 });
 
 export const collections = { journal };
-

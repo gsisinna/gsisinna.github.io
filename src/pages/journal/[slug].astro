@@ -24,6 +24,8 @@ const { Content } = await render(entry);
 const siteUrl = Astro.site?.toString() ?? "https://gsisinna.github.io";
 const postUrl = new URL(`/journal/${entry.slug}/`, siteUrl).toString();
 const publishedIso = entry.data.date.toISOString();
+const postImage = entry.data.image ?? "/og-article-default.svg";
+const postImageUrl = new URL(postImage, siteUrl).toString();
 const postJsonLd = {
   "@context": "https://schema.org",
   "@type": "BlogPosting",
@@ -35,6 +37,7 @@ const postJsonLd = {
   mainEntityOfPage: postUrl,
   inLanguage: "en",
   keywords: entry.data.tags.join(", "),
+  image: postImageUrl,
   author: {
     "@type": "Person",
     name: "Gabriele Sisinna"
@@ -49,6 +52,7 @@ const postJsonLd = {
 <BaseLayout
   title={`${entry.data.title} | gsisinna`}
   description={entry.data.excerpt}
+  image={postImage}
   type="article"
   publishedTime={publishedIso}
   modifiedTime={publishedIso}
