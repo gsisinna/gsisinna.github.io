@@ -1,0 +1,4 @@
+Contact: https://gsisinna.github.io/contact/
+Canonical: https://gsisinna.github.io/.well-known/security.txt
+Preferred-Languages: en, it
+Expires: 2027-02-24T00:00:00Z

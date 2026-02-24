@@ -25,7 +25,7 @@ const contactJsonLd = {
       If you want to get in touch, use the form below. This site is static, so the form is
       prepared for a form service endpoint (for example Formspree).
     </p>
-    <div class="command">
+    <div class="command command-typing" style="--type-ch:32; --type-delay:260ms; --type-duration:1.35s;">
       <span class="prompt">gsisinna@blog:~/contact$</span>
       <code>submit message --subject "hello"</code>
     </div>
@@ -41,10 +41,17 @@ const contactJsonLd = {
         <form
           method="POST"
           action="https://formspree.io/f/xzdakabw"
+          accept-charset="UTF-8"
+          referrerpolicy="no-referrer"
+          autocomplete="on"
           style="display:grid; gap:0.75rem;"
         >
           <input type="hidden" name="_subject" value="New message from gsisinna.github.io" />
           <input type="hidden" name="_next" value="https://gsisinna.github.io/contact/" />
+          <label aria-hidden="true" style="position:absolute; left:-10000px; width:1px; height:1px; overflow:hidden;">
+            Do not fill this out
+            <input type="text" name="_gotcha" tabindex="-1" autocomplete="off" />
+          </label>
 
           <label style="display:grid; gap:0.35rem;">
             <span class="eyebrow">Name</span>
@@ -52,6 +59,8 @@ const contactJsonLd = {
               type="text"
               name="name"
               required
+              minlength="2"
+              maxlength="100"
               autocomplete="name"
               placeholder="Your name"
               style="width:100%; background:rgba(255,255,255,0.015); color:var(--ink-strong); border:1px solid var(--line); border-radius:9px; padding:0.75rem; font:inherit;"
@@ -64,7 +73,11 @@ const contactJsonLd = {
               type="email"
               name="email"
               required
+              maxlength="254"
               autocomplete="email"
+              autocapitalize="off"
+              spellcheck="false"
+              inputmode="email"
               placeholder="you@example.com"
               style="width:100%; background:rgba(255,255,255,0.015); color:var(--ink-strong); border:1px solid var(--line); border-radius:9px; padding:0.75rem; font:inherit;"
             />
@@ -76,6 +89,9 @@ const contactJsonLd = {
               type="text"
               name="subject"
               required
+              minlength="3"
+              maxlength="150"
+              autocomplete="off"
               placeholder="Project, collaboration, question..."
               style="width:100%; background:rgba(255,255,255,0.015); color:var(--ink-strong); border:1px solid var(--line); border-radius:9px; padding:0.75rem; font:inherit;"
             />
@@ -86,6 +102,8 @@ const contactJsonLd = {
             <textarea
               name="message"
               required
+              minlength="10"
+              maxlength="5000"
               rows="7"
               placeholder="Write your message..."
               style="width:100%; resize:vertical; min-height:10rem; background:rgba(255,255,255,0.015); color:var(--ink-strong); border:1px solid var(--line); border-radius:9px; padding:0.75rem; font:inherit;"
@@ -97,7 +115,7 @@ const contactJsonLd = {
               Send message
             </button>
             <span class="muted" style="font-size:0.78rem;">
-              Messages are sent securely through Formspree.
+              Messages are submitted to Formspree (third-party processor). Do not include secrets.
             </span>
           </div>
         </form>

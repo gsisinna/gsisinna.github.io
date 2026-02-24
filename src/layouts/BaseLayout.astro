@@ -30,6 +30,18 @@ const imageUrl = new URL(image, siteUrl).toString();
 const twitterCard = "summary_large_image";
 const jsonLdItems = Array.isArray(jsonLd) ? jsonLd : [jsonLd];
 const currentYear = new Date().getFullYear();
+const csp = [
+  "default-src 'self'",
+  "base-uri 'self'",
+  "object-src 'none'",
+  "form-action https://formspree.io",
+  "img-src 'self' https: data:",
+  "font-src 'self' https://fonts.gstatic.com data:",
+  "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
+  "script-src 'self' 'unsafe-inline'",
+  "connect-src 'self'",
+  "upgrade-insecure-requests"
+].join("; ");
 ---
 
 <!doctype html>
@@ -42,6 +54,8 @@ const currentYear = new Date().getFullYear();
     <meta name="robots" content={noindex ? "noindex, nofollow" : "index, follow"} />
     <meta name="author" content="Gabriele Sisinna" />
     <meta name="theme-color" content="#090b0e" />
+    <meta name="referrer" content="strict-origin-when-cross-origin" />
+    <meta http-equiv="Content-Security-Policy" content={csp} />
     <link rel="canonical" href={canonicalUrl} />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta property="og:site_name" content="gsisinna" />
@@ -70,6 +84,16 @@ const currentYear = new Date().getFullYear();
         set:html={JSON.stringify(item).replace(/</g, "\\u003c")}
       />
     ))}
+    <!-- `frame-ancestors` is ignored in meta CSP. Enforce it via HTTP headers at the host/CDN. -->
+    <script is:inline>
+      if (window.top !== window.self) {
+        document.documentElement.style.display = "none";
+        try {
+          window.top.location = window.self.location.href;
+        } catch {}
+      }
+      document.documentElement.classList.add("js");
+    </script>
     <style is:global>
       :root {
         --bg: #090b0e;
@@ -537,6 +561,18 @@ const currentYear = new Date().getFullYear();
         font-family: "JetBrains Mono", ui-monospace, monospace;
       }
 
+      .command-typing {
+        --type-ch: 12;
+        --type-delay: 120ms;
+        --type-duration: 1.1s;
+      }
+
+      .command-typing code {
+        color: var(--accent);
+        text-shadow: 0 0 14px rgba(82,255,168,0.12);
+        position: relative;
+      }
+
       .terminal-card {
         border-radius: 12px;
         border: 1px solid rgba(82,255,168,0.12);
@@ -806,6 +842,35 @@ const currentYear = new Date().getFullYear();
         .stagger > *:nth-child(2) { animation-delay: 70ms; }
         .stagger > *:nth-child(3) { animation-delay: 140ms; }
         .stagger > *:nth-child(4) { animation-delay: 210ms; }
+
+        html.js .command-typing:not(.is-typing):not(.is-typed) code {
+          display: inline-block;
+          white-space: nowrap;
+          overflow: hidden;
+          width: 0;
+          padding-right: 0;
+        }
+
+        html.js .command-typing.is-typing code {
+          display: inline-block;
+          white-space: nowrap;
+          overflow: hidden;
+          width: 0;
+          animation:
+            typeCommand var(--type-duration) steps(var(--type-ch)) var(--type-delay) both;
+        }
+
+        html.js .command-typing.is-typing code::after {
+          content: "";
+          position: absolute;
+          top: 0.08em;
+          right: -0.18ch;
+          width: 2px;
+          height: 1.05em;
+          background: rgba(82,255,168,0.7);
+          box-shadow: 0 0 10px rgba(82,255,168,0.2);
+          animation: caretBlink 920ms step-end infinite;
+        }
       }
 
       @keyframes rise {
@@ -816,6 +881,21 @@ const currentYear = new Date().getFullYear();
         to {
           opacity: 1;
           transform: translateY(0);
+        }
+      }
+
+      @keyframes typeCommand {
+        from {
+          width: 0;
+        }
+        to {
+          width: calc(var(--type-ch) * 1ch);
+        }
+      }
+
+      @keyframes caretBlink {
+        50% {
+          opacity: 0;
         }
       }
 
@@ -891,5 +971,66 @@ const currentYear = new Date().getFullYear();
         </footer>
       </div>
     </div>
+    <script is:inline>
+    (() => {
+      const commands = Array.from(document.querySelectorAll(".command-typing"));
+      if (commands.length === 0) return;
+
+      const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      if (reduceMotion || !("IntersectionObserver" in window)) {
+        for (const el of commands) el.classList.add("is-typed");
+        return;
+      }
+
+      const onTypeEnd = (event) => {
+        if (!(event.target instanceof HTMLElement)) return;
+        if (event.animationName !== "typeCommand") return;
+        const command = event.target.closest(".command-typing");
+        if (!command) return;
+        command.classList.remove("is-typing");
+        command.classList.add("is-typed");
+        event.target.removeEventListener("animationend", onTypeEnd);
+      };
+
+      const observer = new IntersectionObserver(
+        (entries) => {
+          for (const entry of entries) {
+            if (!entry.isIntersecting) continue;
+            const el = entry.target;
+            if (!(el instanceof HTMLElement)) continue;
+            if (el.classList.contains("is-typed") || el.classList.contains("is-typing")) {
+              observer.unobserve(el);
+              continue;
+            }
+
+            const code = el.querySelector("code");
+            if (code instanceof HTMLElement) {
+              const computed = getComputedStyle(el);
+              const baseDelay = Number.parseFloat(computed.getPropertyValue("--type-delay")) || 0;
+              const baseDuration =
+                Number.parseFloat(computed.getPropertyValue("--type-duration")) || 1.1;
+              const jitterDelay = Math.round((Math.random() * 180) - 60);
+              const jitterDuration = (Math.random() * 0.28) - 0.1;
+              el.style.setProperty("--type-delay", `${Math.max(0, baseDelay + jitterDelay)}ms`);
+              el.style.setProperty(
+                "--type-duration",
+                `${Math.max(0.35, baseDuration + jitterDuration).toFixed(2)}s`
+              );
+              code.addEventListener("animationend", onTypeEnd);
+            }
+
+            el.classList.add("is-typing");
+            observer.unobserve(el);
+          }
+        },
+        {
+          threshold: 0.6,
+          rootMargin: "0px 0px -8% 0px"
+        }
+      );
+
+      for (const el of commands) observer.observe(el);
+    })();
+    </script>
   </body>
 </html>
