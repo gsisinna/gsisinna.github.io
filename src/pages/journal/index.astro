@@ -55,6 +55,18 @@ const notesJsonLd = {
             index % 3 === 0 ? "#0f766e" : index % 3 === 1 ? "#9a5f2d" : "#4f46e5"
           }; opacity:0.6;`}
         />
+        {entry.data.image && (
+          <a href={`/journal/${entry.slug}/`} style="display:block; margin:0 0 0.1rem 0.35rem; border-radius:10px; overflow:hidden; border:1px solid rgba(82,255,168,0.1);">
+            <img
+              src={entry.data.image}
+              alt={`${entry.data.title} thumbnail`}
+              loading="lazy"
+              decoding="async"
+              referrerpolicy="no-referrer"
+              style="width:100%; max-height:220px; object-fit:cover; display:block;"
+            />
+          </a>
+        )}
         <div style="display:flex; justify-content:space-between; gap:1rem; align-items:flex-start; flex-wrap:wrap; padding-left:0.35rem;">
           <div style="display:grid; gap:0.3rem;">
             <h2 style="font-size:1.08rem;">

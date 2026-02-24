@@ -4,6 +4,7 @@
   "private": true,
   "type": "module",
   "scripts": {
+    "prebuild": "node -e \"try{require('node:fs').rmSync('.astro',{recursive:true,force:true})}catch(e){}\"",
     "dev": "astro dev",
     "start": "astro dev",
     "build": "astro build",

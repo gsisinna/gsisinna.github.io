@@ -4,6 +4,7 @@ excerpt: "Why I made this site, what I plan to use it for, and why it looks like
 date: 2026-02-23
 tags: ["about", "blog", "notes"]
 readingTime: "4 min read"
+image: "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=1600&q=80"
 draft: false
 ---
 
@@ -48,4 +49,3 @@ There is no strict category rule.
 Some posts will be technical. Some will be about process. Some may just be short notes I want to keep. The common thread is that they are things I do not want to forget.
 
 If you are reading this later, this post is the starting point.
-
