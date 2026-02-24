@@ -248,6 +248,7 @@ const csp = [
         align-items: center;
         gap: 0.75rem;
         text-decoration: none;
+        min-width: 0;
       }
 
       .traffic {
@@ -290,12 +291,14 @@ const csp = [
         font-family: "JetBrains Mono", ui-monospace, monospace;
         font-weight: 600;
         color: var(--ink-strong);
+        overflow-wrap: anywhere;
       }
 
       .brand-copy span {
         display: block;
         color: var(--muted);
         font-size: 0.72rem;
+        overflow-wrap: anywhere;
       }
 
       nav {
@@ -303,6 +306,7 @@ const csp = [
         align-items: center;
         gap: 0.4rem;
         flex-wrap: wrap;
+        min-width: 0;
       }
 
       nav a {
@@ -340,6 +344,7 @@ const csp = [
           inset 0 0 0 1px rgba(82,255,168,0.015);
         position: relative;
         transform-style: preserve-3d;
+        min-width: 0;
       }
 
       .panel-soft {
@@ -483,6 +488,7 @@ const csp = [
         justify-content: space-between;
         gap: 1rem;
         align-items: end;
+        min-width: 0;
       }
 
       .card-link {
@@ -586,10 +592,12 @@ const csp = [
         padding: 0.55rem 0.75rem;
         color: var(--ink-strong);
         font-size: 0.84rem;
+        min-width: 0;
       }
 
       .command .prompt {
         color: var(--accent);
+        flex-shrink: 0;
       }
 
       .command code {
@@ -598,6 +606,7 @@ const csp = [
         padding: 0;
         color: inherit;
         font-family: "JetBrains Mono", ui-monospace, monospace;
+        min-width: 0;
       }
 
       .command-typing {
@@ -809,6 +818,8 @@ const csp = [
       .prose {
         max-width: 72ch;
         font-size: 0.96rem;
+        min-width: 0;
+        overflow-wrap: anywhere;
       }
 
       .prose p + p {
@@ -865,6 +876,20 @@ const csp = [
         border-radius: 8px 12px 12px 8px;
         background: rgba(82,255,168,0.05);
         color: var(--muted);
+      }
+
+      .prose img,
+      .prose video,
+      .prose iframe {
+        max-width: 100%;
+        height: auto;
+      }
+
+      .prose table {
+        display: block;
+        width: 100%;
+        overflow-x: auto;
+        border-collapse: collapse;
       }
 
       @media (prefers-reduced-motion: no-preference) {
@@ -953,9 +978,14 @@ const csp = [
         header.site {
           align-items: flex-start;
           flex-direction: column;
+          padding: 0.75rem 0.8rem;
         }
 
         main {
+          padding: 0.8rem;
+        }
+
+        .panel {
           padding: 0.8rem;
         }
 
@@ -971,6 +1001,98 @@ const csp = [
 
         .mini-stat-grid {
           grid-template-columns: 1fr;
+        }
+
+        nav[aria-label="Primary"] {
+          width: 100%;
+          display: grid;
+          grid-template-columns: repeat(auto-fit, minmax(0, 1fr));
+          gap: 0.4rem;
+        }
+
+        nav[aria-label="Primary"] a {
+          text-align: center;
+          padding: 0.55rem 0.45rem;
+          min-width: 0;
+        }
+
+        .brand-copy span {
+          display: none;
+        }
+
+        .command {
+          flex-wrap: wrap;
+          align-items: flex-start;
+        }
+
+        .command code {
+          white-space: normal;
+          overflow-wrap: anywhere;
+        }
+
+        html.js .command-typing:not(.is-typing):not(.is-typed) code,
+        html.js .command-typing.is-typing code {
+          display: inline;
+          white-space: normal;
+          overflow: visible;
+          width: auto;
+          animation: none;
+        }
+
+        html.js .command-typing.is-typing code::after {
+          display: none;
+        }
+
+        .prose {
+          font-size: 0.93rem;
+        }
+      }
+
+      @media (max-width: 520px) {
+        .shell {
+          width: min(calc(100% - 0.65rem), var(--max));
+        }
+
+        .frame {
+          border-radius: 16px;
+          margin: 0.35rem auto;
+        }
+
+        header.site {
+          gap: 0.7rem;
+        }
+
+        .brand {
+          gap: 0.55rem;
+        }
+
+        .traffic {
+          display: none;
+        }
+
+        .brand-mark {
+          width: 1.85rem;
+        }
+
+        .brand-copy strong {
+          font-size: 0.82rem;
+        }
+
+        nav[aria-label="Primary"] a {
+          font-size: 0.78rem;
+        }
+
+        .button {
+          width: 100%;
+        }
+
+        .meta-row {
+          gap: 0.35rem;
+        }
+
+        .pill {
+          font-size: 0.7rem;
+          padding: 0.25rem 0.45rem;
         }
       }
     </style>

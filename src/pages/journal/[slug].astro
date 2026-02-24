@@ -55,22 +55,22 @@ const postJsonLd = {
   tags={entry.data.tags}
   jsonLd={postJsonLd}
 >
-  <article class="panel panel-elevated tilt-card" style="display:grid; gap:1rem; position:relative; overflow:hidden;">
+  <article class="panel panel-elevated tilt-card post-article" style="display:grid; gap:1rem; position:relative; overflow:hidden;">
     <div
       aria-hidden="true"
       class="orb-3d"
       style="width:180px; height:180px; inset:-30px -36px auto auto;"
     />
-    <header class="stagger" style="display:grid; gap:0.8rem; position:relative;">
+    <header class="stagger post-header" style="display:grid; gap:0.8rem; position:relative;">
       <a href="/journal/" class="button button-secondary" style="width:fit-content; padding:0.45rem 0.7rem;">← Back to notes</a>
       <p class="term-label">post view</p>
-      <h1 class="term-headline" style="font-size:clamp(1.8rem,4vw,3.1rem); max-width:18ch;">{entry.data.title}</h1>
+      <h1 class="term-headline post-title" style="font-size:clamp(1.6rem,3.1vw,2.45rem);">{entry.data.title}</h1>
       <div class="meta-row">
         <span class="pill">{formatDate(entry.data.date)}</span>
         {entry.data.readingTime && <span class="pill">{entry.data.readingTime}</span>}
         {entry.data.tags.map((tag) => <span class="pill">#{tag}</span>)}
       </div>
-      <p class="muted" style="max-width:62ch;">{entry.data.excerpt}</p>
+      <p class="muted post-subtitle">{entry.data.excerpt}</p>
       <div class="command">
         <span class="prompt">less</span>
         <code>{entry.slug}.md</code>
@@ -79,8 +79,64 @@ const postJsonLd = {
 
     <div class="divider" />
 
-    <div class="prose" style="position:relative;">
+    <div class="prose post-prose" style="position:relative;">
       <Content />
     </div>
   </article>
 </BaseLayout>
+
+<style>
+  .post-header {
+    max-width: 100%;
+  }
+
+  .post-title {
+    max-width: 100%;
+    text-wrap: pretty;
+  }
+
+  .post-subtitle {
+    max-width: 100%;
+  }
+
+  .post-prose {
+    max-width: none;
+  }
+
+  /* Keep long-form text readable while allowing richer blocks to use more width */
+  .post-prose > :where(p, ul, ol, h2, h3, blockquote) {
+    max-width: 74ch;
+  }
+
+  .post-prose > :where(pre, figure, table) {
+    max-width: 100%;
+  }
+
+  .post-prose :where(img) {
+    max-width: 100%;
+    height: auto;
+  }
+
+  .post-prose > figure {
+    margin-left: 0;
+    margin-right: 0;
+  }
+
+  @media (min-width: 980px) {
+    .post-article {
+      padding: 1.1rem 1.15rem;
+    }
+
+    .post-title {
+      max-width: 42ch;
+    }
+
+    .post-subtitle {
+      max-width: 88ch;
+    }
+
+    .post-prose > :where(p, ul, ol, h2, h3, blockquote) {
+      max-width: 78ch;
+    }
+  }
+</style>
