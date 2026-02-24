@@ -1,0 +1,24 @@
+{
+  "$schema": "https://frontmatter.codes/frontmatter.schema.json",
+  "frontMatter.framework.id": "astro",
+  "frontMatter.preview.host": "http://localhost:4321",
+  "frontMatter.content.publicFolder": "public",
+  "frontMatter.content.pageFolders": [
+    {
+      "title": "journal",
+      "path": "[[workspace]]/src/content/journal",
+      "contentTypes": [
+        "journal"
+      ]
+    }
+  ],
+  "frontMatter.taxonomy.contentTypes": [
+    {
+      "name": "journal",
+      "previewPath": "'journal'",
+      "pageBundle": false,
+      "clearEmpty": true,
+      "fields": []
+    }
+  ]
+}

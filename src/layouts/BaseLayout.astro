@@ -195,7 +195,6 @@ const csp = [
         background:
           linear-gradient(to bottom right, rgba(14, 17, 22, 0.98), rgba(9, 11, 15, 0.96)),
           radial-gradient(circle at 8% 0%, rgba(82,255,168,0.05), transparent 34%);
-        backdrop-filter: blur(6px);
         box-shadow: var(--shadow);
         overflow: clip;
         position: relative;
@@ -245,7 +244,6 @@ const csp = [
         position: sticky;
         top: 0;
         z-index: 20;
-        backdrop-filter: blur(10px);
       }
 
       .brand {
@@ -1199,6 +1197,18 @@ const csp = [
         .pill {
           font-size: 0.7rem;
           padding: 0.25rem 0.45rem;
+        }
+      }
+
+      @supports (backdrop-filter: blur(1px)) {
+        @media (min-width: 900px) and (pointer: fine) {
+          .frame {
+            backdrop-filter: blur(6px);
+          }
+
+          header.site {
+            backdrop-filter: blur(10px);
+          }
         }
       }
     </style>

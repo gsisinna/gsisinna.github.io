@@ -574,7 +574,7 @@ const hobbies = [
 
     .home-page::before {
       content: "";
-      position: fixed;
+      position: absolute;
       inset: 0;
       pointer-events: none;
       background:
@@ -770,7 +770,6 @@ const hobbies = [
       gap: 0.45rem;
       flex-wrap: wrap;
       padding: 0.55rem;
-      backdrop-filter: blur(10px);
       background:
         linear-gradient(to right, rgba(12,15,19,0.94), rgba(12,15,19,0.78));
       box-shadow: 0 14px 30px rgba(0,0,0,0.2);
@@ -879,6 +878,14 @@ const hobbies = [
       overflow-wrap: anywhere;
     }
 
+    @supports (backdrop-filter: blur(1px)) {
+      @media (min-width: 900px) and (pointer: fine) {
+        .jumpbar {
+          backdrop-filter: blur(10px);
+        }
+      }
+    }
+
     @keyframes pulseDot {
       0%, 100% {
         transform: scale(1);
@@ -940,6 +947,7 @@ const hobbies = [
         overflow-x: auto;
         overflow-y: hidden;
         scrollbar-width: thin;
+        box-shadow: 0 8px 18px rgba(0,0,0,0.16);
       }
 
       .jumpbar a {
@@ -993,6 +1001,12 @@ const hobbies = [
       .home-progress span {
         transition: none;
       }
+
+      .home-page::before,
+      .home-hero::before {
+        filter: none;
+        background: none;
+      }
     }
   </style>
   <script is:inline>
@@ -1035,14 +1049,15 @@ const hobbies = [
         .filter(Boolean);
 
       if (sections.length > 0 && "IntersectionObserver" in window) {
+        const sectionMap = new Map(sections.map((item) => [item?.section, item?.link]));
         const observer = new IntersectionObserver(
           (entries) => {
             for (const entry of entries) {
-              const match = sections.find((item) => item?.section === entry.target);
-              if (!match) continue;
+              const link = sectionMap.get(entry.target);
+              if (!(link instanceof HTMLAnchorElement)) continue;
               if (entry.isIntersecting) {
                 for (const item of sections) item?.link.classList.remove("is-active");
-                match.link.classList.add("is-active");
+                link.classList.add("is-active");
               }
             }
           },
