@@ -18,6 +18,9 @@ It looks like a terminal, but under the surface it is a static site built with *
 
 This post is a meta-walkthrough of the software architecture of the blog itself: what is in the stack, how content flows, what I optimized for, and what tradeoffs I made.
 
+If you want the more personal "why" behind this project before reading the implementation details, start with
+["About This Blog"](/journal/about-this-blog/).
+
 <figure style="margin:1.2rem 0; display:grid; gap:0.5rem;">
   <img
     src="https://images.unsplash.com/photo-1516116216624-53e697fedbea?auto=format&fit=crop&w=1600&q=80"

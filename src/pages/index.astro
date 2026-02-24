@@ -251,7 +251,7 @@ const hobbies = [
       </div>
       <div style="display:flex; gap:0.6rem; flex-wrap:wrap;">
         {featured ? (
-          <a href={`/journal/${featured.slug}/`} class="button button-primary">Read latest note</a>
+          <a href={`/journal/${featured.id}/`} class="button button-primary">Read latest note</a>
         ) : (
           <a href="/journal/" class="button button-primary">Browse notes</a>
         )}
@@ -535,7 +535,7 @@ const hobbies = [
     <div class="stagger" style="display:grid; gap:0.75rem;">
       {latest.map((entry, index) => (
         <a
-          href={`/journal/${entry.slug}/`}
+          href={`/journal/${entry.id}/`}
           class="panel panel-elevated card-link tilt-card recent-card"
           style="position:relative; overflow:hidden;"
         >

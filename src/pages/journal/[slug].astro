@@ -5,7 +5,7 @@ import { formatDate } from "../../lib/content";
 
 export async function getStaticPaths() {
   const entries = await getCollection("journal", ({ data }) => !data.draft);
-  return entries.map((entry) => ({ params: { slug: entry.slug } }));
+  return entries.map((entry) => ({ params: { slug: entry.id } }));
 }
 
 const { slug } = Astro.params;
@@ -22,13 +22,18 @@ if (!entry || entry.data.draft) {
 
 const { Content, headings } = await render(entry);
 const siteUrl = Astro.site?.toString() ?? "https://gsisinna.github.io";
-const postUrl = new URL(`/journal/${entry.slug}/`, siteUrl).toString();
+const postUrl = new URL(`/journal/${entry.id}/`, siteUrl).toString();
+const homeUrl = new URL("/", siteUrl).toString();
+const contactUrl = new URL("/contact/", siteUrl).toString();
+const rssUrl = new URL("/rss.xml", siteUrl).toString();
+const githubUrl = "https://github.com/gsisinna";
+const linkedInUrl = "https://www.linkedin.com/in/gabriele-sisinna-4a6081109/";
 const publishedIso = entry.data.date.toISOString();
 const postImage = entry.data.image ?? "/og-article-default.svg";
 const postImageUrl = new URL(postImage, siteUrl).toString();
 const allPosts = await getCollection("journal", ({ data }) => !data.draft);
 const relatedPosts = allPosts
-  .filter((post) => post.slug !== entry.slug)
+  .filter((post) => post.id !== entry.id)
   .map((post) => {
     const sharedTags = post.data.tags.filter((tag) => entry.data.tags.includes(tag));
     return { post, sharedTags, score: sharedTags.length };
@@ -102,7 +107,7 @@ const postJsonLd = {
       )}
       <div class="command">
         <span class="prompt">less</span>
-        <code>{entry.slug}.md</code>
+        <code>{entry.id}.md</code>
       </div>
     </header>
 
@@ -129,6 +134,55 @@ const postJsonLd = {
       <Content />
     </div>
 
+    <div class="divider" />
+
+    <section class="post-author panel panel-soft" aria-labelledby="author-block-title" style="padding:0.85rem;">
+      <div class="author-grid">
+        <img
+          class="author-avatar"
+          src="/avatar-profile.jpg"
+          alt="Gabriele Sisinna"
+          loading="lazy"
+          decoding="async"
+          width="88"
+          height="88"
+        />
+        <div style="display:grid; gap:0.45rem; min-width:0;">
+          <p id="author-block-title" class="term-label">author</p>
+          <h2 class="author-name">Gabriele Sisinna</h2>
+          <p class="muted author-copy">
+            Robotics software engineer focused on C++, Python, simulation, control, and system integration.
+            This blog is where I document projects, architecture decisions, and lessons learned from real work.
+          </p>
+          <div class="author-links">
+            <a href={homeUrl}>Home</a>
+            <a href={githubUrl} target="_blank" rel="noreferrer noopener">GitHub</a>
+            <a href={linkedInUrl} target="_blank" rel="noreferrer noopener">LinkedIn</a>
+            <a href={contactUrl}>Contact</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="post-cta panel panel-elevated" aria-labelledby="post-cta-title" style="padding:0.85rem;">
+      <div class="cta-shell">
+        <div style="display:grid; gap:0.45rem;">
+          <p class="term-label">follow</p>
+          <h2 id="post-cta-title" class="cta-title">Keep reading / follow updates</h2>
+          <p class="muted cta-copy">
+            If this was useful, the easiest way to keep up is the RSS feed. You can also follow me on LinkedIn,
+            check code and experiments on GitHub, or send a message if you want to discuss robotics software work.
+          </p>
+        </div>
+        <div class="cta-actions">
+          <a class="button button-primary" href={rssUrl}>Follow via RSS</a>
+          <a class="button button-secondary" href={linkedInUrl} target="_blank" rel="noreferrer noopener">LinkedIn</a>
+          <a class="button button-secondary" href={githubUrl} target="_blank" rel="noreferrer noopener">GitHub</a>
+          <a class="button button-secondary" href={contactUrl}>Contact</a>
+        </div>
+      </div>
+    </section>
+
     {relatedPosts.length > 0 && (
       <>
         <div class="divider" />
@@ -140,7 +194,7 @@ const postJsonLd = {
           <div class="related-grid">
             {relatedPosts.map(({ post, sharedTags }) => (
               <article class="related-card">
-                <a href={`/journal/${post.slug}/`} class="related-link">
+                <a href={`/journal/${post.id}/`} class="related-link">
                   {post.data.image && (
                     <img
                       src={post.data.image}
@@ -262,6 +316,87 @@ const postJsonLd = {
     max-width: 100%;
   }
 
+  .post-author,
+  .post-cta {
+    max-width: 100%;
+  }
+
+  .author-grid {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 0.8rem;
+    align-items: start;
+  }
+
+  .author-avatar {
+    width: 88px;
+    height: 88px;
+    border-radius: 14px;
+    object-fit: cover;
+    display: block;
+    border: 1px solid rgba(82,255,168,0.14);
+    background: rgba(255,255,255,0.02);
+  }
+
+  .author-name {
+    margin: 0;
+    font-size: 1rem;
+    line-height: 1.15;
+  }
+
+  .author-copy {
+    margin: 0;
+    max-width: 84ch;
+    font-size: 0.9rem;
+  }
+
+  .author-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.45rem;
+  }
+
+  .author-links a {
+    text-decoration: none;
+    color: var(--muted);
+    border: 1px solid rgba(82,255,168,0.1);
+    background: rgba(255,255,255,0.012);
+    border-radius: 8px;
+    padding: 0.35rem 0.55rem;
+    font-size: 0.76rem;
+    line-height: 1;
+  }
+
+  .author-links a:hover {
+    color: var(--ink-strong);
+    border-color: rgba(82,255,168,0.2);
+    background: rgba(82,255,168,0.04);
+  }
+
+  .cta-shell {
+    display: grid;
+    gap: 0.8rem;
+  }
+
+  .cta-title {
+    margin: 0;
+    font-size: 1.02rem;
+    line-height: 1.15;
+    text-wrap: pretty;
+  }
+
+  .cta-copy {
+    margin: 0;
+    max-width: 84ch;
+    font-size: 0.9rem;
+  }
+
+  .cta-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.55rem;
+  }
+
   .related-grid {
     display: grid;
     gap: 0.75rem;
@@ -330,6 +465,19 @@ const postJsonLd = {
   @media (max-width: 720px) {
     .post-toc {
       padding: 0.7rem;
+    }
+
+    .author-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .author-avatar {
+      width: 76px;
+      height: 76px;
+    }
+
+    .cta-actions .button {
+      width: 100%;
     }
 
     .related-grid {

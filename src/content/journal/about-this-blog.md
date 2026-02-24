@@ -49,3 +49,6 @@ There is no strict category rule.
 Some posts will be technical. Some will be about process. Some may just be short notes I want to keep. The common thread is that they are things I do not want to forget.
 
 If you are reading this later, this post is the starting point.
+
+If you want to see how this site is built under the hood, I wrote a follow-up meta-post about the architecture:
+["The Software Architecture of This Blog"](/journal/software-architecture-of-this-blog/).

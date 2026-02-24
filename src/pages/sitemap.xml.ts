@@ -38,7 +38,7 @@ export const GET: APIRoute = async () => {
   const urls = [
     ...staticPageEntries,
     ...posts.map((post) => ({
-      loc: new URL(`/journal/${post.slug}/`, SITE_URL).toString(),
+      loc: new URL(`/journal/${post.id}/`, SITE_URL).toString(),
       lastmod: post.data.date.toISOString()
     }))
   ];

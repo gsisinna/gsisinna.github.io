@@ -18,7 +18,7 @@ const notesJsonLd = {
     itemListElement: entries.map((entry, index) => ({
       "@type": "ListItem",
       position: index + 1,
-      url: new URL(`/journal/${entry.slug}/`, siteUrl).toString(),
+      url: new URL(`/journal/${entry.id}/`, siteUrl).toString(),
       name: entry.data.title
     }))
   }
@@ -56,7 +56,7 @@ const notesJsonLd = {
           }; opacity:0.6;`}
         />
         {entry.data.image && (
-          <a href={`/journal/${entry.slug}/`} style="display:block; margin:0 0 0.1rem 0.35rem; border-radius:10px; overflow:hidden; border:1px solid rgba(82,255,168,0.1);">
+          <a href={`/journal/${entry.id}/`} style="display:block; margin:0 0 0.1rem 0.35rem; border-radius:10px; overflow:hidden; border:1px solid rgba(82,255,168,0.1);">
             <img
               src={entry.data.image}
               alt={`${entry.data.title} thumbnail`}
@@ -70,7 +70,7 @@ const notesJsonLd = {
         <div style="display:flex; justify-content:space-between; gap:1rem; align-items:flex-start; flex-wrap:wrap; padding-left:0.35rem;">
           <div style="display:grid; gap:0.3rem;">
             <h2 style="font-size:1.08rem;">
-              <a href={`/journal/${entry.slug}/`} style="text-decoration:none;">
+              <a href={`/journal/${entry.id}/`} style="text-decoration:none;">
                 <span class="term-headline">{entry.data.title}</span>
               </a>
             </h2>

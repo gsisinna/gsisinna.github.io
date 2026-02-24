@@ -23,7 +23,7 @@ export const GET: APIRoute = async () => {
 
   const items = sorted
     .map((post) => {
-      const postUrl = new URL(`/journal/${post.slug}/`, SITE_URL).toString();
+      const postUrl = new URL(`/journal/${post.id}/`, SITE_URL).toString();
       const excerpt = post.data.excerpt ?? "";
       return `    <item>
       <title>${escapeXml(post.data.title)}</title>
