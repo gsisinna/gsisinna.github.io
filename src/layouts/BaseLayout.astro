@@ -30,6 +30,9 @@ const imageUrl = new URL(image, siteUrl).toString();
 const twitterCard = "summary_large_image";
 const jsonLdItems = Array.isArray(jsonLd) ? jsonLd : [jsonLd];
 const currentYear = new Date().getFullYear();
+const pageKeywords = [...new Set(["robotics software", "C++", "Python", "software architecture", ...tags])]
+  .filter(Boolean)
+  .join(", ");
 const csp = [
   "default-src 'self'",
   "base-uri 'self'",
@@ -51,7 +54,9 @@ const csp = [
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>{title}</title>
     <meta name="description" content={description} />
+    <meta name="keywords" content={pageKeywords} />
     <meta name="robots" content={noindex ? "noindex, nofollow" : "index, follow"} />
+    <meta name="googlebot" content={noindex ? "noindex, nofollow" : "index, follow, max-image-preview:large"} />
     <meta name="author" content="Gabriele Sisinna" />
     <meta name="theme-color" content="#090b0e" />
     <meta name="referrer" content="strict-origin-when-cross-origin" />
@@ -65,6 +70,7 @@ const csp = [
     <meta property="og:url" content={canonicalUrl} />
     <meta property="og:image" content={imageUrl} />
     <meta property="og:image:alt" content="gsisinna personal blog preview" />
+    <meta property="og:locale" content="en_US" />
     {publishedTime && <meta property="article:published_time" content={publishedTime} />}
     {modifiedTime && <meta property="article:modified_time" content={modifiedTime} />}
     {type === "article" && tags.map((tag) => <meta property="article:tag" content={tag} />)}
@@ -72,6 +78,7 @@ const csp = [
     <meta name="twitter:title" content={title} />
     <meta name="twitter:description" content={description} />
     <meta name="twitter:image" content={imageUrl} />
+    <meta name="twitter:image:alt" content="gsisinna personal blog preview" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -123,6 +130,7 @@ const csp = [
 
       html {
         color-scheme: dark;
+        scroll-behavior: smooth;
       }
 
       body {
@@ -141,6 +149,33 @@ const csp = [
 
       a {
         color: inherit;
+      }
+
+      a:focus-visible,
+      button:focus-visible,
+      input:focus-visible,
+      textarea:focus-visible {
+        outline: 2px solid rgba(82,255,168,0.65);
+        outline-offset: 2px;
+      }
+
+      .skip-link {
+        position: absolute;
+        left: 0.75rem;
+        top: -3rem;
+        z-index: 1000;
+        padding: 0.6rem 0.85rem;
+        border-radius: 10px;
+        border: 1px solid rgba(82,255,168,0.2);
+        background: rgba(9,11,14,0.96);
+        color: var(--ink-strong);
+        text-decoration: none;
+        box-shadow: 0 12px 24px rgba(0,0,0,0.25);
+        transition: top 120ms ease;
+      }
+
+      .skip-link:focus {
+        top: 0.7rem;
       }
 
       .shell {
@@ -202,6 +237,10 @@ const csp = [
         border-bottom: 1px solid var(--line);
         background:
           linear-gradient(to bottom, rgba(255,255,255,0.02), rgba(255,255,255,0));
+        position: sticky;
+        top: 0;
+        z-index: 20;
+        backdrop-filter: blur(10px);
       }
 
       .brand {
@@ -873,6 +912,12 @@ const csp = [
         }
       }
 
+      @media (prefers-reduced-motion: reduce) {
+        html {
+          scroll-behavior: auto;
+        }
+      }
+
       @keyframes rise {
         from {
           opacity: 0;
@@ -931,6 +976,7 @@ const csp = [
     </style>
   </head>
   <body>
+    <a href="#main-content" class="skip-link">Skip to content</a>
     <div class="shell">
       <div class="frame">
         <header class="site">
@@ -959,7 +1005,7 @@ const csp = [
             </a>
           </nav>
         </header>
-        <main>
+        <main id="main-content">
           <slot />
         </main>
         <footer class="site">

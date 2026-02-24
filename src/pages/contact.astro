@@ -8,22 +8,22 @@ const contactJsonLd = {
   "@type": "ContactPage",
   name: "Contact | Gabriele Sisinna",
   url: contactUrl,
-  description: "Contact form for reaching Gabriele Sisinna.",
+  description: "Contact page for project inquiries, collaborations, and robotics/software architecture work.",
   inLanguage: "en"
 };
 ---
 
 <BaseLayout
   title="Contact | Gabriele Sisinna"
-  description="Send a message through the contact form."
+  description="Get in touch about robotics software, architecture support, prototyping, or collaboration."
   jsonLd={contactJsonLd}
 >
   <section class="panel panel-soft stagger" style="display:grid; gap:0.8rem;">
     <p class="term-label">contact</p>
-    <h1 class="term-headline" style="font-size:clamp(1.8rem,4vw,3rem);">Send a message</h1>
+    <h1 class="term-headline" style="font-size:clamp(1.8rem,4vw,3rem);">Let&apos;s talk</h1>
     <p class="muted" style="max-width:62ch;">
-      If you want to get in touch, use the form below. This site is static, so the form is
-      prepared for a form service endpoint (for example Formspree).
+      If you are working on a robotics, automation, or software architecture project, send a short message.
+      I am open to collaborations, technical discussions, and hands-on implementation work.
     </p>
     <div class="command command-typing" style="--type-ch:32; --type-delay:260ms; --type-duration:1.35s;">
       <span class="prompt">gsisinna@blog:~/contact$</span>
@@ -115,7 +115,7 @@ const contactJsonLd = {
               Send message
             </button>
             <span class="muted" style="font-size:0.78rem;">
-              Messages are submitted to Formspree (third-party processor). Do not include secrets.
+              Messages are submitted through Formspree (third-party processor). Please avoid passwords, credentials, or sensitive data.
             </span>
           </div>
         </form>

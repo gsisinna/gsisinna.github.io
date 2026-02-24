@@ -36,6 +36,11 @@ const homeJsonLd = [
       "Robotics",
       "C++",
       "Python",
+      "Linux",
+      "Arduino",
+      "Electronics",
+      "3D Printing",
+      "Rapid Prototyping",
       "ROS",
       "Robotics Simulation",
       "Control Systems",
@@ -105,11 +110,36 @@ const storyline = [
 ];
 
 const certifications = [
-  "Simscape Onramp",
-  "Control Design Onramp with Simulink",
-  "Linear Algebra with Matlab",
-  "Onshape Introduction to Part Design",
-  "Became a good Matlab programmer in 30 days"
+  {
+    title: "Software Architecture Foundations",
+    issuer: "LinkedIn Learning",
+    issued: "2024",
+    focus: "Software Architecture"
+  },
+  {
+    title: "Learning C++",
+    issuer: "LinkedIn Learning",
+    issued: "2023",
+    focus: "C++"
+  },
+  {
+    title: "Learning Python",
+    issuer: "LinkedIn Learning",
+    issued: "2020",
+    focus: "Python"
+  },
+  {
+    title: "Programming Foundations: Object-Oriented Design",
+    issuer: "LinkedIn Learning",
+    issued: "2020",
+    focus: "OOP / Design"
+  },
+  {
+    title: "Programming Foundations: Algorithms",
+    issuer: "LinkedIn Learning",
+    issued: "2020",
+    focus: "Algorithms"
+  }
 ];
 
 const skillGroups = [
@@ -122,8 +152,12 @@ const skillGroups = [
     items: ["ROS", "Simulation", "Control Systems", "Industrial Manipulators", "Middleware", "System Integration"]
   },
   {
-    title: "Tools",
-    items: ["Linux", "Docker", "Git / GitLab", "Agile", "DevOps", "3D Prototyping"]
+    title: "Systems & Tools",
+    items: ["Linux", "Docker", "Git / GitLab", "DevOps", "Arduino", "Embedded Prototyping"]
+  },
+  {
+    title: "Hardware & Prototyping",
+    items: ["Electronics", "3D Printing", "CAD", "Onshape", "Rapid Prototyping", "Hardware Integration"]
   }
 ];
 
@@ -162,19 +196,23 @@ const hobbies = [
 
 <BaseLayout
   title="Gabriele Sisinna | Personal Blog"
-  description="Senior Robotics Software Engineer (C++/Python) sharing notes, projects, and process in a terminal-style personal blog."
+  description="Robotics software engineer in Bologna sharing projects, notes, prototyping work, and software architecture thinking for robotics and automation."
   jsonLd={homeJsonLd}
 >
-  <section class="panel panel-soft stagger hero-grid tilt-card">
+  <div class="home-page">
+  <div class="home-progress" aria-hidden="true"><span id="home-progress-bar"></span></div>
+
+  <section id="top" class="panel panel-soft stagger hero-grid tilt-card home-hero home-section">
     <div style="display:grid; gap:0.9rem; align-content:start; min-width:0;">
       <p class="term-label">whoami</p>
       <h1 class="term-headline">Gabriele Sisinna</h1>
       <p style="color:var(--ink-strong); font-size:0.95rem;">
-        Senior Robotics Software Engineer | C++ · Python · Software Architecture
+        Robotics Software · C++ · Python · Software Architecture
       </p>
       <p class="muted" style="font-size:1.02rem; max-width:46ch;">
-        I am based in Bologna and I work on robotics software, mainly around simulation,
-        control, integration, and software architecture. I care a lot about building systems that stay clean as they grow.
+        Based in Bologna, I build robotics software for simulation, control, and integration, with a strong focus
+        on software architecture. I also work hands-on with Linux systems, Arduino, electronics, 3D printing,
+        and rapid prototyping when projects need real hardware and fast iteration.
       </p>
       <div class="command command-typing" style="--type-ch:14; --type-delay:220ms; --type-duration:1s;">
         <span class="prompt">gabriele@gsisinna:~$</span>
@@ -182,19 +220,27 @@ const hobbies = [
       </div>
       <div style="display:flex; gap:0.6rem; flex-wrap:wrap;">
         {featured ? (
-          <a href={`/journal/${featured.slug}/`} class="button button-primary">Start here</a>
+          <a href={`/journal/${featured.slug}/`} class="button button-primary">Read latest note</a>
         ) : (
-          <a href="/journal/" class="button button-primary">Open notes</a>
+          <a href="/journal/" class="button button-primary">Browse notes</a>
         )}
-        <a href="/journal/" class="button button-secondary">Open archive</a>
-        <a href="/contact/" class="button button-secondary">Contact</a>
+        <a href="/journal/" class="button button-secondary">View archive</a>
+        <a href="/contact/" class="button button-secondary">Work together</a>
       </div>
       <div class="meta-row">
-        <span class="pill">Robotica</span>
+        <span class="pill">Robotics</span>
         <span class="pill">C++</span>
         <span class="pill">Python</span>
+        <span class="pill">Linux</span>
+        <span class="pill">Arduino</span>
+        <span class="pill">Electronics</span>
+        <span class="pill">3D Printing</span>
         <span class="pill">ROS</span>
-        <span class="pill">Simulation</span>
+        <span class="pill">Prototyping</span>
+      </div>
+      <div class="availability-strip" aria-label="Availability and work style">
+        <span class="availability-badge"><span class="dot"></span>Online</span>
+        <span class="availability-note">Architecture · Implementation · Integration · Prototyping</span>
       </div>
       <div class="divider" />
       <div class="mini-stat-grid">
@@ -216,7 +262,7 @@ const hobbies = [
     <aside class="panel panel-elevated tilt-card" style="display:grid; gap:0.8rem; align-content:start; position:relative; overflow:hidden;">
       <div aria-hidden="true" class="orb-3d" style="inset:auto -22px -18px auto;" />
       <p class="term-label">how to reach me</p>
-      <h2 style="font-size:1.12rem;" class="term-headline">Use the contact form</h2>
+      <h2 style="font-size:1.12rem;" class="term-headline">Start a project conversation</h2>
       <div class="terminal-card">
         <div class="bar">
           <span class="traffic" aria-hidden="true"><span></span><span></span><span></span></span>
@@ -235,18 +281,27 @@ const hobbies = [
         </div>
         <div class="body" style="display:grid; gap:0.45rem;">
           <p class="muted">
-            Most of my work sits at the intersection of robotics software, simulation, control, and architecture.
+            I work across architecture, implementation, and integration, and I am comfortable moving from software
+            design to Linux systems, electronics, prototypes, and hardware bring-up when needed.
           </p>
         </div>
       </div>
     </aside>
   </section>
 
-  <section class="panel panel-elevated stagger tilt-card" style="display:grid; gap:0.85rem;">
+  <nav class="panel panel-soft jumpbar stagger" aria-label="Homepage sections">
+    <a href="#timeline" data-jump>timeline</a>
+    <a href="#toolbox" data-jump>skills</a>
+    <a href="#about" data-jump>about</a>
+    <a href="#recent" data-jump>notes</a>
+    <a href="/contact/" class="jumpbar-cta">contact</a>
+  </nav>
+
+  <section id="timeline" class="panel panel-elevated stagger tilt-card home-section home-section-accent" style="display:grid; gap:0.85rem;">
     <div class="section-head">
       <div>
         <p class="term-label">career timeline</p>
-        <h2 class="term-headline">How I got here</h2>
+        <h2 class="term-headline">Path so far</h2>
       </div>
       <span class="pill">Bologna / Genova / Pisa</span>
     </div>
@@ -284,13 +339,13 @@ const hobbies = [
     </div>
   </section>
 
-  <section class="panel panel-soft stagger" style="display:grid; gap:0.85rem;">
+  <section id="toolbox" class="panel panel-soft stagger home-section home-section-accent" style="display:grid; gap:0.85rem;">
     <div class="section-head">
       <div>
         <p class="term-label">toolbox</p>
-        <h2 class="term-headline">What I work with (and where I learned it)</h2>
+        <h2 class="term-headline">Skills, tools, and prototyping work</h2>
       </div>
-      <span class="pill">robotics + software</span>
+      <span class="pill">software + hardware workflow</span>
     </div>
 
     <div class="grid-2">
@@ -354,7 +409,12 @@ const hobbies = [
               {certifications.map((cert, idx) => (
                 <div class="command" style="padding:0.45rem 0.6rem;">
                   <span class="prompt">[{String(idx + 1).padStart(2, "0")}]</span>
-                  <code>{cert}</code>
+                  <div style="display:grid; gap:0.12rem; min-width:0;">
+                    <code>{cert.title}</code>
+                    <span class="muted" style="font-size:0.72rem;">
+                      {cert.issuer} · {cert.issued} · {cert.focus}
+                    </span>
+                  </div>
                 </div>
               ))}
             </div>
@@ -364,11 +424,11 @@ const hobbies = [
     </div>
   </section>
 
-  <section class="panel panel-elevated stagger tilt-card" style="display:grid; gap:0.85rem;">
+  <section id="about" class="panel panel-elevated stagger tilt-card home-section home-section-accent" style="display:grid; gap:0.85rem;">
     <div class="section-head">
       <div>
         <p class="term-label">about me</p>
-        <h2 class="term-headline">A few things I enjoy outside work</h2>
+        <h2 class="term-headline">Outside work</h2>
       </div>
       <span class="pill">life outside robotics</span>
     </div>
@@ -417,20 +477,20 @@ const hobbies = [
     </div>
   </section>
 
-  <section id="recent" style="display:grid; gap:0.9rem;">
-    <div class="panel panel-soft section-head">
+  <section id="recent" class="home-section" style="display:grid; gap:0.9rem;">
+    <div class="panel panel-soft section-head home-section-accent">
       <div>
         <p class="term-label">blog notes</p>
-        <h2 class="term-headline">Start here</h2>
+        <h2 class="term-headline">Projects and notes</h2>
       </div>
-      <a href="/journal/" class="button button-secondary" style="padding:0.55rem 0.8rem;">Open notes</a>
+      <a href="/journal/" class="button button-secondary" style="padding:0.55rem 0.8rem;">See all notes</a>
     </div>
 
     <div class="stagger" style="display:grid; gap:0.75rem;">
       {latest.map((entry, index) => (
         <a
           href={`/journal/${entry.slug}/`}
-          class="panel panel-elevated card-link tilt-card"
+          class="panel panel-elevated card-link tilt-card recent-card"
           style="position:relative; overflow:hidden;"
         >
           <div
@@ -451,8 +511,226 @@ const hobbies = [
       ))}
     </div>
   </section>
+  </div>
 
   <style>
+    .home-page {
+      display: grid;
+      gap: 0.95rem;
+      position: relative;
+    }
+
+    .home-page::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      background:
+        radial-gradient(circle at 12% 18%, rgba(82,255,168,0.045), transparent 32%),
+        radial-gradient(circle at 84% 12%, rgba(115,217,255,0.04), transparent 34%);
+      z-index: 0;
+    }
+
+    .home-progress {
+      position: sticky;
+      top: 0;
+      z-index: 15;
+      height: 3px;
+      border-radius: 999px;
+      overflow: hidden;
+      background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(82,255,168,0.06);
+      margin-top: -0.2rem;
+    }
+
+    .home-progress span {
+      display: block;
+      height: 100%;
+      width: 0%;
+      background:
+        linear-gradient(90deg, rgba(82,255,168,0.9), rgba(115,217,255,0.85) 65%, rgba(255,209,102,0.8));
+      box-shadow: 0 0 14px rgba(82,255,168,0.16);
+      transition: width 120ms linear;
+    }
+
+    .home-section {
+      scroll-margin-top: 5rem;
+      position: relative;
+      z-index: 1;
+    }
+
+    .home-hero {
+      position: relative;
+      overflow: hidden;
+    }
+
+    .home-hero::before {
+      content: "";
+      position: absolute;
+      inset: auto -5% -24% -5%;
+      height: 48%;
+      background:
+        radial-gradient(circle at 32% 20%, rgba(82,255,168,0.08), transparent 55%),
+        radial-gradient(circle at 72% 30%, rgba(115,217,255,0.06), transparent 50%);
+      pointer-events: none;
+      filter: blur(6px);
+    }
+
+    .availability-strip {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      align-items: center;
+      border: 1px solid rgba(82,255,168,0.12);
+      border-radius: 10px;
+      padding: 0.55rem 0.7rem;
+      background: linear-gradient(to right, rgba(82,255,168,0.03), rgba(115,217,255,0.02));
+    }
+
+    .availability-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.45rem;
+      color: var(--ink-strong);
+      font-size: 0.78rem;
+      border-radius: 999px;
+      padding: 0.22rem 0.55rem;
+      background: rgba(255,255,255,0.02);
+      border: 1px solid rgba(82,255,168,0.14);
+    }
+
+    .availability-badge .dot {
+      width: 0.45rem;
+      height: 0.45rem;
+      border-radius: 999px;
+      background: var(--accent);
+      box-shadow: 0 0 0 4px rgba(82,255,168,0.08), 0 0 12px rgba(82,255,168,0.25);
+      animation: pulseDot 1.8s ease-in-out infinite;
+    }
+
+    .availability-note {
+      color: var(--muted);
+      font-size: 0.76rem;
+    }
+
+    .jumpbar {
+      position: sticky;
+      top: 0.7rem;
+      z-index: 12;
+      display: flex;
+      align-items: center;
+      gap: 0.45rem;
+      flex-wrap: wrap;
+      padding: 0.55rem;
+      backdrop-filter: blur(10px);
+      background:
+        linear-gradient(to right, rgba(12,15,19,0.94), rgba(12,15,19,0.78));
+      box-shadow: 0 14px 30px rgba(0,0,0,0.2);
+    }
+
+    .jumpbar a {
+      text-decoration: none;
+      color: var(--muted);
+      border: 1px solid rgba(82,255,168,0.08);
+      border-radius: 8px;
+      padding: 0.42rem 0.7rem;
+      font-size: 0.78rem;
+      line-height: 1;
+      background: rgba(255,255,255,0.012);
+      transition: 160ms ease;
+    }
+
+    .jumpbar a:hover,
+    .jumpbar a.is-active {
+      color: var(--ink-strong);
+      border-color: rgba(82,255,168,0.18);
+      background: rgba(82,255,168,0.05);
+      box-shadow: inset 0 0 0 1px rgba(82,255,168,0.06);
+    }
+
+    .jumpbar .jumpbar-cta {
+      margin-left: auto;
+      color: var(--ink-strong);
+      border-color: rgba(115,217,255,0.16);
+      background: rgba(115,217,255,0.04);
+    }
+
+    .home-section-accent {
+      overflow: hidden;
+      position: relative;
+    }
+
+    .home-section-accent::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      background:
+        linear-gradient(130deg, rgba(255,255,255,0.02), transparent 24%),
+        radial-gradient(circle at 108% -4%, rgba(115,217,255,0.05), transparent 38%);
+      opacity: 0.85;
+    }
+
+    .home-section-accent > * {
+      position: relative;
+      z-index: 1;
+    }
+
+    .section-head .term-headline {
+      position: relative;
+      display: inline-block;
+      padding-bottom: 0.15rem;
+    }
+
+    .section-head .term-headline::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      right: auto;
+      bottom: -0.2rem;
+      width: 48%;
+      height: 2px;
+      border-radius: 999px;
+      background: linear-gradient(to right, var(--accent), rgba(115,217,255,0.6), transparent);
+      opacity: 0.9;
+    }
+
+    .recent-card {
+      isolation: isolate;
+    }
+
+    .recent-card::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(circle at var(--mx, 50%) var(--my, 50%), rgba(82,255,168,0.07), transparent 46%);
+      opacity: 0;
+      transition: opacity 180ms ease;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .recent-card:hover::after {
+      opacity: 1;
+    }
+
+    .recent-card > * {
+      position: relative;
+      z-index: 1;
+    }
+
+    @keyframes pulseDot {
+      0%, 100% {
+        transform: scale(1);
+        opacity: 1;
+      }
+      50% {
+        transform: scale(1.08);
+        opacity: 0.82;
+      }
+    }
+
     @media (max-width: 900px) {
       section:first-child .panel:first-child {
         grid-template-columns: 1fr;
@@ -461,6 +739,100 @@ const hobbies = [
       section:first-child [class~="mini-stat-grid"] {
         grid-template-columns: 1fr;
       }
+
+      .jumpbar {
+        top: 0.35rem;
+      }
+
+      .jumpbar .jumpbar-cta {
+        margin-left: 0;
+      }
+    }
+
+    @media (max-width: 720px) {
+      .availability-strip {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+
+      .home-progress {
+        margin-top: 0;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .availability-badge .dot {
+        animation: none;
+      }
+
+      .home-progress span {
+        transition: none;
+      }
     }
   </style>
+  <script is:inline>
+    (() => {
+      const progressBar = document.getElementById("home-progress-bar");
+      if (!(progressBar instanceof HTMLElement)) return;
+
+      const updateProgress = () => {
+        const doc = document.documentElement;
+        const scrollTop = window.scrollY || doc.scrollTop;
+        const max = Math.max(1, doc.scrollHeight - window.innerHeight);
+        const pct = Math.max(0, Math.min(100, (scrollTop / max) * 100));
+        progressBar.style.width = `${pct}%`;
+      };
+
+      updateProgress();
+      window.addEventListener("scroll", updateProgress, { passive: true });
+      window.addEventListener("resize", updateProgress);
+
+      const navLinks = Array.from(document.querySelectorAll("[data-jump]"));
+      const sections = navLinks
+        .map((link) => {
+          if (!(link instanceof HTMLAnchorElement)) return null;
+          const id = link.getAttribute("href")?.replace("#", "");
+          if (!id) return null;
+          const section = document.getElementById(id);
+          if (!section) return null;
+          return { link, section };
+        })
+        .filter(Boolean);
+
+      if (sections.length > 0 && "IntersectionObserver" in window) {
+        const observer = new IntersectionObserver(
+          (entries) => {
+            for (const entry of entries) {
+              const match = sections.find((item) => item?.section === entry.target);
+              if (!match) continue;
+              if (entry.isIntersecting) {
+                for (const item of sections) item?.link.classList.remove("is-active");
+                match.link.classList.add("is-active");
+              }
+            }
+          },
+          { threshold: 0.35, rootMargin: "-14% 0px -55% 0px" }
+        );
+
+        for (const item of sections) {
+          if (!item) continue;
+          observer.observe(item.section);
+        }
+      }
+
+      const recentCards = document.querySelectorAll(".recent-card");
+      if (window.matchMedia("(pointer:fine)").matches) {
+        for (const card of recentCards) {
+          if (!(card instanceof HTMLElement)) continue;
+          card.addEventListener("pointermove", (event) => {
+            const rect = card.getBoundingClientRect();
+            const x = ((event.clientX - rect.left) / rect.width) * 100;
+            const y = ((event.clientY - rect.top) / rect.height) * 100;
+            card.style.setProperty("--mx", `${x}%`);
+            card.style.setProperty("--my", `${y}%`);
+          });
+        }
+      }
+    })();
+  </script>
 </BaseLayout>
