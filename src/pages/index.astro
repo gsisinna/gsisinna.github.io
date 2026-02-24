@@ -177,19 +177,19 @@ const education = [
 const hobbies = [
   {
     label: "Guitar",
-    value: "My favorite way to switch gears. It keeps me patient and reminds me that progress often comes from repetition."
+    value: "Playing guitar is one of the ways I slow down. It keeps me patient and grounded, and it reminds me that good things are built one repeat at a time."
   },
   {
     label: "Motorcycle",
-    value: "It gives me a sense of freedom and focus. Riding clears my head and brings me back to the present."
+    value: "Riding gives me freedom and focus at the same time. It clears my head, sharpens attention, and gives me the same sense of flow I look for when building software."
   },
   {
     label: "Photography",
-    value: "It helps me slow down and notice details. I like capturing places, light, and everyday moments."
+    value: "Photography helps me notice detail, light, and atmosphere. I enjoy capturing places and everyday moments, especially when they carry the mood of the sea or mountain landscapes."
   },
   {
     label: "Trekking",
-    value: "Walking in the mountains is how I reset. It gives me space, quiet, and perspective."
+    value: "Trekking is how I reset. Nature gives me space and perspective, and I feel a strong connection to mountain landscapes because of my roots near Mount Etna in Sicily."
   }
 ];
 ---
@@ -261,6 +261,16 @@ const hobbies = [
 
     <aside class="panel panel-elevated tilt-card" style="display:grid; gap:0.8rem; align-content:start; position:relative; overflow:hidden;">
       <div aria-hidden="true" class="orb-3d" style="inset:auto -22px -18px auto;" />
+      <figure class="hero-avatar">
+        <img
+          src="/avatar-profile.jpg"
+          alt="Gabriele Sisinna working on a humanoid robot"
+          loading="eager"
+          decoding="async"
+          width="220"
+          height="220"
+        />
+      </figure>
       <p class="term-label">how to reach me</p>
       <h2 style="font-size:1.12rem;" class="term-headline">Start a project conversation</h2>
       <div class="terminal-card">
@@ -441,8 +451,9 @@ const hobbies = [
         </div>
         <div class="body" style="display:grid; gap:0.65rem;">
           <p class="muted" style="font-size:0.84rem;">
-            Outside robotics and software, I try to keep space for things that are slower,
-            more physical, or just different. They help me reset and come back to work with a clearer head.
+            Outside robotics and software, I try to stay close to things that keep me grounded:
+            music, riding, photography, and time in nature. I come from Sicily, near Mount Etna, and
+            I have always felt a strong connection to both mountains and the sea.
           </p>
           <div class="divider" />
           <div style="display:grid; gap:0.45rem;">
@@ -450,6 +461,10 @@ const hobbies = [
             <div class="command"><span class="prompt">$</span><code>ride motorcycle</code></div>
             <div class="command"><span class="prompt">$</span><code>shoot photos</code></div>
             <div class="command"><span class="prompt">$</span><code>go trekking</code></div>
+            <div class="command"><span class="prompt">$</span><code>read books</code></div>
+            <div class="command"><span class="prompt">$</span><code>go running</code></div>
+            <div class="command"><span class="prompt">$</span><code>cook something good</code></div>
+            <div class="command"><span class="prompt">$</span><code>meet friends</code></div>
           </div>
         </div>
       </div>
@@ -470,7 +485,7 @@ const hobbies = [
             </div>
           ))}
           <p class="muted" style="font-size:0.76rem;">
-            I may turn this into photo notes, ride logs, or trekking entries over time.
+            Over time, I may turn this space into photo notes, ride logs, and short entries about places, trails, and the sea.
           </p>
         </div>
       </div>
@@ -585,6 +600,57 @@ const hobbies = [
       border-radius: 10px;
       padding: 0.55rem 0.7rem;
       background: linear-gradient(to right, rgba(82,255,168,0.03), rgba(115,217,255,0.02));
+    }
+
+    .hero-avatar {
+      margin: 0;
+      width: min(100%, 11.5rem);
+      aspect-ratio: 1;
+      border-radius: 999px;
+      padding: 0.35rem;
+      border: 1px solid rgba(82,255,168,0.14);
+      background:
+        linear-gradient(160deg, rgba(82,255,168,0.12), rgba(115,217,255,0.06) 52%, rgba(255,209,102,0.05)),
+        rgba(12,15,19,0.82);
+      box-shadow:
+        0 18px 34px rgba(0,0,0,0.26),
+        inset 0 1px 0 rgba(255,255,255,0.06);
+      position: relative;
+      overflow: hidden;
+      justify-self: center;
+    }
+
+    .hero-avatar::before {
+      content: "";
+      position: absolute;
+      inset: -18%;
+      background:
+        conic-gradient(
+          from 180deg,
+          rgba(82,255,168,0) 0deg,
+          rgba(82,255,168,0.18) 70deg,
+          rgba(115,217,255,0.16) 150deg,
+          rgba(255,209,102,0.14) 220deg,
+          rgba(82,255,168,0) 360deg
+        );
+      filter: blur(14px);
+      opacity: 0.55;
+      pointer-events: none;
+    }
+
+    .hero-avatar img {
+      position: relative;
+      z-index: 1;
+      width: 100%;
+      height: 100%;
+      display: block;
+      border-radius: inherit;
+      object-fit: cover;
+      object-position: 46% 38%;
+      border: 1px solid rgba(255,255,255,0.05);
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.06);
+      filter: saturate(1.03) contrast(1.02);
+      background: rgba(255,255,255,0.015);
     }
 
     .availability-badge {
@@ -750,6 +816,10 @@ const hobbies = [
     }
 
     @media (max-width: 720px) {
+      .hero-avatar {
+        width: min(100%, 8.75rem);
+      }
+
       .availability-strip {
         align-items: flex-start;
         flex-direction: column;
