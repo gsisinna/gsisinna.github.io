@@ -66,6 +66,15 @@ const postJsonLd = {
     name: "Gabriele Sisinna"
   }
 };
+const breadcrumbJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  itemListElement: [
+    { "@type": "ListItem", position: 1, name: "Home", item: homeUrl },
+    { "@type": "ListItem", position: 2, name: "Notes", item: new URL("/journal/", siteUrl).toString() },
+    { "@type": "ListItem", position: 3, name: entry.data.title, item: postUrl }
+  ]
+};
 ---
 
 <BaseLayout
@@ -76,7 +85,7 @@ const postJsonLd = {
   publishedTime={publishedIso}
   modifiedTime={publishedIso}
   tags={entry.data.tags}
-  jsonLd={postJsonLd}
+  jsonLd={[postJsonLd, breadcrumbJsonLd]}
 >
   <article class="panel panel-elevated tilt-card post-article" style="display:grid; gap:1rem; position:relative; overflow:hidden;">
     <div

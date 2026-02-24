@@ -6,23 +6,33 @@ const entries = await getPublishedJournalEntries();
 const totalPosts = entries.length;
 const siteUrl = Astro.site?.toString() ?? "https://gsisinna.github.io";
 const notesUrl = new URL("/journal/", siteUrl).toString();
-const notesJsonLd = {
-  "@context": "https://schema.org",
-  "@type": "CollectionPage",
-  name: "Notes Archive | gsisinna",
-  url: notesUrl,
-  description: "Archive of robotics software notes, project logs, experiments, and technical writing by Gabriele Sisinna.",
-  inLanguage: "en",
-  mainEntity: {
-    "@type": "ItemList",
-    itemListElement: entries.map((entry, index) => ({
-      "@type": "ListItem",
-      position: index + 1,
-      url: new URL(`/journal/${entry.id}/`, siteUrl).toString(),
-      name: entry.data.title
-    }))
+const notesJsonLd = [
+  {
+    "@context": "https://schema.org",
+    "@type": "CollectionPage",
+    name: "Notes Archive | gsisinna",
+    url: notesUrl,
+    description: "Archive of robotics software notes, project logs, experiments, and technical writing by Gabriele Sisinna.",
+    inLanguage: "en",
+    mainEntity: {
+      "@type": "ItemList",
+      itemListElement: entries.map((entry, index) => ({
+        "@type": "ListItem",
+        position: index + 1,
+        url: new URL(`/journal/${entry.id}/`, siteUrl).toString(),
+        name: entry.data.title
+      }))
+    }
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      { "@type": "ListItem", position: 1, name: "Home", item: new URL("/", siteUrl).toString() },
+      { "@type": "ListItem", position: 2, name: "Notes", item: notesUrl }
+    ]
   }
-};
+];
 ---
 
 <BaseLayout

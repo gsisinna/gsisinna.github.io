@@ -19,7 +19,6 @@ function escapeXml(value: string) {
 export const GET: APIRoute = async () => {
   const pages = [
     { path: "/", source: join(process.cwd(), "src/pages/index.astro") },
-    { path: "/search/", source: join(process.cwd(), "src/pages/search.astro") },
     { path: "/journal/", source: join(process.cwd(), "src/pages/journal/index.astro") },
     { path: "/contact/", source: join(process.cwd(), "src/pages/contact.astro") },
     { path: "/privacy/", source: join(process.cwd(), "src/pages/privacy.astro") },

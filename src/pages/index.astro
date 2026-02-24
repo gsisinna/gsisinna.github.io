@@ -11,6 +11,7 @@ const siteUrl = Astro.site?.toString() ?? "https://gsisinna.github.io";
 const homeUrl = new URL("/", siteUrl).toString();
 const notesUrl = new URL("/journal/", siteUrl).toString();
 const contactUrl = new URL("/contact/", siteUrl).toString();
+const searchUrl = new URL("/search/", siteUrl).toString();
 const githubUrl = "https://github.com/gsisinna";
 const linkedInUrl = "https://www.linkedin.com/in/gabriele-sisinna-4a6081109/";
 const homeJsonLd = [
@@ -21,7 +22,12 @@ const homeJsonLd = [
     url: homeUrl,
     description:
       "Personal blog of Gabriele Sisinna about robotics software, projects, and notes.",
-    inLanguage: "en"
+    inLanguage: "en",
+    potentialAction: {
+      "@type": "SearchAction",
+      target: `${searchUrl}?q={search_term_string}`,
+      "query-input": "required name=search_term_string"
+    }
   },
   {
     "@context": "https://schema.org",

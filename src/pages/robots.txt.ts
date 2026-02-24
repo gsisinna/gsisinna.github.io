@@ -6,6 +6,7 @@ export const GET: APIRoute = () => {
   const body = [
     "User-agent: *",
     "Allow: /",
+    "Disallow: /search-index.json",
     "",
     `Sitemap: ${new URL("/sitemap.xml", SITE_URL).toString()}`,
     `Host: ${new URL("/", SITE_URL).host}`
