@@ -1,8 +1,9 @@
 ---
 import BaseLayout from "../../layouts/BaseLayout.astro";
-import { getPublishedJournalEntries, formatDate } from "../../lib/content";
+import { getPublishedJournalEntries, getPublishedTagSummaries, formatDate, slugifyTag } from "../../lib/content";
 
 const entries = await getPublishedJournalEntries();
+const tags = await getPublishedTagSummaries();
 const totalPosts = entries.length;
 const siteUrl = Astro.site?.toString() ?? "https://gsisinna.github.io";
 const notesUrl = new URL("/journal/", siteUrl).toString();
@@ -54,6 +55,14 @@ const notesJsonLd = [
       <span class="prompt">gsisinna@blog:~/notes$</span>
       <code>ls -1 | wc -l  # {totalPosts} post{totalPosts === 1 ? "" : "s"}</code>
     </div>
+    {tags.length > 0 && (
+      <div class="meta-row" aria-label="Browse tags">
+        <a class="pill" href="/tags/">all tags</a>
+        {tags.slice(0, 8).map((tag) => (
+          <a class="pill" href={`/tags/${tag.slug}/`}>#{tag.name} ({tag.count})</a>
+        ))}
+      </div>
+    )}
   </section>
 
   <section style="display:grid; gap:0.75rem;" class="stagger">
@@ -92,7 +101,9 @@ const notesJsonLd = [
           </div>
         </div>
         <div class="meta-row" style="padding-left:0.35rem;">
-          {entry.data.tags.map((tag) => <span class="pill">#{tag}</span>)}
+          {entry.data.tags.map((tag) => (
+            <a class="pill" href={`/tags/${slugifyTag(tag)}/`}>#{tag}</a>
+          ))}
         </div>
       </article>
     ))}

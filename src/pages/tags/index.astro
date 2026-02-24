@@ -1,0 +1,92 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import { getPublishedTagSummaries } from "../../lib/content";
+
+const tags = await getPublishedTagSummaries();
+const siteUrl = Astro.site?.toString() ?? "https://gsisinna.github.io";
+const tagsUrl = new URL("/tags/", siteUrl).toString();
+const tagsJsonLd = [
+  {
+    "@context": "https://schema.org",
+    "@type": "CollectionPage",
+    name: "Tags | gsisinna",
+    url: tagsUrl,
+    description: "Browse notes by topic tags.",
+    inLanguage: "en"
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      { "@type": "ListItem", position: 1, name: "Home", item: new URL("/", siteUrl).toString() },
+      { "@type": "ListItem", position: 2, name: "Tags", item: tagsUrl }
+    ]
+  }
+];
+---
+
+<BaseLayout
+  title="Tags | gsisinna"
+  description="Browse notes by tag."
+  jsonLd={tagsJsonLd}
+>
+  <section class="panel panel-soft stagger" style="display:grid; gap:0.75rem;">
+    <p class="term-label">tags index</p>
+    <h1 class="term-headline" style="font-size:clamp(1.6rem,3.4vw,2.5rem);">Browse by tag</h1>
+    <p class="muted">Topic-based navigation across notes and technical posts.</p>
+    <div class="meta-row">
+      <a class="button button-secondary" href="/journal/">Back to notes</a>
+      <span class="pill">{tags.length} tag{tags.length === 1 ? "" : "s"}</span>
+    </div>
+  </section>
+
+  <section class="panel panel-elevated" aria-labelledby="tag-list-title">
+    <h2 id="tag-list-title" class="term-label" style="margin:0 0 0.75rem;">all tags</h2>
+    {tags.length === 0 ? (
+      <p class="muted">No tags yet.</p>
+    ) : (
+      <div class="tag-grid">
+        {tags.map((tag) => (
+          <a class="tag-card" href={`/tags/${tag.slug}/`}>
+            <span class="tag-name">#{tag.name}</span>
+            <span class="pill">{tag.count} post{tag.count === 1 ? "" : "s"}</span>
+          </a>
+        ))}
+      </div>
+    )}
+  </section>
+</BaseLayout>
+
+<style>
+  .tag-grid {
+    display: grid;
+    gap: 0.7rem;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  }
+
+  .tag-card {
+    text-decoration: none;
+    color: inherit;
+    border: 1px solid rgba(82,255,168,0.1);
+    border-radius: 12px;
+    background: linear-gradient(to bottom, rgba(255,255,255,0.018), rgba(255,255,255,0.006));
+    padding: 0.8rem;
+    display: grid;
+    gap: 0.5rem;
+    align-content: start;
+    transition: 160ms ease;
+  }
+
+  .tag-card:hover {
+    transform: translateY(-1px);
+    border-color: rgba(82,255,168,0.18);
+    background: linear-gradient(to bottom, rgba(82,255,168,0.04), rgba(255,255,255,0.008));
+  }
+
+  .tag-name {
+    color: var(--ink-strong);
+    font-family: "JetBrains Mono", ui-monospace, monospace;
+    font-size: 0.92rem;
+    overflow-wrap: anywhere;
+  }
+</style>

@@ -1,0 +1,96 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import {
+  formatDate,
+  getPublishedJournalEntries,
+  getPublishedTagSummaries,
+  slugifyTag
+} from "../../lib/content";
+
+export async function getStaticPaths() {
+  const tags = await getPublishedTagSummaries();
+  return tags.map((tag) => ({
+    params: { tag: tag.slug },
+    props: { tagName: tag.name, tagCount: tag.count }
+  }));
+}
+
+const { tag } = Astro.params;
+const { tagName, tagCount } = Astro.props as { tagName: string; tagCount: number };
+
+if (!tag) {
+  throw new Error("Missing tag param");
+}
+
+const allEntries = await getPublishedJournalEntries();
+const entries = allEntries.filter((entry) => entry.data.tags.some((entryTag) => slugifyTag(entryTag) === tag));
+const siteUrl = Astro.site?.toString() ?? "https://gsisinna.github.io";
+const tagUrl = new URL(`/tags/${tag}/`, siteUrl).toString();
+const tagJsonLd = [
+  {
+    "@context": "https://schema.org",
+    "@type": "CollectionPage",
+    name: `Tag: ${tagName} | gsisinna`,
+    url: tagUrl,
+    description: `Notes tagged ${tagName}.`,
+    inLanguage: "en"
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      { "@type": "ListItem", position: 1, name: "Home", item: new URL("/", siteUrl).toString() },
+      { "@type": "ListItem", position: 2, name: "Tags", item: new URL("/tags/", siteUrl).toString() },
+      { "@type": "ListItem", position: 3, name: tagName, item: tagUrl }
+    ]
+  }
+];
+---
+
+<BaseLayout
+  title={`Tag: ${tagName} | gsisinna`}
+  description={`Notes and posts tagged ${tagName}.`}
+  jsonLd={tagJsonLd}
+>
+  <section class="panel panel-soft stagger" style="display:grid; gap:0.75rem;">
+    <p class="term-label">tag archive</p>
+    <h1 class="term-headline" style="font-size:clamp(1.6rem,3.4vw,2.5rem);">#{tagName}</h1>
+    <div class="meta-row">
+      <a class="button button-secondary" href="/tags/">All tags</a>
+      <a class="button button-secondary" href="/journal/">All notes</a>
+      <span class="pill">{tagCount} post{tagCount === 1 ? "" : "s"}</span>
+    </div>
+  </section>
+
+  <section style="display:grid; gap:0.75rem;" class="stagger">
+    {entries.map((entry) => (
+      <article class="panel panel-elevated" style="display:grid; gap:0.55rem;">
+        <div style="display:flex; justify-content:space-between; gap:0.75rem; align-items:flex-start; flex-wrap:wrap;">
+          <div style="display:grid; gap:0.3rem;">
+            <h2 style="font-size:1.02rem;">
+              <a href={`/journal/${entry.id}/`} style="text-decoration:none;">
+                <span class="term-headline">{entry.data.title}</span>
+              </a>
+            </h2>
+            <p class="muted">{entry.data.excerpt}</p>
+          </div>
+          <div style="display:grid; gap:0.35rem; justify-items:end;">
+            <span class="pill">{formatDate(entry.data.date)}</span>
+            {entry.data.readingTime && <span class="pill">{entry.data.readingTime}</span>}
+          </div>
+        </div>
+        <div class="meta-row">
+          {entry.data.tags.map((entryTag) => (
+            <a
+              class="pill"
+              href={`/tags/${slugifyTag(entryTag)}/`}
+              aria-current={slugifyTag(entryTag) === tag ? "page" : undefined}
+            >
+              #{entryTag}
+            </a>
+          ))}
+        </div>
+      </article>
+    ))}
+  </section>
+</BaseLayout>

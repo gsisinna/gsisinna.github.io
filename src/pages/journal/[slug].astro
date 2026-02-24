@@ -1,7 +1,7 @@
 ---
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import { getCollection, getEntry, render } from "astro:content";
-import { formatDate } from "../../lib/content";
+import { formatDate, slugifyTag } from "../../lib/content";
 
 export async function getStaticPaths() {
   const entries = await getCollection("journal", ({ data }) => !data.draft);
@@ -106,7 +106,9 @@ const breadcrumbJsonLd = {
           <div class="post-tag-row" aria-label="Article tags">
             <span class="post-tag-label">tags</span>
             <div class="meta-row">
-              {entry.data.tags.map((tag) => <span class="pill">#{tag}</span>)}
+              {entry.data.tags.map((tag) => (
+                <a class="pill" href={`/tags/${slugifyTag(tag)}/`}>#{tag}</a>
+              ))}
             </div>
           </div>
         )}
@@ -274,6 +276,10 @@ const breadcrumbJsonLd = {
     text-transform: uppercase;
     padding-top: 0.25rem;
     font-family: "JetBrains Mono", ui-monospace, monospace;
+  }
+
+  .post-tag-row .pill {
+    text-decoration: none;
   }
 
   .post-cover {

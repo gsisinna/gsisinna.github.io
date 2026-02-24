@@ -2,6 +2,7 @@ import type { APIRoute } from "astro";
 import { getCollection } from "astro:content";
 import { stat } from "node:fs/promises";
 import { join } from "node:path";
+import { getPublishedTagSummaries } from "../lib/content";
 
 const SITE_URL = "https://gsisinna.github.io";
 const XML_ESCAPES: Record<string, string> = {
@@ -25,6 +26,7 @@ export const GET: APIRoute = async () => {
     { path: "/terms/", source: join(process.cwd(), "src/pages/terms.astro") }
   ];
   const posts = await getCollection("journal", ({ data }) => !data.draft);
+  const tags = await getPublishedTagSummaries();
   const staticPageEntries = await Promise.all(
     pages.map(async (page) => {
       const fileStats = await stat(page.source);
@@ -40,6 +42,14 @@ export const GET: APIRoute = async () => {
     ...posts.map((post) => ({
       loc: new URL(`/journal/${post.id}/`, SITE_URL).toString(),
       lastmod: post.data.date.toISOString()
+    })),
+    {
+      loc: new URL("/tags/", SITE_URL).toString(),
+      lastmod: new Date().toISOString()
+    },
+    ...tags.map((tag) => ({
+      loc: new URL(`/tags/${tag.slug}/`, SITE_URL).toString(),
+      lastmod: new Date().toISOString()
     }))
   ];
 
