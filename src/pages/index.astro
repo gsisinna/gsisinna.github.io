@@ -592,11 +592,13 @@ const hobbies = [
     .home-progress span {
       display: block;
       height: 100%;
-      width: 0%;
+      width: 100%;
+      transform: scaleX(0);
+      transform-origin: left center;
       background:
         linear-gradient(90deg, rgba(82,255,168,0.9), rgba(115,217,255,0.85) 65%, rgba(255,209,102,0.8));
       box-shadow: 0 0 14px rgba(82,255,168,0.16);
-      transition: width 120ms linear;
+      will-change: transform;
     }
 
     .home-section {
@@ -992,17 +994,27 @@ const hobbies = [
       const progressBar = document.getElementById("home-progress-bar");
       if (!(progressBar instanceof HTMLElement)) return;
 
+      let progressRaf = 0;
+
       const updateProgress = () => {
         const doc = document.documentElement;
         const scrollTop = window.scrollY || doc.scrollTop;
         const max = Math.max(1, doc.scrollHeight - window.innerHeight);
         const pct = Math.max(0, Math.min(100, (scrollTop / max) * 100));
-        progressBar.style.width = `${pct}%`;
+        progressBar.style.transform = `scaleX(${pct / 100})`;
+      };
+
+      const scheduleProgressUpdate = () => {
+        if (progressRaf) return;
+        progressRaf = window.requestAnimationFrame(() => {
+          progressRaf = 0;
+          updateProgress();
+        });
       };
 
       updateProgress();
-      window.addEventListener("scroll", updateProgress, { passive: true });
-      window.addEventListener("resize", updateProgress);
+      window.addEventListener("scroll", scheduleProgressUpdate, { passive: true });
+      window.addEventListener("resize", scheduleProgressUpdate, { passive: true });
 
       const navLinks = Array.from(document.querySelectorAll("[data-jump]"));
       const sections = navLinks

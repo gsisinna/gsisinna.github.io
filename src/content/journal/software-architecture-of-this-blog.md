@@ -49,6 +49,14 @@ I wanted the blog to be:
 
 That pushed me toward a static architecture with a strong shared layout and a content-first workflow.
 
+<aside class="callout callout-note">
+  <p class="callout-title">Architecture principle</p>
+  <p>
+    I optimize this blog for <strong>clarity over cleverness</strong>: simple routing, centralized metadata, and features
+    that are derived from the content itself (TOC, related posts, RSS) instead of bolted on manually.
+  </p>
+</aside>
+
 ## High-level architecture
 
 At a high level, the blog is a static Astro app with a clear separation between:

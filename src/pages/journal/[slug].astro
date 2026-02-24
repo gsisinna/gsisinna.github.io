@@ -88,10 +88,19 @@ const postJsonLd = {
       <a href="/journal/" class="button button-secondary" style="width:fit-content; padding:0.45rem 0.7rem;">← Back to notes</a>
       <p class="term-label">post view</p>
       <h1 class="term-headline post-title" style="font-size:clamp(1.6rem,3.1vw,2.45rem);">{entry.data.title}</h1>
-      <div class="meta-row">
-        <span class="pill">{formatDate(entry.data.date)}</span>
-        {entry.data.readingTime && <span class="pill">{entry.data.readingTime}</span>}
-        {entry.data.tags.map((tag) => <span class="pill">#{tag}</span>)}
+      <div class="post-meta-stack" aria-label="Article metadata">
+        <div class="meta-row">
+          <span class="pill">{formatDate(entry.data.date)}</span>
+          {entry.data.readingTime && <span class="pill">{entry.data.readingTime}</span>}
+        </div>
+        {entry.data.tags.length > 0 && (
+          <div class="post-tag-row" aria-label="Article tags">
+            <span class="post-tag-label">tags</span>
+            <div class="meta-row">
+              {entry.data.tags.map((tag) => <span class="pill">#{tag}</span>)}
+            </div>
+          </div>
+        )}
       </div>
       <p class="muted post-subtitle">{entry.data.excerpt}</p>
       {entry.data.image && (
@@ -234,6 +243,28 @@ const postJsonLd = {
 
   .post-subtitle {
     max-width: 100%;
+  }
+
+  .post-meta-stack {
+    display: grid;
+    gap: 0.45rem;
+  }
+
+  .post-tag-row {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 0.55rem;
+    align-items: start;
+    min-width: 0;
+  }
+
+  .post-tag-label {
+    color: var(--muted);
+    font-size: 0.72rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    padding-top: 0.25rem;
+    font-family: "JetBrains Mono", ui-monospace, monospace;
   }
 
   .post-cover {
@@ -465,6 +496,15 @@ const postJsonLd = {
   @media (max-width: 720px) {
     .post-toc {
       padding: 0.7rem;
+    }
+
+    .post-tag-row {
+      grid-template-columns: 1fr;
+      gap: 0.35rem;
+    }
+
+    .post-tag-label {
+      padding-top: 0;
     }
 
     .author-grid {
