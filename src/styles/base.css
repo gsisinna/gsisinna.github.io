@@ -753,12 +753,44 @@ footer.site {
 
 .prose ul,
 .prose ol {
-  padding-left: 1.1rem;
+  margin: 0.9rem 0 1rem;
+  padding-left: 1.5rem;
   color: var(--ink);
+  list-style-position: outside;
+}
+
+.prose ul {
+  list-style-type: disc;
+}
+
+.prose ol {
+  list-style-type: decimal;
+  padding-left: 1.85rem;
+}
+
+.prose ol ol {
+  list-style-type: lower-alpha;
+}
+
+.prose ol ol ol {
+  list-style-type: lower-roman;
 }
 
 .prose li + li {
-  margin-top: 0.35rem;
+  margin-top: 0.45rem;
+}
+
+.prose li::marker {
+  color: var(--muted);
+  font-weight: 600;
+}
+
+.prose li > p {
+  margin: 0;
+}
+
+.prose li > p + p {
+  margin-top: 0.5rem;
 }
 
 .prose :not(pre) > code {
