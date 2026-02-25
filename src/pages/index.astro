@@ -192,10 +192,6 @@ const hobbies = [
     value: "Riding gives me freedom and focus at the same time. It clears my head, sharpens attention, and gives me the same sense of flow I look for when building software."
   },
   {
-    label: "Photography",
-    value: "Photography helps me notice detail, light, and atmosphere. I enjoy capturing places and everyday moments, especially when they carry the mood of the sea or mountain landscapes."
-  },
-  {
     label: "Trekking",
     value: "Trekking is how I reset. Nature gives me space and perspective, and I feel a strong connection to mountain landscapes because of my roots near Mount Etna in Sicily."
   }
@@ -264,21 +260,6 @@ const hobbies = [
         <a href="/journal/" class="button button-secondary">View archive</a>
         <a href="/contact/" class="button button-secondary">Work together</a>
       </div>
-      <div class="meta-row">
-        <span class="pill">Robotics</span>
-        <span class="pill">C++</span>
-        <span class="pill">Python</span>
-        <span class="pill">Linux</span>
-        <span class="pill">Arduino</span>
-        <span class="pill">Electronics</span>
-        <span class="pill">3D Printing</span>
-        <span class="pill">ROS</span>
-        <span class="pill">Prototyping</span>
-      </div>
-      <div class="availability-strip" aria-label="Availability and work style">
-        <span class="availability-badge"><span class="dot"></span>Online</span>
-        <span class="availability-note">Architecture · Implementation · Integration · Prototyping</span>
-      </div>
       <div class="divider" />
       <div class="mini-stat-grid">
         <div class="mini-tile">
@@ -298,6 +279,9 @@ const hobbies = [
 
     <aside class="panel panel-elevated tilt-card" style="display:grid; gap:0.8rem; align-content:start; position:relative; overflow:hidden;">
       <div aria-hidden="true" class="orb-3d" style="inset:auto -22px -18px auto;" />
+      <div class="availability-strip availability-strip-plain" aria-label="Availability">
+        <span class="availability-badge"><span class="dot"></span>Online</span>
+      </div>
       <figure class="hero-avatar">
         <img
           src="/avatar-profile.jpg"
@@ -309,7 +293,7 @@ const hobbies = [
         />
       </figure>
       <p class="term-label">how to reach me</p>
-      <h2 style="font-size:1.12rem;" class="term-headline">Start a project conversation</h2>
+      <h2 style="font-size:1.12rem;" class="term-headline">Let&apos;s Talk</h2>
       <div class="terminal-card">
         <div class="bar">
           <span class="traffic" aria-hidden="true"><span></span><span></span><span></span></span>
@@ -319,18 +303,6 @@ const hobbies = [
           <div class="command command-typing" style="--type-ch:13; --type-delay:520ms; --type-duration:0.9s;"><span class="prompt">$</span><code>open /contact</code></div>
           <div class="command command-typing" style="--type-ch:21; --type-delay:980ms; --type-duration:1.2s;"><span class="prompt">$</span><code>write a short message</code></div>
           <div class="command command-typing" style="--type-ch:4; --type-delay:1540ms; --type-duration:0.5s;"><span class="prompt">$</span><code>send</code></div>
-        </div>
-      </div>
-      <div class="terminal-card">
-        <div class="bar">
-          <span class="traffic" aria-hidden="true"><span></span><span></span><span></span></span>
-          <span class="title">focus.cfg</span>
-        </div>
-        <div class="body" style="display:grid; gap:0.45rem;">
-          <p class="muted">
-            I work across architecture, implementation, and integration, and I am comfortable moving from software
-            design to Linux systems, electronics, prototypes, and hardware bring-up when needed.
-          </p>
         </div>
       </div>
     </aside>
@@ -477,7 +449,7 @@ const hobbies = [
         <p class="term-label">about me</p>
         <h2 class="term-headline" style="max-width:100%; text-wrap:pretty;">Outside work</h2>
       </div>
-      <span class="pill">life outside robotics</span>
+      <span class="pill">Life</span>
     </div>
 
     <div class="grid-2">
@@ -500,7 +472,6 @@ const hobbies = [
             <div class="command"><span class="prompt">$</span><code>go trekking</code></div>
             <div class="command"><span class="prompt">$</span><code>read books</code></div>
             <div class="command"><span class="prompt">$</span><code>go running</code></div>
-            <div class="command"><span class="prompt">$</span><code>cook something good</code></div>
             <div class="command"><span class="prompt">$</span><code>meet friends</code></div>
           </div>
         </div>
@@ -521,9 +492,6 @@ const hobbies = [
               <p class="muted" style="font-size:0.82rem;">{item.value}</p>
             </div>
           ))}
-          <p class="muted" style="font-size:0.76rem;">
-            Over time, I may turn this space into photo notes, ride logs, and short entries about places, trails, and the sea.
-          </p>
         </div>
       </div>
     </div>
@@ -639,6 +607,14 @@ const hobbies = [
       border-radius: 10px;
       padding: 0.55rem 0.7rem;
       background: linear-gradient(to right, rgba(82,255,168,0.03), rgba(115,217,255,0.02));
+    }
+
+    .availability-strip-plain {
+      border: 0;
+      background: transparent;
+      padding: 0;
+      border-radius: 0;
+      justify-self: end;
     }
 
     .hero-avatar {
