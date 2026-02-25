@@ -1,0 +1,62 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 1200" fill="none">
+  <defs>
+    <linearGradient id="traceA" x1="0" y1="0" x2="1600" y2="1200" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#52FFA8" stop-opacity=".10"/>
+      <stop offset=".5" stop-color="#73D9FF" stop-opacity=".08"/>
+      <stop offset="1" stop-color="#FFD166" stop-opacity=".06"/>
+    </linearGradient>
+    <linearGradient id="traceB" x1="1400" y1="120" x2="220" y2="1080" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#73D9FF" stop-opacity=".10"/>
+      <stop offset=".55" stop-color="#52FFA8" stop-opacity=".05"/>
+      <stop offset="1" stop-color="#73D9FF" stop-opacity=".02"/>
+    </linearGradient>
+    <radialGradient id="glowGreen" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(290 180) rotate(90) scale(220 300)">
+      <stop stop-color="#52FFA8" stop-opacity=".18"/>
+      <stop offset="1" stop-color="#52FFA8" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="glowBlue" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(1250 220) rotate(90) scale(220 300)">
+      <stop stop-color="#73D9FF" stop-opacity=".16"/>
+      <stop offset="1" stop-color="#73D9FF" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="glowWarm" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(1320 930) rotate(90) scale(240 340)">
+      <stop stop-color="#FFD166" stop-opacity=".10"/>
+      <stop offset="1" stop-color="#FFD166" stop-opacity="0"/>
+    </radialGradient>
+    <pattern id="grid" width="64" height="64" patternUnits="userSpaceOnUse">
+      <path d="M64 0H0V64" stroke="#FFFFFF" stroke-opacity=".035" stroke-width="1"/>
+      <circle cx="0" cy="0" r="1.5" fill="#52FFA8" fill-opacity=".06"/>
+    </pattern>
+    <filter id="softBlur" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="1.3"/>
+    </filter>
+  </defs>
+
+  <rect width="1600" height="1200" fill="url(#grid)"/>
+  <rect width="1600" height="1200" fill="url(#glowGreen)"/>
+  <rect width="1600" height="1200" fill="url(#glowBlue)"/>
+  <rect width="1600" height="1200" fill="url(#glowWarm)"/>
+
+  <g stroke-linecap="round" stroke-linejoin="round">
+    <path d="M90 220H360V320H580V260H780V420H1040V350H1320V500H1510" stroke="url(#traceA)" stroke-width="2"/>
+    <path d="M120 780H280V660H500V760H740V680H940V860H1180V760H1440" stroke="url(#traceB)" stroke-width="2"/>
+    <path d="M220 1040V880H420V970H620V840H860V980H1060V900H1260V1040" stroke="url(#traceA)" stroke-width="1.8"/>
+    <path d="M1340 120V260H1180V210H980V300H760V160H540V240H340V140H180" stroke="url(#traceB)" stroke-width="1.6"/>
+  </g>
+
+  <g filter="url(#softBlur)">
+    <circle cx="360" cy="320" r="4" fill="#52FFA8" fill-opacity=".28"/>
+    <circle cx="780" cy="420" r="4" fill="#73D9FF" fill-opacity=".25"/>
+    <circle cx="1320" cy="500" r="4" fill="#52FFA8" fill-opacity=".24"/>
+    <circle cx="940" cy="860" r="4" fill="#73D9FF" fill-opacity=".22"/>
+    <circle cx="620" cy="840" r="4" fill="#FFD166" fill-opacity=".18"/>
+    <circle cx="1180" cy="210" r="4" fill="#73D9FF" fill-opacity=".22"/>
+  </g>
+
+  <g stroke="#52FFA8" stroke-opacity=".09" stroke-width="1.2">
+    <path d="M360 320v50"/>
+    <path d="M580 260v36"/>
+    <path d="M1040 350v40"/>
+    <path d="M1180 760v42"/>
+    <path d="M940 860v30"/>
+  </g>
+</svg>
