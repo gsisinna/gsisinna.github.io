@@ -285,8 +285,12 @@ const breadcrumbJsonLd = {
   }
 
   /* Keep long-form text readable while allowing richer blocks to use more width */
-  .post-prose > :where(p, ul, ol, h2, h3, blockquote) {
+  .post-prose > :where(p, ul, ol, blockquote) {
     max-width: 74ch;
+  }
+
+  .post-prose > :where(h2, h3, h4) {
+    max-width: 100%;
   }
 
   .post-prose :where(h2, h3, h4)[id] {
@@ -445,14 +449,14 @@ const breadcrumbJsonLd = {
     }
 
     .post-title {
-      max-width: 42ch;
+      max-width: 100%;
     }
 
     .post-subtitle {
       max-width: 88ch;
     }
 
-    .post-prose > :where(p, ul, ol, h2, h3, blockquote) {
+    .post-prose > :where(p, ul, ol, blockquote) {
       max-width: 78ch;
     }
   }

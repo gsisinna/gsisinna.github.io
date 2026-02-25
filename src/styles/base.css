@@ -276,6 +276,9 @@ h1, h2, h3 {
   margin: 0;
   font-family: "JetBrains Mono", ui-monospace, monospace;
   font-weight: 700;
+  max-width: 100%;
+  min-width: 0;
+  overflow-wrap: anywhere;
 }
 
 h1 {
@@ -475,6 +478,13 @@ p {
 .term-headline::before {
   content: "> ";
   color: var(--accent);
+}
+
+.term-headline {
+  display: block;
+  max-width: 100%;
+  min-width: 0;
+  overflow-wrap: anywhere;
 }
 
 .command {

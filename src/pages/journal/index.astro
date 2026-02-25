@@ -88,15 +88,15 @@ const notesJsonLd = [
           </a>
         )}
         <div style="display:flex; justify-content:space-between; gap:1rem; align-items:flex-start; flex-wrap:wrap; padding-left:0.35rem;">
-          <div style="display:grid; gap:0.3rem;">
-            <h2 style="font-size:1.08rem;">
+          <div style="display:grid; gap:0.3rem; flex:1 1 20rem; min-width:0;">
+            <h2 style="font-size:1.08rem; min-width:0;">
               <a href={`/journal/${entry.id}/`} style="text-decoration:none;">
                 <span class="term-headline">{entry.data.title}</span>
               </a>
             </h2>
             <p class="muted">{entry.data.excerpt}</p>
           </div>
-          <div style="display:grid; gap:0.35rem; justify-items:end;">
+          <div style="display:grid; gap:0.35rem; justify-items:end; flex:0 0 auto;">
             <span class="pill">{formatDate(entry.data.date)}</span>
             {entry.data.readingTime && <span class="pill">{entry.data.readingTime}</span>}
           </div>
