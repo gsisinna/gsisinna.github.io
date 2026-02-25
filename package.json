@@ -8,6 +8,8 @@
     "dev": "astro dev",
     "start": "astro dev",
     "build": "astro build",
+    "perf": "npm run build && node scripts/perf-report.mjs",
+    "perf:report": "node scripts/perf-report.mjs",
     "preview": "astro preview",
     "check": "astro check"
   },
