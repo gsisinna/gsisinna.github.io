@@ -4,7 +4,7 @@ excerpt: "I built a small Java + Spring Boot learning repo that starts with clas
 date: 2026-03-17
 tags: ["java", "spring boot", "backend", "learning", "gradle", "software architecture"]
 readingTime: "12 min read"
-image: "https://images.unsplash.com/photo-1515879218367-8466d910aaa4?auto=format&fit=crop&w=1600&q=80"
+image: "https://images.unsplash.com/photo-1461749280684-dccba630e2f6?auto=format&fit=crop&w=1600&q=80"
 draft: false
 ---
 
@@ -45,7 +45,7 @@ The second track is **Spring Boot**:
 - dependency injection
 - request and response models
 - validation
-- persistence with JPA
+- persistence with MongoDB
 - security
 - OpenAPI / Swagger
 - Docker and deployment setup
@@ -296,18 +296,20 @@ Instead of checking everything manually, you can declare rules on request models
 
 That reduces boilerplate and teaches an important architectural habit: push input constraints as close to the boundary as possible.
 
-### Persistence with JPA
+### Persistence with MongoDB
 
-The repo adds JPA and a database-backed flow because without persistence, many backend examples stay too abstract.
+The repo adds a MongoDB-backed flow because without persistence, many backend examples stay too abstract.
 
 It is useful to see:
 
-- entities
+- documents
 - repositories
 - service-layer orchestration
-- integration tests that hit the database path
+- tests that verify the HTTP and service flow around persistence
 
-Even if the first database is just H2, the learning value is in understanding the shape of the flow.
+MongoDB is also a useful learning step because it keeps the data model close to JSON, which makes the transition from request bodies to stored documents easier to follow.
+
+That is a good fit for a beginner-friendly backend because the communication format at the API boundary is already JSON. You can look at a request body, a response body, and a MongoDB document and see the relationship more directly than in a heavier relational setup.
 
 ### Security
 
@@ -353,6 +355,7 @@ This project does not go all the way to production-grade platform engineering, b
 - a runnable Spring Boot jar
 - Docker files for container runs
 - a production Compose setup
+- a MongoDB service for local and production-style runs
 - externalized environment variables
 - a production profile
 - a documented deployment path
