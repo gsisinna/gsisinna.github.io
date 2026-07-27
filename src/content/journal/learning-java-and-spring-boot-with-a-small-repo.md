@@ -4,7 +4,7 @@ excerpt: "I built a small Java + Spring Boot learning repo that starts with clas
 date: 2026-03-17
 tags: ["java", "spring boot", "backend", "learning", "gradle", "software architecture"]
 readingTime: "12 min read"
-image: "https://images.unsplash.com/photo-1461749280684-dccba630e2f6?auto=format&fit=crop&w=1600&q=80"
+image: "https://opengraph.githubassets.com/1/spring-projects/spring-boot"
 draft: false
 ---
 

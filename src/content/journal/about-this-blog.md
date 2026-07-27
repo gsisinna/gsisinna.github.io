@@ -4,7 +4,7 @@ excerpt: "Why I made this site, what I plan to use it for, and why it looks like
 date: 2026-02-23
 tags: ["about", "blog", "notes"]
 readingTime: "4 min read"
-image: "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=1600&q=80"
+image: "https://upload.wikimedia.org/wikipedia/commons/7/7e/DEC_VT100_Terminal_%2816131954383%29.jpg"
 draft: false
 ---
 

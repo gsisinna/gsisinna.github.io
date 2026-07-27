@@ -4,7 +4,7 @@ excerpt: "A practical performance pass on this Astro blog: baseline measurements
 date: 2026-02-25
 tags: ["performance", "astro", "frontend", "web vitals", "meta"]
 readingTime: "8 min read"
-image: "https://images.unsplash.com/photo-1498050108023-c5249f4df085?auto=format&fit=crop&w=1600&q=80"
+image: "https://developer.chrome.com/static/docs/lighthouse/performance/performance-scoring/image/lighthouse-scoring-calcul-196f49058e387.png"
 draft: false
 ---
 

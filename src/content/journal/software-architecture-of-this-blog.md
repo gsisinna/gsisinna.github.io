@@ -4,7 +4,7 @@ excerpt: "A meta-post about the software architecture behind this blog: Astro co
 date: 2026-02-24
 tags: ["software architecture", "astro", "blog", "meta", "frontend", "seo"]
 readingTime: "10 min read"
-image: "https://images.unsplash.com/photo-1516116216624-53e697fedbea?auto=format&fit=crop&w=1600&q=80"
+image: "https://opengraph.githubassets.com/1/withastro/astro"
 draft: false
 ---
 
@@ -23,15 +23,16 @@ If you want the more personal "why" behind this project before reading the imple
 
 <figure style="margin:1.2rem 0; display:grid; gap:0.5rem;">
   <img
-    src="https://images.unsplash.com/photo-1516116216624-53e697fedbea?auto=format&fit=crop&w=1600&q=80"
-    alt="Laptop with code editor in a dark workspace representing the engineering setup behind the blog"
+    src="https://opengraph.githubassets.com/1/withastro/astro"
+    alt="Astro framework GitHub repository preview"
     loading="lazy"
     decoding="async"
     referrerpolicy="no-referrer"
     style="width:100%; display:block; border-radius:12px; border:1px solid rgba(82,255,168,0.12);"
   />
   <figcaption style="color:var(--muted); font-size:0.78rem;">
-    The blog is intentionally simple in UX, but the architecture is designed to scale cleanly as content grows.
+    Astro is the foundation of the site, so an actual project image fits this architecture post better than a generic
+    laptop photo.
   </figcaption>
 </figure>
 
