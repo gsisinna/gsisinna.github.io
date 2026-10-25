@@ -1,10 +1,12 @@
 #!/usr/bin/env node
-// Create a new post from a template.
+// Create a new post or project from a template.
 //
 //   npm run new -- "My post title"
 //   npm run new -- "Quick fix for colcon" --template note --tags "ros 2, tooling"
+//   npm run new -- "My robot driver" --template project --tags "C++, ROS 2"
 //
-// The post is created as a draft in src/content/journal/<slug>.md.
+// Posts are created as drafts in src/content/journal/<slug>.md,
+// projects in src/content/projects/<slug>.md.
 
 import { existsSync, readFileSync, writeFileSync } from "node:fs";
 import { dirname, join } from "node:path";
@@ -26,7 +28,7 @@ const tags = option("tags", "");
 const title = args.join(" ").trim();
 
 if (!title) {
-  console.error('Usage: npm run new -- "Post title" [--template article|note] [--tags "tag one, tag two"]');
+  console.error('Usage: npm run new -- "Title" [--template article|note|project] [--tags "tag one, tag two"]');
   process.exit(1);
 }
 
@@ -39,20 +41,23 @@ if (!existsSync(templatePath)) {
 const slug = title
   .toLowerCase()
   .normalize("NFKD")
-  .replace(/[̀-ͯ]/g, "")
+  .replace(/\p{M}/gu, "") // strip accents: "Città" -> "citta"
   .replace(/[^a-z0-9]+/g, "-")
   .replace(/^-+|-+$/g, "");
-const target = join(root, "src", "content", "journal", `${slug}.md`);
+const collection = template === "project" ? "projects" : "journal";
+const relativeTarget = `src/content/${collection}/${slug}.md`;
+const target = join(root, relativeTarget);
 
 if (existsSync(target)) {
-  console.error(`A post with this slug already exists: src/content/journal/${slug}.md`);
+  console.error(`An entry with this slug already exists: ${relativeTarget}`);
   process.exit(1);
 }
 
 const today = new Date().toISOString().slice(0, 10);
+// Project stacks keep their casing ("C++", "ROS 2"); post tags are lowercase.
 const tagList = tags
   .split(",")
-  .map((tag) => tag.trim().toLowerCase())
+  .map((tag) => (template === "project" ? tag.trim() : tag.trim().toLowerCase()))
   .filter(Boolean)
   .map((tag) => JSON.stringify(tag))
   .join(", ");
@@ -60,8 +65,11 @@ const tagList = tags
 const content = readFileSync(templatePath, "utf8")
   .replaceAll("{{title}}", title.replace(/"/g, '\\"'))
   .replaceAll("{{date}}", today)
+  .replaceAll("{{year}}", today.slice(0, 4))
   .replaceAll("{{tags}}", tagList);
 
 writeFileSync(target, content);
-console.log(`Created src/content/journal/${slug}.md (draft)`);
-console.log(`Preview: npm run dev, then open http://localhost:4321/journal/${slug}/`);
+console.log(`Created ${relativeTarget} (draft)`);
+console.log(
+  `Preview: npm run dev, then open http://localhost:4321/${collection === "projects" ? "projects/" : `journal/${slug}/`}`
+);

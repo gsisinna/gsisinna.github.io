@@ -90,3 +90,8 @@ export function groupByYear(entries: CollectionEntry<"journal">[]) {
   }
   return [...groups.entries()].sort((a, b) => b[0] - a[0]);
 }
+
+export async function getProjects() {
+  const projects = await getCollection("projects", isVisible);
+  return projects.sort((a, b) => a.data.order - b.data.order || b.data.year.localeCompare(a.data.year));
+}

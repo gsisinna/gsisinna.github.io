@@ -1,0 +1,225 @@
+---
+import type { CollectionEntry } from "astro:content";
+import CoverImage from "./CoverImage.astro";
+import Icon from "./Icon.astro";
+
+interface Props {
+  project: CollectionEntry<"projects">;
+  headingLevel?: "h2" | "h3";
+  large?: boolean;
+}
+
+const { project, headingLevel = "h3", large = false } = Astro.props;
+const { title, summary, year, status, role, stack, highlights, links, image } = project.data;
+const Heading = headingLevel;
+const statusLabel = { active: "Active", completed: "Completed", experiment: "Experiment", archived: "Archived" }[status];
+const primaryHref = links.repo ?? links.demo ?? (links.post ? `/journal/${links.post}/` : undefined);
+---
+
+<article class:list={["project-card", "lift", large && "project-card-large", image && "has-image"]}>
+  {image && (
+    <div class="project-media">
+      <CoverImage entry={project} />
+    </div>
+  )}
+  <div class="project-body">
+    <div class="meta-line">
+      <span class:list={["project-status", `status-${status}`]}>{statusLabel}</span>
+      <span>{year}</span>
+      {role && <span>{role}</span>}
+    </div>
+    <Heading class="project-title">
+      {primaryHref ? (
+        <a href={primaryHref} target={primaryHref.startsWith("http") ? "_blank" : undefined} rel={primaryHref.startsWith("http") ? "noreferrer noopener" : undefined}>
+          {title}
+        </a>
+      ) : (
+        title
+      )}
+    </Heading>
+    <p class="muted project-summary">{summary}</p>
+    {highlights.length > 0 && (
+      <ul class="project-highlights">
+        {highlights.map((item) => <li>{item}</li>)}
+      </ul>
+    )}
+    <div class="project-footer">
+      <div class="meta-row">{stack.map((item) => <span class="pill">{item}</span>)}</div>
+      <div class="project-links">
+        {links.repo && (
+          <a href={links.repo} target="_blank" rel="noreferrer noopener" aria-label={`${title} source code on GitHub`} title="Source on GitHub">
+            <Icon name="github" />
+            <span>Code</span>
+          </a>
+        )}
+        {links.demo && (
+          <a href={links.demo} target="_blank" rel="noreferrer noopener" title="Live demo">
+            <Icon name="external" />
+            <span>Demo</span>
+          </a>
+        )}
+        {links.post && (
+          <a href={`/journal/${links.post}/`} title="Read the write-up">
+            <Icon name="doc" />
+            <span>Write-up</span>
+          </a>
+        )}
+      </div>
+    </div>
+  </div>
+</article>
+
+<style>
+  .project-card {
+    position: relative;
+    display: grid;
+    grid-template-rows: auto 1fr;
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    background: var(--surface);
+    overflow: hidden;
+  }
+
+  .project-media {
+    aspect-ratio: 16 / 9;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .project-body {
+    display: grid;
+    grid-template-rows: auto auto auto 1fr auto;
+    gap: 0.7rem;
+    padding: 1.25rem;
+  }
+
+  .project-status {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+  }
+
+  .project-status::before {
+    content: "";
+    width: 0.45rem;
+    height: 0.45rem;
+    border-radius: 50%;
+    background: var(--muted);
+  }
+
+  .status-active {
+    color: var(--accent);
+  }
+
+  .status-active::before {
+    background: var(--accent);
+    box-shadow: 0 0 0 3px var(--accent-dim);
+  }
+
+  .status-experiment::before {
+    background: var(--accent-warm);
+  }
+
+  .project-title {
+    font-size: 1.1rem;
+    line-height: 1.25;
+  }
+
+  .project-title a {
+    text-decoration: none;
+  }
+
+  /* Whole card is clickable through the title link; inner links stay above it */
+  .project-title a::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+  }
+
+  .project-card:hover .project-title a {
+    color: var(--accent);
+  }
+
+  .project-summary {
+    font-size: 0.95rem;
+  }
+
+  .project-highlights {
+    margin: 0;
+    padding-left: 1.1rem;
+    display: grid;
+    gap: 0.3rem;
+    font-size: 0.9rem;
+    color: var(--ink);
+  }
+
+  .project-highlights li::marker {
+    color: var(--accent);
+  }
+
+  .project-footer {
+    display: grid;
+    gap: 0.85rem;
+    padding-top: 0.85rem;
+    border-top: 1px solid var(--line);
+  }
+
+  .project-links {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+  }
+
+  .project-links a {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.35rem 0.6rem;
+    border: 1px solid var(--line);
+    border-radius: 7px;
+    color: var(--muted);
+    font-family: var(--font-mono);
+    font-size: 0.76rem;
+    text-decoration: none;
+    transition: color 140ms ease, border-color 140ms ease, background-color 140ms ease;
+  }
+
+  .project-links a:hover {
+    color: var(--ink-strong);
+    border-color: var(--accent-line);
+    background: var(--hover);
+  }
+
+  .project-links :global(.icon) {
+    font-size: 0.95rem;
+  }
+
+  .project-card-large.has-image {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr);
+    grid-template-rows: none;
+  }
+
+  .project-card-large.has-image .project-media {
+    aspect-ratio: auto;
+    min-height: 100%;
+    border-bottom: 0;
+    border-right: 1px solid var(--line);
+  }
+
+  .project-card-large .project-title {
+    font-size: 1.3rem;
+  }
+
+  @media (max-width: 760px) {
+    .project-card-large.has-image {
+      grid-template-columns: 1fr;
+    }
+
+    .project-card-large.has-image .project-media {
+      aspect-ratio: 16 / 9;
+      border-right: 0;
+      border-bottom: 1px solid var(--line);
+    }
+  }
+</style>

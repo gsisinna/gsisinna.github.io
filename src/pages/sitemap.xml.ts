@@ -23,6 +23,7 @@ export const GET: APIRoute = async () => {
     ...posts.map((post) => ({ path: `/journal/${post.id}/`, lastmod: getLastModified(post) })),
     { path: "/tags/", lastmod: siteLastMod },
     ...[...tagPosts].map(([slug, items]) => ({ path: `/tags/${slug}/`, lastmod: latest(items) })),
+    { path: "/projects/" },
     { path: "/contact/" },
     { path: "/privacy/" },
     { path: "/terms/" }

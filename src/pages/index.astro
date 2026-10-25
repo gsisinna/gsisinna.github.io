@@ -3,8 +3,9 @@ import BaseLayout from "../layouts/BaseLayout.astro";
 import { Image, getImage } from "astro:assets";
 import PostRow from "../components/PostRow.astro";
 import FeaturedPost from "../components/FeaturedPost.astro";
+import ProjectCard from "../components/ProjectCard.astro";
 import Icon from "../components/Icon.astro";
-import { getPublishedJournalEntries } from "../lib/content";
+import { getProjects, getPublishedJournalEntries } from "../lib/content";
 import {
   profile,
   focusAreas,
@@ -20,6 +21,8 @@ const entries = await getPublishedJournalEntries();
 const avatarForSchema = await getImage({ src: profile.avatar, width: 200, format: "jpg" });
 const [featured, ...rest] = entries;
 const recent = rest.slice(0, 3);
+const projects = await getProjects();
+const featuredProjects = projects.filter((project) => project.data.featured).slice(0, 2);
 const siteUrl = Astro.site?.toString() ?? "https://gsisinna.github.io";
 const homeUrl = new URL("/", siteUrl).toString();
 const notesUrl = new URL("/journal/", siteUrl).toString();
@@ -146,6 +149,22 @@ const homeJsonLd = [
       ))}
     </div>
   </section>
+
+  {featuredProjects.length > 0 && (
+    <section id="projects" class="section" aria-labelledby="projects-title" data-reveal>
+      <div class="section-head">
+        <div>
+          <p class="kicker">ls ~/projects</p>
+          <h2 id="projects-title">Selected projects</h2>
+          <p class="section-lead">Open-source work: real-time control in C++ and robot architectures in ROS.</p>
+        </div>
+        <a href="/projects/" class="text-link">All {projects.length} projects →</a>
+      </div>
+      <div class="home-projects" data-reveal="stagger">
+        {featuredProjects.map((project) => <ProjectCard project={project} />)}
+      </div>
+    </section>
+  )}
 
   {featured && (
     <section id="writing" class="section" aria-labelledby="writing-title" data-reveal>
@@ -450,6 +469,12 @@ const homeJsonLd = [
       font-size: 1.25rem;
     }
 
+    .home-projects {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 1rem;
+    }
+
     .focus-card .muted {
       font-size: 0.95rem;
     }
@@ -647,6 +672,7 @@ const homeJsonLd = [
 
     @media (max-width: 860px) {
       .focus-grid,
+      .home-projects,
       .skills-grid,
       .hobby-grid {
         grid-template-columns: 1fr;

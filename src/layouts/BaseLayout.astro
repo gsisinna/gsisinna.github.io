@@ -147,8 +147,8 @@ const csp = [
       <div class="container">
         <a class="brand" href="/" aria-label="gsisinna, home"><span>~/</span>gsisinna</a>
         <nav class="primary" aria-label="Primary">
-          <a href="/journal/" aria-current={pathName.startsWith("/journal") ? "page" : undefined}>notes</a>
-          <a href="/tags/" aria-current={pathName.startsWith("/tags") ? "page" : undefined}>topics</a>
+          <a href="/journal/" aria-current={pathName.startsWith("/journal") || pathName.startsWith("/tags") ? "page" : undefined}>notes</a>
+          <a href="/projects/" aria-current={pathName.startsWith("/projects") ? "page" : undefined}>projects</a>
           <a href="/contact/" aria-current={pathName.startsWith("/contact") ? "page" : undefined}>contact</a>
           <a
             href="/search/"
@@ -176,6 +176,7 @@ const csp = [
       <div class="container">
         <span>© {currentYear} Gabriele Sisinna</span>
         <nav class="footer-links" aria-label="Footer">
+          <a href="/tags/">Topics</a>
           <a href={rssUrl}>RSS</a>
           <a href={githubUrl} target="_blank" rel="noreferrer noopener">GitHub</a>
           <a href={linkedInUrl} target="_blank" rel="noreferrer noopener">LinkedIn</a>

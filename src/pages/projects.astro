@@ -1,0 +1,93 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import ProjectCard from "../components/ProjectCard.astro";
+import { getProjects } from "../lib/content";
+import { profile } from "../data/profile";
+
+const projects = await getProjects();
+const featured = projects.filter((project) => project.data.featured);
+const others = projects.filter((project) => !project.data.featured);
+const siteUrl = Astro.site?.toString() ?? "https://gsisinna.github.io";
+const pageUrl = new URL("/projects/", siteUrl).toString();
+const description =
+  "Open-source and personal projects by Gabriele Sisinna: robotics control software, ROS, C++, Python, and the tools around them.";
+const projectsJsonLd = [
+  {
+    "@context": "https://schema.org",
+    "@type": "CollectionPage",
+    name: `Projects · ${profile.name}`,
+    url: pageUrl,
+    description,
+    inLanguage: "en",
+    mainEntity: {
+      "@type": "ItemList",
+      itemListElement: projects.map((project, index) => ({
+        "@type": "ListItem",
+        position: index + 1,
+        item: {
+          "@type": "SoftwareSourceCode",
+          name: project.data.title,
+          description: project.data.summary,
+          programmingLanguage: project.data.stack,
+          ...(project.data.links.repo ? { codeRepository: project.data.links.repo } : {}),
+          author: { "@type": "Person", name: profile.name }
+        }
+      }))
+    }
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      { "@type": "ListItem", position: 1, name: "Home", item: new URL("/", siteUrl).toString() },
+      { "@type": "ListItem", position: 2, name: "Projects", item: pageUrl }
+    ]
+  }
+];
+---
+
+<BaseLayout title={`Projects · ${profile.name}`} description={description} jsonLd={projectsJsonLd} image="/og/projects.png">
+  <header class="page-head fade-in">
+    <p class="kicker">ls ~/projects</p>
+    <h1>Projects</h1>
+    <p class="lead">
+      Open-source and personal work I can share: control software, robot architectures, and the
+      tools and experiments around them.
+    </p>
+    <p class="meta-line">
+      <span>{projects.length} projects</span>
+      <a class="text-link" href={profile.links.github} target="_blank" rel="noreferrer noopener">All repositories on GitHub →</a>
+    </p>
+  </header>
+
+  {featured.length > 0 && (
+    <section class="section" aria-labelledby="featured-title">
+      <h2 id="featured-title" class="sr-only">Featured projects</h2>
+      <div class="featured-projects" data-reveal="stagger">
+        {featured.map((project) => <ProjectCard project={project} large />)}
+      </div>
+    </section>
+  )}
+
+  {others.length > 0 && (
+    <section class="section" aria-labelledby="more-title">
+      <h2 id="more-title">More projects</h2>
+      <div class="project-grid" data-reveal="stagger">
+        {others.map((project) => <ProjectCard project={project} />)}
+      </div>
+    </section>
+  )}
+</BaseLayout>
+
+<style>
+  .featured-projects {
+    display: grid;
+    gap: 1.25rem;
+  }
+
+  .project-grid {
+    display: grid;
+    gap: 1rem;
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 290px), 1fr));
+  }
+</style>

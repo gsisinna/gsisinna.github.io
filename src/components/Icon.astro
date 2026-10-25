@@ -12,7 +12,9 @@ interface Props {
     | "arrow-up"
     | "search"
     | "sun"
-    | "moon";
+    | "moon"
+    | "doc"
+    | "external";
   class?: string;
 }
 
@@ -89,6 +91,13 @@ const { name, class: className } = Astro.props;
       </>
     )}
     {name === "moon" && <path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5Z" />}
+    {name === "doc" && (
+      <>
+        <path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8l-5-5Z" />
+        <path d="M14 3v5h5M9 13h6M9 17h4" />
+      </>
+    )}
+    {name === "external" && <path d="M14 4h6v6M20 4l-9 9M18 14v4a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4" />}
   </svg>
 )}
 

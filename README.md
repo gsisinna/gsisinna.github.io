@@ -86,6 +86,23 @@ can be clicked to open full size; give each one a meaningful `alt` text and, whe
 
 Inline HTML is sanitized: scripts, event handlers, and `style` attributes are removed.
 
+## Adding a project
+
+```bash
+npm run new -- "My robot driver" --template project --tags "C++, ROS 2"
+```
+
+This creates `src/content/projects/<slug>.md` (a draft) from `templates/project.md`. Fill in the
+summary, highlights, stack, and links, then set `draft: false`. Projects with `featured: true`
+appear on the home page (the first two by `order`); all projects are listed on `/projects/`.
+
+## Share images
+
+Every post gets its own 1200×630 preview image at `/og/<slug>.png`, generated at build time by
+`src/pages/og/[slug].png.ts` from the title, tags, date, and reading time (layout in
+`src/lib/og.ts`). Nothing to do when you write a post. The home page uses
+`public/og-default.png` (`npm run assets`).
+
 ## Editing the site
 
 | What | Where |
@@ -97,6 +114,7 @@ Inline HTML is sanitized: scripts, event handlers, and `style` attributes are re
 | Theme toggle, scroll reveal (`data-reveal`), reading progress | `src/scripts/site.ts` |
 | Header, footer, SEO metadata | `src/layouts/BaseLayout.astro` |
 | Home page | `src/pages/index.astro` |
+| Projects | `src/content/projects/`, `src/pages/projects.astro` |
 | Notes archive / post page | `src/pages/journal/` |
 | Topics | `src/pages/tags/` |
 | Markdown pipeline (sanitizer, syntax highlighting) | `astro.config.mjs` |
