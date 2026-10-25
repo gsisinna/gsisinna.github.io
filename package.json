@@ -17,6 +17,7 @@
     "@astrojs/check": "^0.9.6",
     "@types/node": "^25.3.0",
     "astro": "^5.0.0",
+    "rehype-raw": "^7.0.0",
     "rehype-sanitize": "^6.0.0",
     "typescript": "^5.6.0"
   }
