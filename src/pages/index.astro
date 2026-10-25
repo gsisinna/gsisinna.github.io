@@ -1,12 +1,10 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
-import TimelineIcon from "../components/TimelineIcon.astro";
-import { getPublishedJournalEntries, formatDate } from "../lib/content";
+import PostRow from "../components/PostRow.astro";
+import { getPublishedJournalEntries } from "../lib/content";
 
 const entries = await getPublishedJournalEntries();
 const latest = entries.slice(0, 3);
-const featured = latest[0];
-const totalPosts = entries.length;
 const siteUrl = Astro.site?.toString() ?? "https://gsisinna.github.io";
 const homeUrl = new URL("/", siteUrl).toString();
 const notesUrl = new URL("/journal/", siteUrl).toString();
@@ -69,132 +67,63 @@ const homeJsonLd = [
   }
 ];
 
-const storyline = [
+const experience = [
   {
-    period: "2024 -> now",
-    place: "FlexLink · Bologna",
+    period: "2024 – now",
     role: "Robotics Software Engineer",
-    icon: "factory",
-    current: true,
-    note:
-      "I work on modular C++/Python software for autonomous and collaborative robotics, with a strong focus on reusable components, CI/CD, and system integration."
+    place: "FlexLink · Bologna",
+    note: "Modular C++/Python software for autonomous and collaborative robotics: reusable components, CI/CD, and system integration."
   },
   {
-    period: "2022 -> 2023",
-    place: "Lab0 · Genova",
+    period: "2022 – 2023",
     role: "Robotics Engineer",
-    icon: "cube",
-    current: false,
-    note:
-      "This was a hands-on role across simulation, middleware, C++/Python development, Docker/Git workflows, hardware integration, and prototyping."
+    place: "Lab0 · Genova",
+    note: "Simulation, middleware, C++/Python development, Docker/Git workflows, hardware integration, and prototyping."
   },
   {
-    period: "2021 -> 2022",
+    period: "2021 – 2022",
+    role: "Robotics Technician / Software Engineer",
     place: "Istituto Italiano di Tecnologia · Genova",
-    role: "Robotics Technician / Robotics Software Engineer",
-    icon: "robot",
-    current: false,
-    note:
-      "I worked on iCub assembly, testing, diagnostics, YARP-based test activities, Docker deployments, and technical support for demos and public events."
+    note: "iCub assembly, testing and diagnostics, YARP-based test activities, Docker deployments, and support for demos."
   },
   {
     period: "2021",
-    place: "Università di Pisa",
     role: "Master Thesis",
-    icon: "thesis",
-    current: false,
-    note:
-      "My master thesis focused on a bio-inspired control system for the humanoid robot Abel, with a ROS-based architecture written in Python."
+    place: "Università di Pisa",
+    note: "Bio-inspired control system for the humanoid robot Abel, with a ROS-based architecture in Python."
   },
   {
-    period: "2020 -> 2021",
+    period: "2020 – 2021",
+    role: "Lab Training, Robotics",
     place: "Scuola Superiore Sant'Anna · Pisa",
-    role: "Lab Training - Robotics",
-    icon: "academy",
-    current: false,
-    note:
-      "Training work on a 7DOF KUKA simulation using ROS/MoveIt/Gazebo, CLIK, PID control, trajectory planning, and Linux-based robotics workflows."
-  }
-];
-
-const certifications = [
-  {
-    title: "Software Architecture Foundations",
-    issuer: "LinkedIn Learning",
-    issued: "2024",
-    focus: "Software Architecture"
-  },
-  {
-    title: "Learning C++",
-    issuer: "LinkedIn Learning",
-    issued: "2023",
-    focus: "C++"
-  },
-  {
-    title: "Learning Python",
-    issuer: "LinkedIn Learning",
-    issued: "2020",
-    focus: "Python"
-  },
-  {
-    title: "Programming Foundations: Object-Oriented Design",
-    issuer: "LinkedIn Learning",
-    issued: "2020",
-    focus: "OOP / Design"
-  },
-  {
-    title: "Programming Foundations: Algorithms",
-    issuer: "LinkedIn Learning",
-    issued: "2020",
-    focus: "Algorithms"
+    note: "7-DOF KUKA simulation with ROS, MoveIt and Gazebo: CLIK, PID control, and trajectory planning."
   }
 ];
 
 const skillGroups = [
-  {
-    title: "Software",
-    items: ["C++", "Python", "CMake", "Software Architecture", "Unit Testing", "CI/CD"]
-  },
-  {
-    title: "Robotics",
-    items: ["ROS", "Simulation", "Control Systems", "Industrial Manipulators", "Middleware", "System Integration"]
-  },
-  {
-    title: "Systems & Tools",
-    items: ["Linux", "Docker", "Git / GitLab", "DevOps", "Arduino", "Embedded Prototyping"]
-  },
-  {
-    title: "Hardware & Prototyping",
-    items: ["Electronics", "3D Printing", "CAD", "Onshape", "Rapid Prototyping", "Hardware Integration"]
-  }
+  { title: "Software", items: ["C++", "Python", "CMake", "Software Architecture", "Unit Testing", "CI/CD"] },
+  { title: "Robotics", items: ["ROS", "Simulation", "Control Systems", "Industrial Manipulators", "Middleware", "System Integration"] },
+  { title: "Systems", items: ["Linux", "Docker", "Git / GitLab", "DevOps", "Arduino", "Embedded Prototyping"] },
+  { title: "Hardware", items: ["Electronics", "3D Printing", "CAD / Onshape", "Rapid Prototyping", "Hardware Integration"] }
 ];
 
 const education = [
-  {
-    title: "MSc in Bionics Engineering (Biorobotics)",
-    school: "Scuola Superiore Sant'Anna",
-    period: "2018-2021"
-  },
-  {
-    title: "BSc in Biomedical Engineering",
-    school: "Università di Pisa",
-    period: "2014-2018"
-  }
+  { title: "MSc Bionics Engineering (Biorobotics)", school: "Scuola Superiore Sant'Anna", period: "2018–2021" },
+  { title: "BSc Biomedical Engineering", school: "Università di Pisa", period: "2014–2018" }
+];
+
+const certifications = [
+  { title: "Software Architecture Foundations", year: "2024" },
+  { title: "Learning C++", year: "2023" },
+  { title: "Learning Python", year: "2020" },
+  { title: "Programming Foundations: Object-Oriented Design", year: "2020" },
+  { title: "Programming Foundations: Algorithms", year: "2020" }
 ];
 
 const hobbies = [
-  {
-    label: "Guitar",
-    value: "Playing guitar is one of the ways I slow down. It keeps me patient and grounded, and it reminds me that good things are built one repeat at a time."
-  },
-  {
-    label: "Motorcycle",
-    value: "Riding gives me freedom and focus at the same time. It clears my head, sharpens attention, and gives me the same sense of flow I look for when building software."
-  },
-  {
-    label: "Trekking",
-    value: "Trekking is how I reset. Nature gives me space and perspective, and I feel a strong connection to mountain landscapes because of my roots near Mount Etna in Sicily."
-  }
+  { label: "Guitar", value: "How I slow down. Good things are built one repeat at a time." },
+  { label: "Motorcycle", value: "Freedom and focus at once: the same flow I look for when building software." },
+  { label: "Trekking", value: "How I reset. Mountains feel like home after growing up near Mount Etna." }
 ];
 ---
 
@@ -202,790 +131,405 @@ const hobbies = [
   title="Gabriele Sisinna | Personal Blog"
   description="Robotics software engineer in Bologna sharing projects, notes, prototyping work, and software architecture thinking for robotics and automation."
   jsonLd={homeJsonLd}
-  enableCommandTyping={true}
 >
-  <div class="home-page">
-  <div class="home-progress" aria-hidden="true"><span id="home-progress-bar"></span></div>
-
-  <section id="top" class="panel panel-soft stagger hero-grid tilt-card home-hero home-section">
-    <div style="display:grid; gap:0.9rem; align-content:start; min-width:0;">
-      <p class="term-label">whoami</p>
-      <h1 class="term-headline" style="max-width:100%; text-wrap:pretty;">Gabriele Sisinna</h1>
-      <p style="color:var(--ink-strong); font-size:0.95rem; max-width:100%; text-wrap:pretty;">
-        Robotics Software · C++ · Python · Software Architecture
+  <section class="hero fade-in">
+    <div class="hero-copy">
+      <p class="kicker">whoami</p>
+      <h1>Gabriele Sisinna</h1>
+      <p class="hero-role">Robotics software engineer in Bologna.</p>
+      <p class="hero-bio">
+        I build software for simulation, control, and system integration, with a strong focus on
+        architecture. When a project needs fast iteration on real hardware, I also work hands-on with
+        Linux, electronics, and rapid prototyping.
       </p>
-      <div class="command command-typing" style="--type-ch:14; --type-delay:220ms; --type-duration:1s;">
-        <span class="prompt">gabriele@gsisinna:~$</span>
-        <code>cat profile.md</code>
-      </div>
-      <p class="muted" style="font-size:1.02rem; max-width:62ch;">
-        Based in Bologna, I build robotics software for simulation, control, and system integration, with a strong
-        focus on software architecture. I also work hands-on with Linux, electronics and rapid
-        prototyping when a project needs fast iteration on real hardware.
-      </p>
-      <div class="social-links" aria-label="Social links">
-        <a class="social-link" href={githubUrl} target="_blank" rel="noreferrer noopener" aria-label="GitHub profile">
+      <div class="hero-actions">
+        <a href="/journal/" class="button button-primary">Read the notes</a>
+        <a class="button" href={githubUrl} target="_blank" rel="noreferrer noopener">
           <svg viewBox="0 0 24 24" aria-hidden="true">
             <path
               fill="currentColor"
               d="M12 2C6.48 2 2 6.58 2 12.23c0 4.52 2.87 8.36 6.84 9.71.5.1.68-.22.68-.5 0-.24-.01-1.03-.01-1.87-2.78.62-3.37-1.21-3.37-1.21-.46-1.2-1.11-1.52-1.11-1.52-.91-.64.07-.63.07-.63 1 .08 1.53 1.06 1.53 1.06.9 1.57 2.35 1.12 2.92.86.09-.67.35-1.12.64-1.38-2.22-.26-4.56-1.14-4.56-5.07 0-1.12.39-2.04 1.03-2.76-.1-.26-.45-1.31.1-2.74 0 0 .84-.28 2.75 1.05A9.3 9.3 0 0 1 12 6.84c.85 0 1.71.12 2.52.37 1.91-1.33 2.75-1.05 2.75-1.05.55 1.43.2 2.48.1 2.74.64.72 1.03 1.64 1.03 2.76 0 3.94-2.34 4.8-4.57 5.06.36.32.68.94.68 1.9 0 1.37-.01 2.47-.01 2.81 0 .28.18.61.69.5A10.26 10.26 0 0 0 22 12.23C22 6.58 17.52 2 12 2Z"
             />
           </svg>
-          <span>GitHub</span>
+          GitHub
         </a>
-        <a class="social-link" href={linkedInUrl} target="_blank" rel="noreferrer noopener" aria-label="LinkedIn profile">
+        <a class="button" href={linkedInUrl} target="_blank" rel="noreferrer noopener">
           <svg viewBox="0 0 24 24" aria-hidden="true">
             <path
               fill="currentColor"
               d="M6.94 8.5A1.56 1.56 0 1 0 6.9 5.38a1.56 1.56 0 0 0 .04 3.12ZM5.6 9.67h2.62V18H5.6V9.67Zm4.27 0h2.51v1.14h.03c.35-.66 1.2-1.35 2.47-1.35 2.64 0 3.12 1.78 3.12 4.1V18h-2.61v-3.91c0-.93-.02-2.13-1.27-2.13-1.28 0-1.48 1.03-1.48 2.06V18H9.87V9.67Z"
             />
           </svg>
-          <span>LinkedIn</span>
+          LinkedIn
         </a>
-        <a class="social-link" href={contactUrl} aria-label="Contact page">
-          <svg viewBox="0 0 24 24" aria-hidden="true">
-            <path
-              fill="currentColor"
-              d="M3 6.75A2.75 2.75 0 0 1 5.75 4h12.5A2.75 2.75 0 0 1 21 6.75v10.5A2.75 2.75 0 0 1 18.25 20H5.75A2.75 2.75 0 0 1 3 17.25V6.75Zm2 .17v.16l7 4.88 7-4.88v-.16a.75.75 0 0 0-.75-.75H5.75a.75.75 0 0 0-.75.75Zm14 2.59-6.43 4.48a1 1 0 0 1-1.14 0L5 9.51v7.74c0 .41.34.75.75.75h12.5c.41 0 .75-.34.75-.75V9.51Z"
-            />
-          </svg>
-          <span>Contact</span>
-        </a>
-      </div>
-      <div style="display:flex; gap:0.6rem; flex-wrap:wrap;">
-        {featured ? (
-          <a href={`/journal/${featured.id}/`} class="button button-primary">Read latest note</a>
-        ) : (
-          <a href="/journal/" class="button button-primary">Browse notes</a>
-        )}
-        <a href="/journal/" class="button button-secondary">View archive</a>
-        <a href="/contact/" class="button button-secondary">Work together</a>
-      </div>
-      <div class="divider" />
-      <div class="mini-stat-grid">
-        <div class="mini-tile">
-          <p class="eyebrow">Base</p>
-          <p style="margin-top:0.2rem;">Bologna, IT</p>
-        </div>
-        <div class="mini-tile">
-          <p class="eyebrow">Languages</p>
-          <p style="margin-top:0.2rem;">IT · EN</p>
-        </div>
-        <div class="mini-tile">
-          <p class="eyebrow">Posts</p>
-          <p style="margin-top:0.2rem;">{totalPosts}</p>
-        </div>
+        <a class="button" href="/contact/">Contact</a>
       </div>
     </div>
-
-    <aside class="panel panel-elevated tilt-card" style="display:grid; gap:0.8rem; align-content:start; position:relative; overflow:hidden;">
-      <div aria-hidden="true" class="orb-3d" style="inset:auto -22px -18px auto;" />
-      <div class="availability-strip availability-strip-plain" aria-label="Availability">
-        <span class="availability-badge"><span class="dot"></span>Online</span>
-      </div>
-      <figure class="hero-avatar">
-        <img
-          src="/avatar-profile.jpg"
-          alt="Gabriele Sisinna working on a humanoid robot"
-          loading="eager"
-          decoding="async"
-          fetchpriority="high"
-          width="220"
-          height="220"
-        />
-      </figure>
-      <p class="term-label">how to reach me</p>
-      <h2 style="font-size:1.12rem;" class="term-headline">Let&apos;s Talk</h2>
-      <div class="terminal-card">
-        <div class="bar">
-          <span class="traffic" aria-hidden="true"><span></span><span></span><span></span></span>
-          <span class="title">contact.sh</span>
-        </div>
-        <div class="body" style="display:grid; gap:0.55rem;">
-          <div class="command command-typing" style="--type-ch:13; --type-delay:520ms; --type-duration:0.9s;"><span class="prompt">$</span><code>open /contact</code></div>
-          <div class="command command-typing" style="--type-ch:21; --type-delay:980ms; --type-duration:1.2s;"><span class="prompt">$</span><code>write a short message</code></div>
-          <div class="command command-typing" style="--type-ch:4; --type-delay:1540ms; --type-duration:0.5s;"><span class="prompt">$</span><code>send</code></div>
-        </div>
-      </div>
-    </aside>
+    <figure class="hero-avatar">
+      <img
+        src="/avatar-profile.jpg"
+        alt="Gabriele Sisinna working on a humanoid robot"
+        loading="eager"
+        decoding="async"
+        fetchpriority="high"
+        width="240"
+        height="240"
+      />
+    </figure>
   </section>
 
-  <nav class="panel panel-soft jumpbar stagger" aria-label="Homepage sections">
-    <a href="#timeline" data-jump>timeline</a>
-    <a href="#toolbox" data-jump>skills</a>
-    <a href="#about" data-jump>about</a>
-    <a href="#recent" data-jump>notes</a>
-    <a href="/contact/" class="jumpbar-cta">contact</a>
-  </nav>
-
-  <section id="timeline" class="panel panel-elevated stagger tilt-card home-section home-section-accent" style="display:grid; gap:0.85rem;">
+  <section id="recent" class="section" aria-labelledby="recent-title">
     <div class="section-head">
       <div>
-        <p class="term-label">career timeline</p>
-        <h2 class="term-headline" style="max-width:100%; text-wrap:pretty;">Path so far</h2>
+        <p class="kicker">ls ~/notes</p>
+        <h2 id="recent-title">Latest notes</h2>
       </div>
-      <span class="pill">Bologna / Genova / Pisa</span>
+      <a href="/journal/" class="text-link">All notes →</a>
     </div>
+    <div class="post-list">
+      {latest.map((entry) => <PostRow entry={entry} headingLevel="h3" />)}
+    </div>
+  </section>
 
-    <div class="terminal-card">
-      <div class="bar">
-        <span class="traffic" aria-hidden="true"><span></span><span></span><span></span></span>
-        <span class="title">timeline.log</span>
-      </div>
-      <div class="body">
-        <div class="timeline">
-        {storyline.map((step, index) => (
-          <div class="timeline-item">
-            <div class="timeline-marker" aria-hidden="true">
-              <span class:list={["timeline-dot", step.current && "current"]}></span>
-            </div>
-            <div class:list={["timeline-card", step.current && "current"]}>
-              <div class="timeline-top">
-                <span class="pill">
-                  #{String(index + 1).padStart(2, "0")} · {step.period}
-                  {step.current ? " · current" : ""}
-                </span>
-                <span class="timeline-place">{step.place}</span>
-              </div>
-              <div class="timeline-role-row">
-                <span class="timeline-icon" aria-hidden="true"><TimelineIcon kind={step.icon} /></span>
-                <p class="timeline-role">{step.role}</p>
-              </div>
-              <p class="muted" style="font-size:0.84rem;">{step.note}</p>
-            </div>
+  <section id="experience" class="section" aria-labelledby="experience-title">
+    <div>
+      <p class="kicker">cat experience.log</p>
+      <h2 id="experience-title">Experience</h2>
+    </div>
+    <ol class="timeline">
+      {experience.map((item, index) => (
+        <li class:list={["timeline-item", index === 0 && "current"]}>
+          <p class="timeline-period">{item.period}</p>
+          <div class="timeline-body">
+            <h3>{item.role}</h3>
+            <p class="timeline-place">{item.place}</p>
+            <p class="muted">{item.note}</p>
           </div>
-        ))}
-        </div>
-      </div>
-    </div>
+        </li>
+      ))}
+    </ol>
   </section>
 
-  <section id="toolbox" class="panel panel-soft stagger home-section home-section-accent" style="display:grid; gap:0.85rem;">
-    <div class="section-head">
-      <div>
-        <p class="term-label">toolbox</p>
-        <h2 class="term-headline" style="max-width:100%; text-wrap:pretty;">Skills, tools, and prototyping work</h2>
-      </div>
-      <span class="pill">software + hardware workflow</span>
+  <section id="skills" class="section" aria-labelledby="skills-title">
+    <div>
+      <p class="kicker">cat skills.txt</p>
+      <h2 id="skills-title">Skills &amp; background</h2>
     </div>
-
-    <div class="grid-2">
-      <div class="terminal-card">
-        <div class="bar">
-          <span class="traffic" aria-hidden="true"><span></span><span></span><span></span></span>
-          <span class="title">skills.txt</span>
-        </div>
-        <div class="body" style="display:grid; gap:0.7rem;">
+    <div class="skills-grid">
+      <div class="panel">
+        <h3 class="panel-title">Toolbox</h3>
+        <dl class="skill-list">
           {skillGroups.map((group) => (
-            <div class="panel" style="padding:0.7rem; border-radius:10px; display:grid; gap:0.45rem;">
-              <div style="display:flex; justify-content:space-between; gap:0.5rem; align-items:center; flex-wrap:wrap;">
-                <p style="color:var(--ink-strong); font-size:0.82rem;">{group.title}</p>
-                <span class="pill">{group.items.length} items</span>
-              </div>
-              <div class="meta-row">
-                {group.items.map((item) => <span class="pill">{item}</span>)}
-              </div>
+            <div>
+              <dt>{group.title}</dt>
+              <dd class="meta-row">{group.items.map((item) => <span class="pill">{item}</span>)}</dd>
             </div>
           ))}
-
-          <div class="panel" style="padding:0.7rem; border-radius:10px; display:grid; gap:0.35rem;">
-            <p style="color:var(--ink-strong); font-size:0.82rem;">Languages</p>
-            <p class="muted" style="font-size:0.82rem;">
-              Italiano (native/bilingual) · English (professional working)
-            </p>
+          <div>
+            <dt>Languages</dt>
+            <dd>Italian (native) · English (professional)</dd>
           </div>
-        </div>
+        </dl>
       </div>
-
-      <div class="terminal-card">
-        <div class="bar">
-          <span class="traffic" aria-hidden="true"><span></span><span></span><span></span></span>
-          <span class="title">education_and_certs.md</span>
-        </div>
-        <div class="body" style="display:grid; gap:0.7rem;">
-          <div class="panel" style="padding:0.7rem; border-radius:10px; display:grid; gap:0.5rem;">
-            <div style="display:flex; justify-content:space-between; gap:0.5rem; align-items:center; flex-wrap:wrap;">
-              <p style="color:var(--ink-strong); font-size:0.82rem;">Education</p>
-              <span class="pill">{education.length} entries</span>
-            </div>
-            <div style="display:grid; gap:0.45rem;">
-              {education.map((item) => (
-                <div class="panel" style="padding:0.65rem; border-radius:9px; display:grid; gap:0.2rem;">
-                  <div style="display:flex; justify-content:space-between; gap:0.5rem; align-items:center; flex-wrap:wrap;">
-                    <p style="color:var(--ink-strong); font-size:0.82rem;">{item.title}</p>
-                    <span class="pill">{item.period}</span>
-                  </div>
-                  <p class="muted" style="font-size:0.78rem;">{item.school}</p>
-                </div>
-              ))}
-            </div>
-          </div>
-
-          <div class="panel" style="padding:0.7rem; border-radius:10px; display:grid; gap:0.5rem;">
-            <div style="display:flex; justify-content:space-between; gap:0.5rem; align-items:center; flex-wrap:wrap;">
-              <p style="color:var(--ink-strong); font-size:0.82rem;">Selected certifications</p>
-              <span class="pill">{certifications.length}</span>
-            </div>
-            <div style="display:grid; gap:0.4rem;">
-              {certifications.map((cert, idx) => (
-                <div class="command" style="padding:0.45rem 0.6rem;">
-                  <span class="prompt">[{String(idx + 1).padStart(2, "0")}]</span>
-                  <div style="display:grid; gap:0.12rem; min-width:0;">
-                    <code>{cert.title}</code>
-                    <span class="muted" style="font-size:0.72rem;">
-                      {cert.issuer} · {cert.issued} · {cert.focus}
-                    </span>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
+      <div class="panel">
+        <h3 class="panel-title">Education</h3>
+        <ul class="plain-list">
+          {education.map((item) => (
+            <li>
+              <span>{item.title}</span>
+              <span class="muted">{item.school} · {item.period}</span>
+            </li>
+          ))}
+        </ul>
+        <h3 class="panel-title">Certifications <span class="muted">· LinkedIn Learning</span></h3>
+        <ul class="plain-list">
+          {certifications.map((cert) => (
+            <li class="plain-list-row">
+              <span>{cert.title}</span>
+              <span class="muted">{cert.year}</span>
+            </li>
+          ))}
+        </ul>
       </div>
     </div>
   </section>
 
-  <section id="about" class="panel panel-elevated stagger tilt-card home-section home-section-accent" style="display:grid; gap:0.85rem;">
-    <div class="section-head">
-      <div>
-        <p class="term-label">about me</p>
-        <h2 class="term-headline" style="max-width:100%; text-wrap:pretty;">Outside work</h2>
-      </div>
-      <span class="pill">Life</span>
+  <section id="about" class="section" aria-labelledby="about-title">
+    <div>
+      <p class="kicker">cat about.md</p>
+      <h2 id="about-title">Outside work</h2>
     </div>
-
-    <div class="grid-2">
-      <div class="terminal-card">
-        <div class="bar">
-          <span class="traffic" aria-hidden="true"><span></span><span></span><span></span></span>
-          <span class="title">about_me.md</span>
+    <p class="about-intro">
+      I'm from Sicily, near Mount Etna, and I try to stay close to the things that keep me grounded:
+      music, riding, photography, running, books, and time in nature with friends.
+    </p>
+    <div class="hobby-grid">
+      {hobbies.map((item) => (
+        <div class="panel">
+          <h3>{item.label}</h3>
+          <p class="muted">{item.value}</p>
         </div>
-        <div class="body" style="display:grid; gap:0.65rem;">
-          <p class="muted" style="font-size:0.84rem;">
-            Outside robotics and software, I try to stay close to things that keep me grounded:
-            music, riding, photography, and time in nature. I come from Sicily, near Mount Etna, and
-            I have always felt a strong connection to both mountains and the sea.
-          </p>
-          <div class="divider" />
-          <div style="display:grid; gap:0.45rem;">
-            <div class="command"><span class="prompt">$</span><code>play guitar</code></div>
-            <div class="command"><span class="prompt">$</span><code>ride motorcycle</code></div>
-            <div class="command"><span class="prompt">$</span><code>shoot photos</code></div>
-            <div class="command"><span class="prompt">$</span><code>go trekking</code></div>
-            <div class="command"><span class="prompt">$</span><code>read books</code></div>
-            <div class="command"><span class="prompt">$</span><code>go running</code></div>
-            <div class="command"><span class="prompt">$</span><code>meet friends</code></div>
-          </div>
-        </div>
-      </div>
-
-      <div class="terminal-card">
-        <div class="bar">
-          <span class="traffic" aria-hidden="true"><span></span><span></span><span></span></span>
-          <span class="title">hobbies.log</span>
-        </div>
-        <div class="body" style="display:grid; gap:0.55rem;">
-          {hobbies.map((item, index) => (
-            <div class="panel" style="padding:0.7rem; border-radius:10px; display:grid; gap:0.25rem;">
-              <div style="display:flex; justify-content:space-between; gap:0.5rem; flex-wrap:wrap; align-items:center;">
-                <p style="color:var(--ink-strong); font-size:0.82rem;">{item.label}</p>
-                <span class="pill">#{String(index + 1).padStart(2, "0")}</span>
-              </div>
-              <p class="muted" style="font-size:0.82rem;">{item.value}</p>
-            </div>
-          ))}
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <section id="recent" class="home-section" style="display:grid; gap:0.9rem;">
-    <div class="panel panel-soft section-head home-section-accent">
-      <div>
-        <p class="term-label">blog notes</p>
-        <h2 class="term-headline" style="max-width:100%; text-wrap:pretty;">Projects and notes</h2>
-      </div>
-      <a href="/journal/" class="button button-secondary" style="padding:0.55rem 0.8rem;">See all notes</a>
-    </div>
-
-    <div class="stagger" style="display:grid; gap:0.75rem;">
-      {latest.map((entry, index) => (
-        <a
-          href={`/journal/${entry.id}/`}
-          class="panel panel-elevated card-link tilt-card recent-card"
-          style="position:relative; overflow:hidden;"
-        >
-          <div
-            aria-hidden="true"
-            style={`position:absolute; inset:0 auto 0 0; width:4px; opacity:0.65; background:${
-              index % 3 === 0 ? "var(--accent)" : index % 3 === 1 ? "var(--accent-warm)" : "#495ed1"
-            };`}
-          />
-          <div style="display:flex; justify-content:space-between; gap:1rem; align-items:center; flex-wrap:wrap; padding-left:0.35rem;">
-            <h3 style="font-size:1rem; flex:1 1 20rem; min-width:0;" class="term-headline">{entry.data.title}</h3>
-            <span class="pill">{formatDate(entry.data.date)}</span>
-          </div>
-          <p class="muted" style="padding-left:0.35rem;">{entry.data.excerpt}</p>
-          <div class="meta-row" style="padding-left:0.35rem;">
-            {entry.data.tags.map((tag) => <span class="pill">#{tag}</span>)}
-          </div>
-        </a>
       ))}
     </div>
   </section>
-  </div>
 
   <style>
-    .home-page {
+    .hero {
       display: grid;
-      gap: 0.95rem;
-      position: relative;
+      grid-template-columns: minmax(0, 1fr) auto;
+      gap: clamp(1.5rem, 5vw, 3.5rem);
+      align-items: center;
+      padding-top: clamp(0.5rem, 3vw, 2rem);
     }
 
-    .home-page::before {
-      content: "";
-      position: absolute;
-      inset: 0;
-      pointer-events: none;
-      background:
-        radial-gradient(circle at 12% 18%, rgba(82,255,168,0.045), transparent 32%),
-        radial-gradient(circle at 84% 12%, rgba(115,217,255,0.04), transparent 34%);
-      z-index: 0;
+    .hero-copy {
+      display: grid;
+      gap: 1rem;
+      min-width: 0;
     }
 
-    .home-progress {
-      position: sticky;
-      top: 0;
-      z-index: 15;
-      height: 3px;
-      border-radius: 999px;
-      overflow: hidden;
-      background: rgba(255,255,255,0.03);
-      border: 1px solid rgba(82,255,168,0.06);
-      margin-top: -0.2rem;
+    .hero-role {
+      font-family: var(--font-mono);
+      font-size: clamp(1.05rem, 2.2vw, 1.25rem);
+      color: var(--accent);
     }
 
-    .home-progress span {
-      display: block;
-      height: 100%;
-      width: 100%;
-      transform: scaleX(0);
-      transform-origin: left center;
-      background:
-        linear-gradient(90deg, rgba(82,255,168,0.9), rgba(115,217,255,0.85) 65%, rgba(255,209,102,0.8));
-      box-shadow: 0 0 14px rgba(82,255,168,0.16);
-      will-change: transform;
+    .hero-bio {
+      max-width: 58ch;
+      font-size: 1.08rem;
+      color: var(--muted);
     }
 
-    .home-section {
-      scroll-margin-top: 5rem;
-      position: relative;
-      z-index: 1;
-    }
-
-    .home-hero {
-      position: relative;
-      overflow: hidden;
-    }
-
-    .home-hero::before {
-      content: "";
-      position: absolute;
-      inset: auto -5% -24% -5%;
-      height: 48%;
-      background:
-        radial-gradient(circle at 32% 20%, rgba(82,255,168,0.08), transparent 55%),
-        radial-gradient(circle at 72% 30%, rgba(115,217,255,0.06), transparent 50%);
-      pointer-events: none;
-      filter: blur(6px);
-    }
-
-    .availability-strip {
+    .hero-actions {
       display: flex;
       flex-wrap: wrap;
-      gap: 0.5rem;
-      align-items: center;
-      border: 1px solid rgba(82,255,168,0.12);
-      border-radius: 10px;
-      padding: 0.55rem 0.7rem;
-      background: linear-gradient(to right, rgba(82,255,168,0.03), rgba(115,217,255,0.02));
-    }
-
-    .availability-strip-plain {
-      border: 0;
-      background: transparent;
-      padding: 0;
-      border-radius: 0;
-      justify-self: end;
+      gap: 0.6rem;
+      margin-top: 0.5rem;
     }
 
     .hero-avatar {
       margin: 0;
-      width: min(100%, 11.5rem);
+      width: clamp(9rem, 22vw, 15rem);
       aspect-ratio: 1;
-      border-radius: 999px;
-      padding: 0.35rem;
-      border: 1px solid rgba(82,255,168,0.14);
-      background:
-        linear-gradient(160deg, rgba(82,255,168,0.12), rgba(115,217,255,0.06) 52%, rgba(255,209,102,0.05)),
-        rgba(12,15,19,0.82);
-      box-shadow:
-        0 18px 34px rgba(0,0,0,0.26),
-        inset 0 1px 0 rgba(255,255,255,0.06);
-      position: relative;
-      overflow: hidden;
-      justify-self: center;
-    }
-
-    .hero-avatar::before {
-      content: "";
-      position: absolute;
-      inset: -18%;
-      background:
-        conic-gradient(
-          from 180deg,
-          rgba(82,255,168,0) 0deg,
-          rgba(82,255,168,0.18) 70deg,
-          rgba(115,217,255,0.16) 150deg,
-          rgba(255,209,102,0.14) 220deg,
-          rgba(82,255,168,0) 360deg
-        );
-      filter: blur(14px);
-      opacity: 0.55;
-      pointer-events: none;
+      border-radius: 50%;
+      padding: 3px;
+      background: linear-gradient(140deg, var(--accent), rgba(94, 230, 160, 0.08) 55%, var(--accent-warm));
     }
 
     .hero-avatar img {
-      position: relative;
-      z-index: 1;
       width: 100%;
       height: 100%;
       display: block;
-      border-radius: inherit;
+      border-radius: 50%;
       object-fit: cover;
       object-position: 46% 38%;
-      border: 1px solid rgba(255,255,255,0.05);
-      box-shadow: inset 0 1px 0 rgba(255,255,255,0.06);
-      filter: saturate(1.03) contrast(1.02);
-      background: rgba(255,255,255,0.015);
+      border: 4px solid var(--bg);
     }
 
-    .availability-badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.45rem;
-      color: var(--ink-strong);
-      font-size: 0.78rem;
-      border-radius: 999px;
-      padding: 0.22rem 0.55rem;
-      background: rgba(255,255,255,0.02);
-      border: 1px solid rgba(82,255,168,0.14);
+    .timeline {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      display: grid;
+      --period-w: 8rem;
     }
 
-    .availability-badge .dot {
-      width: 0.45rem;
-      height: 0.45rem;
-      border-radius: 999px;
+    .timeline-item {
+      position: relative;
+      display: grid;
+      grid-template-columns: var(--period-w) minmax(0, 1fr);
+      gap: 2.5rem;
+      padding-bottom: 1.75rem;
+    }
+
+    .timeline-item:last-child {
+      padding-bottom: 0;
+    }
+
+    /* Rail and dot sit in the middle of the column gap */
+    .timeline-item::before {
+      content: "";
+      position: absolute;
+      left: calc(var(--period-w) + 1.25rem);
+      top: 0.55rem;
+      bottom: -0.55rem;
+      width: 1px;
+      background: var(--line-strong);
+    }
+
+    .timeline-item:last-child::before {
+      display: none;
+    }
+
+    .timeline-item::after {
+      content: "";
+      position: absolute;
+      left: calc(var(--period-w) + 1.25rem - 4px);
+      top: 0.4rem;
+      width: 9px;
+      height: 9px;
+      border-radius: 50%;
+      background: var(--bg);
+      border: 1.5px solid var(--muted);
+    }
+
+    .timeline-item.current::after {
+      border-color: var(--accent);
       background: var(--accent);
-      box-shadow: 0 0 0 4px rgba(82,255,168,0.08), 0 0 12px rgba(82,255,168,0.25);
-      animation: pulseDot 1.8s ease-in-out infinite;
+      box-shadow: 0 0 0 4px var(--accent-dim);
     }
 
-    .availability-note {
+    .timeline-period {
+      font-family: var(--font-mono);
+      font-size: 0.82rem;
       color: var(--muted);
-      font-size: 0.76rem;
+      padding-top: 0.1rem;
+      text-align: right;
     }
 
-    .social-links {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 0.55rem;
-      align-items: center;
-    }
-
-    .social-link {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.45rem;
-      padding: 0.45rem 0.65rem;
-      border-radius: 10px;
-      border: 1px solid rgba(82,255,168,0.12);
-      background:
-        linear-gradient(to bottom, rgba(255,255,255,0.018), rgba(255,255,255,0.006));
-      color: var(--ink);
-      text-decoration: none;
-      font-size: 0.78rem;
-      line-height: 1;
-      box-shadow: inset 0 1px 0 rgba(255,255,255,0.02);
-      transition: 160ms ease;
-    }
-
-    .social-link:hover {
-      color: var(--ink-strong);
-      border-color: rgba(82,255,168,0.2);
-      background:
-        linear-gradient(to bottom, rgba(82,255,168,0.05), rgba(255,255,255,0.008));
-      transform: translateY(-1px);
-    }
-
-    .social-link svg {
-      width: 0.95rem;
-      height: 0.95rem;
+    .timeline-item.current .timeline-period {
       color: var(--accent);
-      flex-shrink: 0;
     }
 
-    .social-link span {
-      white-space: nowrap;
+    .timeline-body {
+      display: grid;
+      gap: 0.25rem;
+      max-width: 62ch;
     }
 
-    .jumpbar {
-      position: sticky;
-      top: 0.7rem;
-      z-index: 12;
-      display: flex;
-      align-items: center;
-      gap: 0.45rem;
-      flex-wrap: wrap;
-      padding: 0.55rem;
-      background:
-        linear-gradient(to right, rgba(12,15,19,0.94), rgba(12,15,19,0.78));
-      box-shadow: 0 14px 30px rgba(0,0,0,0.2);
+    .timeline-place {
+      font-size: 0.92rem;
     }
 
-    .jumpbar a {
-      text-decoration: none;
-      color: var(--muted);
-      border: 1px solid rgba(82,255,168,0.08);
-      border-radius: 8px;
-      padding: 0.42rem 0.7rem;
+    .skills-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr);
+      gap: 1rem;
+      align-items: start;
+    }
+
+    .skills-grid .panel {
+      display: grid;
+      gap: 1rem;
+    }
+
+    .panel-title {
+      font-size: 0.95rem;
+    }
+
+    .panel-title .muted {
+      font-weight: 400;
+    }
+
+    .plain-list + .panel-title {
+      margin-top: 0.5rem;
+    }
+
+    .skill-list {
+      margin: 0;
+      display: grid;
+      gap: 1rem;
+    }
+
+    .skill-list dt {
+      font-family: var(--font-mono);
       font-size: 0.78rem;
-      line-height: 1;
-      background: rgba(255,255,255,0.012);
-      transition: 160ms ease;
-      white-space: nowrap;
+      color: var(--muted);
+      margin-bottom: 0.4rem;
     }
 
-    .jumpbar a:hover,
-    .jumpbar a.is-active {
-      color: var(--ink-strong);
-      border-color: rgba(82,255,168,0.18);
-      background: rgba(82,255,168,0.05);
-      box-shadow: inset 0 0 0 1px rgba(82,255,168,0.06);
+    .skill-list dd {
+      margin: 0;
+      font-size: 0.92rem;
     }
 
-    .jumpbar .jumpbar-cta {
-      margin-left: auto;
-      color: var(--ink-strong);
-      border-color: rgba(115,217,255,0.16);
-      background: rgba(115,217,255,0.04);
+    .skill-list .pill {
+      color: var(--ink);
     }
 
-    .home-section-accent {
-      overflow: hidden;
-      position: relative;
+    .plain-list {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      display: grid;
+      gap: 0.7rem;
+      font-size: 0.92rem;
     }
 
-    .home-section-accent::after {
-      content: "";
-      position: absolute;
-      inset: 0;
-      pointer-events: none;
-      background:
-        linear-gradient(130deg, rgba(255,255,255,0.02), transparent 24%),
-        radial-gradient(circle at 108% -4%, rgba(115,217,255,0.05), transparent 38%);
-      opacity: 0.85;
+    .plain-list li {
+      display: grid;
+      gap: 0.1rem;
     }
 
-    .home-section-accent > * {
-      position: relative;
-      z-index: 1;
+    .plain-list li.plain-list-row {
+      grid-template-columns: minmax(0, 1fr) auto;
+      gap: 1rem;
+      align-items: baseline;
     }
 
-    .section-head .term-headline {
-      position: relative;
-      display: inline-block;
-      padding-bottom: 0.15rem;
+    .plain-list .muted {
+      font-size: 0.85rem;
     }
 
-    .section-head .term-headline::after {
-      content: "";
-      position: absolute;
-      left: 0;
-      right: auto;
-      bottom: -0.2rem;
-      width: 48%;
-      height: 2px;
-      border-radius: 999px;
-      background: linear-gradient(to right, var(--accent), rgba(115,217,255,0.6), transparent);
-      opacity: 0.9;
+    .about-intro {
+      max-width: 64ch;
+      font-size: 1.08rem;
     }
 
-    .recent-card {
-      isolation: isolate;
+    .hobby-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 1rem;
     }
 
-    .recent-card::after {
-      content: "";
-      position: absolute;
-      inset: 0;
-      background:
-        radial-gradient(circle at var(--mx, 50%) var(--my, 50%), rgba(82,255,168,0.07), transparent 46%);
-      opacity: 0;
-      transition: opacity 180ms ease;
-      pointer-events: none;
-      z-index: 0;
+    .hobby-grid .panel {
+      display: grid;
+      gap: 0.4rem;
+      align-content: start;
     }
 
-    .recent-card:hover::after {
-      opacity: 1;
+    .hobby-grid .muted {
+      font-size: 0.94rem;
     }
 
-    .recent-card > * {
-      position: relative;
-      z-index: 1;
-    }
-
-    .home-page,
-    .home-page :where(.panel, .terminal-card, .timeline-card, .section-head, .timeline-top, .timeline-role-row) {
-      min-width: 0;
-    }
-
-    .timeline-place,
-    .timeline-role {
-      overflow-wrap: anywhere;
-    }
-
-    @supports (backdrop-filter: blur(1px)) {
-      @media (min-width: 900px) and (pointer: fine) {
-        .jumpbar {
-          backdrop-filter: blur(10px);
-        }
-      }
-    }
-
-    @keyframes pulseDot {
-      0%, 100% {
-        transform: scale(1);
-        opacity: 1;
-      }
-      50% {
-        transform: scale(1.08);
-        opacity: 0.82;
-      }
-    }
-
-    @media (max-width: 900px) {
-      section:first-child .panel:first-child {
+    @media (max-width: 820px) {
+      .skills-grid,
+      .hobby-grid {
         grid-template-columns: 1fr;
       }
-
-      section:first-child [class~="mini-stat-grid"] {
-        grid-template-columns: 1fr;
-      }
-
-      .jumpbar {
-        top: 0.35rem;
-      }
-
-      .jumpbar .jumpbar-cta {
-        margin-left: 0;
-      }
     }
 
-    @media (max-width: 720px) {
-      .home-hero {
-        gap: 0.8rem;
+    @media (max-width: 640px) {
+      .hero {
+        grid-template-columns: 1fr;
       }
 
       .hero-avatar {
-        width: min(100%, 8.75rem);
+        order: -1;
+        width: 7.5rem;
       }
 
-      .availability-strip {
-        align-items: flex-start;
-        flex-direction: column;
+      .hero-actions .button-primary {
+        flex-basis: 100%;
       }
 
-      .social-links {
-        gap: 0.45rem;
+      .timeline-item {
+        grid-template-columns: minmax(0, 1fr);
+        gap: 0.3rem;
+        padding-left: 1.5rem;
       }
 
-      .social-link {
-        padding: 0.45rem 0.55rem;
+      .timeline-item::before {
+        left: 0.25rem;
       }
 
-      .home-progress {
-        margin-top: 0;
+      .timeline-item::after {
+        left: calc(0.25rem - 4px);
       }
 
-      .jumpbar {
-        top: 0.35rem;
-        flex-wrap: nowrap;
-        overflow-x: auto;
-        overflow-y: hidden;
-        scrollbar-width: thin;
-        box-shadow: 0 8px 18px rgba(0,0,0,0.16);
-      }
-
-      .jumpbar a {
-        flex: 0 0 auto;
-      }
-
-      .jumpbar .jumpbar-cta {
-        margin-left: 0;
-      }
-    }
-
-    @media (max-width: 520px) {
-      .social-links {
-        display: grid;
-        grid-template-columns: repeat(3, minmax(0, 1fr));
-        width: 100%;
-      }
-
-      .social-link {
-        justify-content: center;
-        min-width: 0;
-        gap: 0.35rem;
-        padding: 0.45rem 0.4rem;
-      }
-
-      .social-link span {
-        overflow: hidden;
-        text-overflow: ellipsis;
-      }
-
-      .jumpbar {
-        padding: 0.45rem;
-        gap: 0.35rem;
-      }
-
-      .jumpbar a {
-        font-size: 0.75rem;
-        padding: 0.4rem 0.55rem;
-      }
-
-      .section-head .pill {
-        align-self: flex-start;
-      }
-    }
-
-    @media (prefers-reduced-motion: reduce) {
-      .availability-badge .dot {
-        animation: none;
-      }
-
-      .home-progress span {
-        transition: none;
-      }
-
-      .home-page::before,
-      .home-hero::before {
-        filter: none;
-        background: none;
+      .timeline-period {
+        text-align: left;
       }
     }
   </style>
-  <script is:inline src="/scripts/home-page.js" defer></script>
 </BaseLayout>

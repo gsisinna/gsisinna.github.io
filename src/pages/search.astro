@@ -19,56 +19,41 @@ const searchJsonLd = {
   noindex={true}
   jsonLd={searchJsonLd}
 >
-  <section class="panel panel-soft stagger" style="display:grid; gap:0.8rem; position:relative; overflow:hidden;">
-    <div
-      aria-hidden="true"
-      style="position:absolute; inset:auto -26px -34px auto; width:150px; height:150px; border-radius:999px; background:radial-gradient(circle, rgba(115,217,255,0.14), rgba(115,217,255,0));"
-    />
-    <p class="term-label">search</p>
-    <h1 class="term-headline" style="font-size:clamp(1.7rem,3.4vw,2.6rem); max-width:100%; text-wrap:pretty;">Find notes quickly</h1>
-    <p class="muted" style="max-width:78ch;">
-      Search titles, excerpts, and tags across the journal. Results update as you type.
-    </p>
+  <header class="page-head fade-in">
+    <p class="kicker">grep -ri</p>
+    <h1>Search</h1>
     <label class="search-box" for="site-search-input">
-      <span class="search-icon" aria-hidden="true">/</span>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
+        <circle cx="11" cy="11" r="7" />
+        <path d="m20 20-3.5-3.5" />
+      </svg>
+      <span class="sr-only">Search notes</span>
       <input
         id="site-search-input"
         type="search"
         name="q"
-        placeholder="Search topics, tags, or terms..."
+        placeholder="Titles, excerpts, tags..."
         autocomplete="off"
         spellcheck="false"
+        autofocus
       />
     </label>
-    <div class="meta-row" aria-live="polite">
-      <span class="pill" id="search-status">Loading index...</span>
-      <span class="pill" id="search-count">0 results</span>
-      <span class="pill" id="search-range">Page 1</span>
+    <div id="search-empty" class="meta-row">
+      <span class="muted" style="font-size:0.88rem; margin-right:0.25rem;">Try:</span>
+      <button class="pill search-chip" type="button" data-query="robotics">robotics</button>
+      <button class="pill search-chip" type="button" data-query="software architecture">software architecture</button>
+      <button class="pill search-chip" type="button" data-query="astro">astro</button>
+      <button class="pill search-chip" type="button" data-query="java">java</button>
     </div>
-  </section>
+    <p id="search-status" class="muted" aria-live="polite">Loading index...</p>
+  </header>
 
-  <section class="panel panel-elevated" style="display:grid; gap:0.8rem;">
-    <div id="search-empty" class="terminal-card">
-      <div class="bar">
-        <span class="traffic" aria-hidden="true"><span></span><span></span><span></span></span>
-        <span class="title">search.help</span>
-      </div>
-      <div class="body" style="display:grid; gap:0.55rem;">
-        <p class="muted">Try searching for topics like:</p>
-        <div class="meta-row">
-          <button class="search-chip" type="button" data-query="astro">astro</button>
-          <button class="search-chip" type="button" data-query="software architecture">software architecture</button>
-          <button class="search-chip" type="button" data-query="robotics">robotics</button>
-          <button class="search-chip" type="button" data-query="blog">blog</button>
-        </div>
-      </div>
-    </div>
-
-    <div id="search-results" class="search-results" aria-live="polite"></div>
+  <section>
+    <div id="search-results" class="post-list search-results"></div>
     <div id="search-pagination" class="search-pagination" hidden>
-      <button type="button" class="button button-secondary" id="search-prev">Previous</button>
-      <span class="pill" id="search-page-label">Page 1 of 1</span>
-      <button type="button" class="button button-secondary" id="search-next">Next</button>
+      <button type="button" class="button" id="search-prev">Previous</button>
+      <span class="muted" id="search-page-label">Page 1 of 1</span>
+      <button type="button" class="button" id="search-next">Next</button>
     </div>
   </section>
 
@@ -76,238 +61,84 @@ const searchJsonLd = {
 
   <style>
     .search-box {
-      display: grid;
-      grid-template-columns: auto 1fr;
+      display: flex;
       align-items: center;
-      gap: 0.55rem;
-      border: 1px solid rgba(82,255,168,0.14);
-      background: rgba(255,255,255,0.012);
-      border-radius: 12px;
-      padding: 0.65rem 0.75rem;
+      gap: 0.7rem;
+      margin-top: 0.5rem;
+      padding: 0.8rem 1rem;
+      border: 1px solid var(--line-strong);
+      border-radius: 10px;
+      background: var(--surface);
+      transition: border-color 140ms ease, box-shadow 140ms ease;
     }
 
-    .search-icon {
-      color: var(--accent);
-      font-family: "JetBrains Mono", ui-monospace, monospace;
-      font-size: 0.95rem;
-      line-height: 1;
+    .search-box:focus-within {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px var(--accent-dim);
+    }
+
+    .search-box svg {
+      width: 1.1rem;
+      height: 1.1rem;
+      color: var(--muted);
+      flex-shrink: 0;
     }
 
     .search-box input {
-      width: 100%;
+      flex: 1;
+      min-width: 0;
       border: 0;
       outline: 0;
       background: transparent;
       color: var(--ink-strong);
       font: inherit;
-      min-width: 0;
+      font-size: 1.05rem;
     }
 
     .search-box input::placeholder {
       color: var(--muted);
     }
 
+    .sr-only {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      overflow: hidden;
+      clip: rect(0 0 0 0);
+      white-space: nowrap;
+    }
+
     .search-chip {
-      border: 1px solid rgba(82,255,168,0.1);
-      background: rgba(255,255,255,0.012);
-      color: var(--muted);
-      border-radius: 999px;
-      padding: 0.32rem 0.55rem;
-      font: inherit;
-      font-size: 0.74rem;
       cursor: pointer;
+      font-family: var(--font-mono);
     }
 
     .search-chip:hover {
       color: var(--ink-strong);
-      border-color: rgba(82,255,168,0.18);
-      background: rgba(82,255,168,0.04);
+      border-color: rgba(94, 230, 160, 0.4);
     }
 
-    .search-results {
-      display: grid;
-      gap: 0.75rem;
-      min-width: 0;
+    .search-results:empty {
+      border-top: 0;
     }
 
-    .search-results > * {
-      min-width: 0;
-    }
-
-    .search-result-card {
-      border: 1px solid rgba(82,255,168,0.1);
-      border-radius: 12px;
-      overflow: hidden;
-      background: linear-gradient(to bottom, rgba(255,255,255,0.018), rgba(255,255,255,0.006));
-      min-width: 0;
-    }
-
-    .search-result-link {
-      display: grid;
-      grid-template-columns: minmax(0, 180px) minmax(0, 1fr);
-      text-decoration: none;
-      color: inherit;
-      min-width: 0;
-      align-items: start;
-    }
-
-    .search-result-link.no-image,
-    .search-result-link.compact {
-      grid-template-columns: 1fr;
-    }
-
-    .search-result-link > img {
-      width: 100%;
-      aspect-ratio: 16 / 10;
-      height: auto;
-      max-height: 140px;
-      object-fit: cover;
-      display: block;
-      border-right: 1px solid rgba(82,255,168,0.08);
-      background: rgba(255,255,255,0.01);
-      align-self: start;
-    }
-
-    .search-result-link.compact > img {
-      display: none;
-    }
-
-    .search-result-body {
-      display: grid;
-      gap: 0.55rem;
-      padding: 0.75rem;
-      min-width: 0;
-      align-content: start;
-    }
-
-    .search-result-link.compact .search-result-body {
-      gap: 0.45rem;
-      padding: 0.7rem 0.8rem;
-    }
-
-    .search-result-top {
-      display: flex;
-      align-items: flex-start;
-      justify-content: space-between;
-      gap: 0.75rem;
-      flex-wrap: wrap;
-      min-width: 0;
-    }
-
-    .search-result-top h2 {
-      margin: 0;
-      font-size: 1rem;
-      line-height: 1.2;
-      text-wrap: pretty;
-      max-width: 100%;
-      min-width: 0;
-      flex: 1 1 18rem;
-      overflow-wrap: anywhere;
-    }
-
-    .search-result-top .pill {
-      flex-shrink: 0;
-    }
-
-    .search-result-body :where(h2, p, .pill) mark {
-      background: rgba(255, 209, 102, 0.16);
+    .search-results :global(mark) {
+      background: rgba(242, 196, 109, 0.22);
       color: var(--ink-strong);
-      border-radius: 4px;
-      padding: 0 0.18em;
-      box-shadow: inset 0 0 0 1px rgba(255, 209, 102, 0.14);
-    }
-
-    .search-result-body p {
-      margin: 0;
-      font-size: 0.88rem;
-      line-height: 1.4;
-      display: -webkit-box;
-      -webkit-line-clamp: 3;
-      -webkit-box-orient: vertical;
-      overflow: hidden;
-      overflow-wrap: anywhere;
-    }
-
-    .search-result-meta {
-      align-items: flex-start;
-      min-width: 0;
-    }
-
-    .search-result-meta-line {
-      display: flex;
-      gap: 0.5rem;
-      align-items: flex-start;
-      flex-wrap: wrap;
-      min-width: 0;
-    }
-
-    .search-result-meta-line > .pill {
-      flex-shrink: 0;
-    }
-
-    .search-result-meta .pill {
-      max-width: 100%;
-      white-space: normal;
-      overflow-wrap: anywhere;
-      line-height: 1.2;
-    }
-
-    @media (max-width: 760px) {
-      .search-result-link {
-        grid-template-columns: 1fr;
-      }
-
-      .search-result-link > img {
-        border-right: 0;
-        border-bottom: 1px solid rgba(82,255,168,0.08);
-        max-height: 170px;
-        width: 100%;
-      }
-
-      .search-result-top {
-        gap: 0.45rem;
-      }
-
-      .search-result-top h2 {
-        max-width: 100%;
-        font-size: 0.96rem;
-      }
-
-      .search-result-body {
-        padding: 0.65rem;
-      }
-
-      .search-result-meta {
-        gap: 0.35rem;
-      }
+      border-radius: 3px;
+      padding: 0 0.1em;
     }
 
     .search-pagination {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      gap: 0.6rem;
-      flex-wrap: wrap;
+      gap: 0.75rem;
+      margin-top: 1.5rem;
     }
 
-    .search-pagination .button {
-      padding: 0.5rem 0.75rem;
-    }
-
-    .search-pagination .button:disabled {
-      opacity: 0.5;
-      cursor: not-allowed;
-    }
-
-    @media (max-width: 520px) {
-      .search-pagination {
-        display: grid;
-        grid-template-columns: 1fr;
-      }
-
-      .search-pagination .button {
-        width: 100%;
-      }
+    .search-pagination[hidden] {
+      display: none;
     }
   </style>
 </BaseLayout>

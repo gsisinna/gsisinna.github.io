@@ -1,0 +1,44 @@
+---
+import type { CollectionEntry } from "astro:content";
+import { formatDate, slugifyTag } from "../lib/content";
+
+interface Props {
+  entry: CollectionEntry<"journal">;
+  headingLevel?: "h2" | "h3";
+  showImage?: boolean;
+  activeTag?: string;
+}
+
+const { entry, headingLevel = "h2", showImage = true, activeTag } = Astro.props;
+const Heading = headingLevel;
+const href = `/journal/${entry.id}/`;
+---
+
+<article class="post-row">
+  <div class="post-row-body">
+    <div class="meta-line">
+      <time datetime={entry.data.date.toISOString()}>{formatDate(entry.data.date)}</time>
+      {entry.data.readingTime && <span>{entry.data.readingTime}</span>}
+    </div>
+    <Heading><a href={href}>{entry.data.title}</a></Heading>
+    <p class="muted">{entry.data.excerpt}</p>
+    {entry.data.tags.length > 0 && (
+      <div class="meta-row">
+        {entry.data.tags.map((tag) => (
+          <a
+            class="pill"
+            href={`/tags/${slugifyTag(tag)}/`}
+            aria-current={activeTag === slugifyTag(tag) ? "page" : undefined}
+          >
+            #{tag}
+          </a>
+        ))}
+      </div>
+    )}
+  </div>
+  {showImage && entry.data.image && (
+    <a class="post-row-thumb" href={href} tabindex="-1" aria-hidden="true">
+      <img src={entry.data.image} alt="" loading="lazy" decoding="async" referrerpolicy="no-referrer" />
+    </a>
+  )}
+</article>

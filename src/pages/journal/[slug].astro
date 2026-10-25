@@ -24,8 +24,6 @@ const { Content } = await render(entry);
 const siteUrl = Astro.site?.toString() ?? "https://gsisinna.github.io";
 const postUrl = new URL(`/journal/${entry.id}/`, siteUrl).toString();
 const homeUrl = new URL("/", siteUrl).toString();
-const contactUrl = new URL("/contact/", siteUrl).toString();
-const rssUrl = new URL("/rss.xml", siteUrl).toString();
 const githubUrl = "https://github.com/gsisinna";
 const linkedInUrl = "https://www.linkedin.com/in/gabriele-sisinna-4a6081109/";
 const publishedIso = entry.data.date.toISOString();
@@ -86,191 +84,103 @@ const breadcrumbJsonLd = {
   tags={entry.data.tags}
   jsonLd={[postJsonLd, breadcrumbJsonLd]}
 >
-  <article class="panel panel-elevated tilt-card post-article" style="display:grid; gap:1rem; position:relative; overflow:hidden;">
-    <div
-      aria-hidden="true"
-      class="orb-3d"
-      style="width:180px; height:180px; inset:-30px -36px auto auto;"
-    />
-    <header class="stagger post-header" style="display:grid; gap:0.8rem; position:relative;">
-      <a href="/journal/" class="button button-secondary" style="width:fit-content; padding:0.45rem 0.7rem;">← Back to notes</a>
-      <p class="term-label">post view</p>
-      <h1 class="term-headline post-title" style="font-size:clamp(1.6rem,3.1vw,2.45rem);">{entry.data.title}</h1>
-      <div class="post-meta-stack" aria-label="Article metadata">
-        <div class="meta-row">
-          <span class="pill">{formatDate(entry.data.date)}</span>
-          {entry.data.readingTime && <span class="pill">{entry.data.readingTime}</span>}
+  <article class="post">
+    <header class="post-header fade-in">
+      <a href="/journal/" class="text-link">← All notes</a>
+      <h1>{entry.data.title}</h1>
+      <p class="post-lead">{entry.data.excerpt}</p>
+      <div class="meta-line">
+        <time datetime={publishedIso}>{formatDate(entry.data.date)}</time>
+        {entry.data.readingTime && <span>{entry.data.readingTime}</span>}
+      </div>
+      {entry.data.tags.length > 0 && (
+        <div class="meta-row" aria-label="Tags">
+          {entry.data.tags.map((tag) => (
+            <a class="pill" href={`/tags/${slugifyTag(tag)}/`}>#{tag}</a>
+          ))}
         </div>
-        {entry.data.tags.length > 0 && (
-          <div class="post-tag-row" aria-label="Article tags">
-            <span class="post-tag-label">tags</span>
-            <div class="meta-row">
-              {entry.data.tags.map((tag) => (
-                <a class="pill" href={`/tags/${slugifyTag(tag)}/`}>#{tag}</a>
-              ))}
-            </div>
-          </div>
-        )}
-      </div>
-      <p class="muted post-subtitle">{entry.data.excerpt}</p>
-      {entry.data.image && (
-        <figure class="post-cover">
-          <img
-            src={entry.data.image}
-            alt={`${entry.data.title} featured image`}
-            loading="eager"
-            decoding="async"
-            referrerpolicy="no-referrer"
-          />
-        </figure>
       )}
-      <div class="command">
-        <span class="prompt">less</span>
-        <code>{entry.id}.md</code>
-      </div>
     </header>
 
-    <div class="divider" />
+    {entry.data.image && (
+      <figure class="post-cover">
+        <img src={entry.data.image} alt="" loading="eager" decoding="async" referrerpolicy="no-referrer" />
+      </figure>
+    )}
 
-    <div class="prose post-prose" style="position:relative;">
+    <div class="prose">
       <Content />
     </div>
 
-    <div class="divider" />
-
-    <section class="post-author panel panel-soft" aria-labelledby="author-block-title" style="padding:0.85rem;">
-      <div class="author-grid">
-        <img
-          class="author-avatar"
-          src="/avatar-profile.jpg"
-          alt="Gabriele Sisinna"
-          loading="lazy"
-          decoding="async"
-          width="88"
-          height="88"
-        />
-        <div style="display:grid; gap:0.45rem; min-width:0;">
-          <p id="author-block-title" class="term-label">author</p>
-          <h2 class="author-name">Gabriele Sisinna</h2>
-          <p class="muted author-copy">
-            Robotics software engineer focused on C++, Python, simulation, control, and system integration.
-            This blog is where I document projects, architecture decisions, and lessons learned from real work.
-          </p>
-          <div class="author-links">
-            <a href={homeUrl}>Home</a>
-            <a href={githubUrl} target="_blank" rel="noreferrer noopener">GitHub</a>
-            <a href={linkedInUrl} target="_blank" rel="noreferrer noopener">LinkedIn</a>
-            <a href={contactUrl}>Contact</a>
-          </div>
+    <aside class="post-author" aria-label="About the author">
+      <img src="/avatar-profile.jpg" alt="" loading="lazy" decoding="async" width="64" height="64" />
+      <div class="post-author-body">
+        <p class="post-author-name">Written by Gabriele Sisinna</p>
+        <p class="muted">
+          Robotics software engineer working on C++, Python, simulation, control, and system integration.
+        </p>
+        <div class="post-author-links">
+          <a href="/rss.xml">RSS</a>
+          <a href={githubUrl} target="_blank" rel="noreferrer noopener">GitHub</a>
+          <a href={linkedInUrl} target="_blank" rel="noreferrer noopener">LinkedIn</a>
+          <a href="/contact/">Contact</a>
         </div>
       </div>
-    </section>
-
-    <section class="post-cta panel panel-elevated" aria-labelledby="post-cta-title" style="padding:0.85rem;">
-      <div class="cta-shell">
-        <div style="display:grid; gap:0.45rem;">
-          <p class="term-label">follow</p>
-          <h2 id="post-cta-title" class="cta-title">Keep reading / follow updates</h2>
-          <p class="muted cta-copy">
-            If this was useful, the easiest way to keep up is the RSS feed. You can also follow me on LinkedIn,
-            check code and experiments on GitHub, or send a message if you want to discuss robotics software work.
-          </p>
-        </div>
-        <div class="cta-actions">
-          <a class="button button-primary" href={rssUrl}>Follow via RSS</a>
-          <a class="button button-secondary" href={linkedInUrl} target="_blank" rel="noreferrer noopener">LinkedIn</a>
-          <a class="button button-secondary" href={githubUrl} target="_blank" rel="noreferrer noopener">GitHub</a>
-          <a class="button button-secondary" href={contactUrl}>Contact</a>
-        </div>
-      </div>
-    </section>
-
-    {relatedPosts.length > 0 && (
-      <>
-        <div class="divider" />
-        <section class="post-related" aria-labelledby="related-posts-title" style="display:grid; gap:0.75rem;">
-          <div style="display:flex; justify-content:space-between; align-items:center; gap:0.75rem; flex-wrap:wrap;">
-            <p id="related-posts-title" class="term-label">related posts</p>
-            <a href="/journal/" class="button button-secondary" style="padding:0.45rem 0.7rem;">View all notes</a>
-          </div>
-          <div class="related-grid">
-            {relatedPosts.map(({ post, sharedTags }) => (
-              <article class="related-card">
-                <a href={`/journal/${post.id}/`} class="related-link">
-                  {post.data.image && (
-                    <img
-                      src={post.data.image}
-                      alt={`${post.data.title} thumbnail`}
-                      loading="lazy"
-                      decoding="async"
-                      referrerpolicy="no-referrer"
-                    />
-                  )}
-                  <div class="related-body">
-                    <h2>{post.data.title}</h2>
-                    <p class="muted">{post.data.excerpt}</p>
-                    <div class="meta-row">
-                      <span class="pill">{formatDate(post.data.date)}</span>
-                      {sharedTags.slice(0, 2).map((tag) => <span class="pill">#{tag}</span>)}
-                    </div>
-                  </div>
-                </a>
-              </article>
-            ))}
-          </div>
-        </section>
-      </>
-    )}
+    </aside>
   </article>
+
+  {relatedPosts.length > 0 && (
+    <section class="section" aria-labelledby="related-title">
+      <div class="section-head">
+        <h2 id="related-title">Related notes</h2>
+        <a href="/journal/" class="text-link">All notes →</a>
+      </div>
+      <div class="related-grid">
+        {relatedPosts.map(({ post }) => (
+          <a href={`/journal/${post.id}/`} class="related-card">
+            {post.data.image && (
+              <img src={post.data.image} alt="" loading="lazy" decoding="async" referrerpolicy="no-referrer" />
+            )}
+            <div class="related-body">
+              <span class="meta-line">{formatDate(post.data.date)}</span>
+              <h3>{post.data.title}</h3>
+            </div>
+          </a>
+        ))}
+      </div>
+    </section>
+  )}
 </BaseLayout>
 
 <style>
-  .post-header {
-    max-width: 100%;
-  }
-
-  .post-title {
-    max-width: 100%;
-    text-wrap: pretty;
-  }
-
-  .post-subtitle {
-    max-width: 100%;
-  }
-
-  .post-meta-stack {
+  .post {
     display: grid;
-    gap: 0.45rem;
-  }
-
-  .post-tag-row {
-    display: grid;
-    grid-template-columns: auto 1fr;
-    gap: 0.55rem;
-    align-items: start;
+    gap: 2.25rem;
     min-width: 0;
   }
 
-  .post-tag-label {
-    color: var(--muted);
-    font-size: 0.72rem;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    padding-top: 0.25rem;
-    font-family: "JetBrains Mono", ui-monospace, monospace;
+  .post-header {
+    display: grid;
+    gap: 1rem;
+    max-width: 70ch;
   }
 
-  .post-tag-row .pill {
-    text-decoration: none;
+  .post-header h1 {
+    font-size: clamp(1.8rem, 4.4vw, 2.6rem);
+    line-height: 1.12;
+  }
+
+  .post-lead {
+    font-size: 1.15rem;
+    color: var(--muted);
   }
 
   .post-cover {
     margin: 0;
-    max-width: min(100%, 920px);
-    border-radius: 14px;
+    border-radius: var(--radius);
     overflow: hidden;
-    border: 1px solid rgba(82,255,168,0.12);
-    background: rgba(255,255,255,0.01);
+    border: 1px solid var(--line);
+    background: var(--surface);
   }
 
   .post-cover img {
@@ -280,216 +190,96 @@ const breadcrumbJsonLd = {
     display: block;
   }
 
-  .post-prose {
-    max-width: none;
+  .post-author {
+    display: flex;
+    gap: 1rem;
+    align-items: flex-start;
+    max-width: 70ch;
+    padding-top: 2rem;
+    border-top: 1px solid var(--line);
   }
 
-  /* Keep long-form text readable while allowing richer blocks to use more width */
-  .post-prose > :where(p, ul, ol, blockquote) {
-    max-width: 74ch;
-  }
-
-  .post-prose > :where(h2, h3, h4) {
-    max-width: 100%;
-  }
-
-  .post-prose :where(h2, h3, h4)[id] {
-    scroll-margin-top: 5.75rem;
-  }
-
-  .post-prose > :where(pre, figure, table) {
-    max-width: 100%;
-  }
-
-  .post-prose :where(img) {
-    max-width: 100%;
-    height: auto;
-  }
-
-  .post-prose > figure {
-    margin-left: 0;
-    margin-right: 0;
-  }
-
-  .post-related {
-    max-width: 100%;
-  }
-
-  .post-author,
-  .post-cta {
-    max-width: 100%;
-  }
-
-  .author-grid {
-    display: grid;
-    grid-template-columns: auto 1fr;
-    gap: 0.8rem;
-    align-items: start;
-  }
-
-  .author-avatar {
-    width: 88px;
-    height: 88px;
-    border-radius: 14px;
+  .post-author img {
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
     object-fit: cover;
-    display: block;
-    border: 1px solid rgba(82,255,168,0.14);
-    background: rgba(255,255,255,0.02);
+    flex-shrink: 0;
   }
 
-  .author-name {
-    margin: 0;
-    font-size: 1rem;
-    line-height: 1.15;
-  }
-
-  .author-copy {
-    margin: 0;
-    max-width: 84ch;
-    font-size: 0.9rem;
-  }
-
-  .author-links {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.45rem;
-  }
-
-  .author-links a {
-    text-decoration: none;
-    color: var(--muted);
-    border: 1px solid rgba(82,255,168,0.1);
-    background: rgba(255,255,255,0.012);
-    border-radius: 8px;
-    padding: 0.35rem 0.55rem;
-    font-size: 0.76rem;
-    line-height: 1;
-  }
-
-  .author-links a:hover {
-    color: var(--ink-strong);
-    border-color: rgba(82,255,168,0.2);
-    background: rgba(82,255,168,0.04);
-  }
-
-  .cta-shell {
+  .post-author-body {
     display: grid;
-    gap: 0.8rem;
+    gap: 0.35rem;
+    min-width: 0;
   }
 
-  .cta-title {
-    margin: 0;
-    font-size: 1.02rem;
-    line-height: 1.15;
-    text-wrap: pretty;
+  .post-author-name {
+    color: var(--ink-strong);
+    font-family: var(--font-mono);
+    font-weight: 600;
   }
 
-  .cta-copy {
-    margin: 0;
-    max-width: 84ch;
-    font-size: 0.9rem;
-  }
-
-  .cta-actions {
+  .post-author-links {
     display: flex;
     flex-wrap: wrap;
-    gap: 0.55rem;
+    gap: 0.25rem 1rem;
+    margin-top: 0.25rem;
+    font-family: var(--font-mono);
+    font-size: 0.85rem;
+  }
+
+  .post-author-links a {
+    color: var(--accent);
+    text-decoration: none;
+  }
+
+  .post-author-links a:hover {
+    text-decoration: underline;
+    text-underline-offset: 3px;
   }
 
   .related-grid {
     display: grid;
-    gap: 0.75rem;
-    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 1rem;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
   }
 
   .related-card {
-    border: 1px solid rgba(82,255,168,0.1);
-    border-radius: 12px;
-    background: linear-gradient(to bottom, rgba(255,255,255,0.018), rgba(255,255,255,0.006));
-    overflow: hidden;
-  }
-
-  .related-link {
     display: grid;
-    gap: 0;
+    align-content: start;
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    background: var(--surface);
+    overflow: hidden;
     text-decoration: none;
-    color: inherit;
-    height: 100%;
+    transition: border-color 140ms ease;
   }
 
-  .related-link > img {
+  .related-card:hover {
+    border-color: rgba(94, 230, 160, 0.4);
+  }
+
+  .related-card:hover h3 {
+    color: var(--accent);
+  }
+
+  .related-card img {
     width: 100%;
     aspect-ratio: 16 / 9;
     object-fit: cover;
     display: block;
-    border-bottom: 1px solid rgba(82,255,168,0.08);
+    border-bottom: 1px solid var(--line);
   }
 
   .related-body {
     display: grid;
-    gap: 0.55rem;
-    padding: 0.7rem;
+    gap: 0.45rem;
+    padding: 1rem;
   }
 
-  .related-body h2 {
-    font-size: 0.95rem;
-    margin: 0;
-    line-height: 1.2;
-    text-wrap: pretty;
-  }
-
-  .related-body p {
-    font-size: 0.84rem;
-    margin: 0;
-  }
-
-  @media (min-width: 980px) {
-    .post-article {
-      padding: 1.1rem 1.15rem;
-    }
-
-    .post-title {
-      max-width: 100%;
-    }
-
-    .post-subtitle {
-      max-width: 88ch;
-    }
-
-    .post-prose > :where(p, ul, ol, blockquote) {
-      max-width: 78ch;
-    }
-  }
-
-  @media (max-width: 720px) {
-    .post-tag-row {
-      grid-template-columns: 1fr;
-      gap: 0.35rem;
-    }
-
-    .post-tag-label {
-      padding-top: 0;
-    }
-
-    .author-grid {
-      grid-template-columns: 1fr;
-    }
-
-    .author-avatar {
-      width: 76px;
-      height: 76px;
-    }
-
-    .cta-actions .button {
-      width: 100%;
-    }
-
-    .related-grid {
-      grid-template-columns: 1fr;
-    }
-
-    .post-prose :where(h2, h3, h4)[id] {
-      scroll-margin-top: 6.25rem;
-    }
+  .related-body h3 {
+    font-size: 0.98rem;
+    line-height: 1.3;
+    transition: color 140ms ease;
   }
 </style>

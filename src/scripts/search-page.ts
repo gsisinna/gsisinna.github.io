@@ -1,8 +1,6 @@
 (() => {
   const input = document.getElementById("site-search-input");
   const status = document.getElementById("search-status");
-  const count = document.getElementById("search-count");
-  const range = document.getElementById("search-range");
   const results = document.getElementById("search-results");
   const pagination = document.getElementById("search-pagination");
   const prevBtn = document.getElementById("search-prev");
@@ -87,9 +85,6 @@
     const end = Math.min(total, start + pageSize);
     const pageItems = lastMatches.slice(start, end);
 
-    if (range) {
-      range.textContent = total > 0 ? `${start + 1}-${end} shown` : "Page 1";
-    }
     if (pageLabel) {
       pageLabel.textContent = `Page ${currentPage} of ${totalPages}`;
     }
@@ -104,42 +99,28 @@
     }
 
     if (pageItems.length === 0) {
-      results.innerHTML = `
-        <div class="terminal-card">
-          <div class="bar">
-            <span class="traffic" aria-hidden="true"><span></span><span></span><span></span></span>
-            <span class="title">search.log</span>
-          </div>
-          <div class="body">
-            <p class="muted">No results yet. Try a broader keyword or a tag name.</p>
-          </div>
-        </div>
-      `;
+      results.innerHTML = "";
       return;
     }
 
     results.innerHTML = pageItems
       .map(
         ({ post }) => `
-          <article class="search-result-card">
-            <a class="search-result-link compact" href="/journal/${encodeURIComponent(post.id)}/">
-              <div class="search-result-body">
-                <div class="search-result-top">
-                  <h2>${highlightHtml(post.title, input.value)}</h2>
-                  <span class="pill">${escapeHtml(formatDate(post.date))}</span>
-                </div>
-                <p class="muted">${highlightHtml(post.excerpt, input.value)}</p>
-                <div class="search-result-meta-line">
-                  ${post.readingTime ? `<span class="pill">${escapeHtml(post.readingTime)}</span>` : ""}
-                  <div class="meta-row search-result-meta">
-                    ${post.tags
-                      .slice(0, 3)
-                      .map((tag) => `<span class="pill">#${highlightHtml(tag, input.value)}</span>`)
-                      .join("")}
-                  </div>
-                </div>
+          <article class="post-row">
+            <div class="post-row-body">
+              <div class="meta-line">
+                <span>${escapeHtml(formatDate(post.date))}</span>
+                ${post.readingTime ? `<span>${escapeHtml(post.readingTime)}</span>` : ""}
               </div>
-            </a>
+              <h2><a href="/journal/${encodeURIComponent(post.id)}/">${highlightHtml(post.title, input.value)}</a></h2>
+              <p class="muted">${highlightHtml(post.excerpt, input.value)}</p>
+              <div class="meta-row">
+                ${post.tags
+                  .slice(0, 4)
+                  .map((tag) => `<span class="pill"><span>#${highlightHtml(tag, input.value)}</span></span>`)
+                  .join("")}
+              </div>
+            </div>
           </article>
         `,
       )
@@ -155,9 +136,7 @@
 
     if (!q) {
       results.innerHTML = "";
-      if (status) status.textContent = "Type to search";
-      if (count) count.textContent = "0 results";
-      if (range) range.textContent = "Page 1";
+      if (status) status.textContent = "";
       lastMatches = [];
       currentPage = 1;
       if (pagination instanceof HTMLElement) pagination.hidden = true;
@@ -174,8 +153,12 @@
       })
       .slice(0, 100);
 
-    if (status) status.textContent = matches.length > 0 ? `Searching for: ${q}` : `No match for: ${q}`;
-    if (count) count.textContent = `${matches.length} result${matches.length === 1 ? "" : "s"}`;
+    if (status) {
+      status.textContent =
+        matches.length > 0
+          ? `${matches.length} result${matches.length === 1 ? "" : "s"} for “${q}”`
+          : `No results for “${q}”. Try a broader keyword or a tag name.`;
+    }
     if (empty) empty.hidden = matches.length > 0 || q.length > 0;
     lastMatches = matches;
     currentPage = 1;
@@ -214,7 +197,7 @@
     .then((data: unknown) => {
       index = Array.isArray(data) ? (data as SearchPost[]) : [];
       ready = true;
-      if (status) status.textContent = "Type to search";
+      if (status) status.textContent = "";
       renderResults(input.value);
     })
     .catch(() => {

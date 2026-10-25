@@ -1,10 +1,10 @@
 ---
 import BaseLayout from "../../layouts/BaseLayout.astro";
-import { getPublishedJournalEntries, getPublishedTagSummaries, formatDate, slugifyTag } from "../../lib/content";
+import PostRow from "../../components/PostRow.astro";
+import { getPublishedJournalEntries, getPublishedTagSummaries } from "../../lib/content";
 
 const entries = await getPublishedJournalEntries();
 const tags = await getPublishedTagSummaries();
-const totalPosts = entries.length;
 const siteUrl = Astro.site?.toString() ?? "https://gsisinna.github.io";
 const notesUrl = new URL("/journal/", siteUrl).toString();
 const notesJsonLd = [
@@ -38,75 +38,24 @@ const notesJsonLd = [
 
 <BaseLayout
   title="Notes | gsisinna"
-  enableCommandTyping={true}
   description="Robotics software notes, project updates, experiments, and practical learnings."
   jsonLd={notesJsonLd}
 >
-  <section class="panel panel-soft stagger" style="display:grid; gap:0.8rem; position:relative; overflow:hidden;">
-    <div
-      aria-hidden="true"
-      style="position:absolute; inset:auto auto -38px -26px; width:140px; height:140px; border-radius:999px; background:radial-gradient(circle, rgba(185,109,52,0.16), rgba(185,109,52,0));"
-    />
-    <p class="term-label">notes index</p>
-    <h1 class="term-headline" style="font-size:clamp(1.7rem,3.4vw,2.6rem); max-width:100%; text-wrap:pretty;">Notes archive</h1>
-    <p class="muted" style="max-width:76ch;">
-      A growing archive of project notes, experiments, build logs, and lessons learned from real work.
-    </p>
-    <div class="command command-typing" style="--type-ch:26; --type-delay:220ms; --type-duration:1.15s;">
-      <span class="prompt">gsisinna@blog:~/notes$</span>
-      <code>ls -1 | wc -l  # {totalPosts} post{totalPosts === 1 ? "" : "s"}</code>
-    </div>
+  <header class="page-head fade-in">
+    <p class="kicker">ls ~/notes</p>
+    <h1>Notes</h1>
+    <p class="lead">Project notes, experiments, build logs, and lessons learned from real work.</p>
     {tags.length > 0 && (
       <div class="meta-row" aria-label="Browse tags">
-        <a class="pill" href="/tags/">all tags</a>
         {tags.slice(0, 8).map((tag) => (
-          <a class="pill" href={`/tags/${tag.slug}/`}>#{tag.name} ({tag.count})</a>
+          <a class="pill" href={`/tags/${tag.slug}/`}>#{tag.name}</a>
         ))}
+        <a class="text-link" href="/tags/" style="margin-left:0.35rem;">All tags →</a>
       </div>
     )}
-  </section>
+  </header>
 
-  <section style="display:grid; gap:0.75rem;" class="stagger">
-    {entries.map((entry, index) => (
-      <article class="panel panel-elevated tilt-card" style="display:grid; gap:0.55rem; position:relative; overflow:hidden;">
-        <div
-          aria-hidden="true"
-          style={`position:absolute; inset:0 auto 0 0; width:4px; background:${
-            index % 3 === 0 ? "#0f766e" : index % 3 === 1 ? "#9a5f2d" : "#4f46e5"
-          }; opacity:0.6;`}
-        />
-        {entry.data.image && (
-          <a href={`/journal/${entry.id}/`} style="display:block; margin:0 0 0.1rem 0.35rem; border-radius:10px; overflow:hidden; border:1px solid rgba(82,255,168,0.1);">
-            <img
-              src={entry.data.image}
-              alt={`${entry.data.title} thumbnail`}
-              loading="lazy"
-              decoding="async"
-              referrerpolicy="no-referrer"
-              style="width:100%; max-height:220px; object-fit:cover; display:block;"
-            />
-          </a>
-        )}
-        <div style="display:flex; justify-content:space-between; gap:1rem; align-items:flex-start; flex-wrap:wrap; padding-left:0.35rem;">
-          <div style="display:grid; gap:0.3rem; flex:1 1 20rem; min-width:0;">
-            <h2 style="font-size:1.08rem; min-width:0;">
-              <a href={`/journal/${entry.id}/`} style="text-decoration:none;">
-                <span class="term-headline">{entry.data.title}</span>
-              </a>
-            </h2>
-            <p class="muted">{entry.data.excerpt}</p>
-          </div>
-          <div style="display:grid; gap:0.35rem; justify-items:end; flex:0 0 auto;">
-            <span class="pill">{formatDate(entry.data.date)}</span>
-            {entry.data.readingTime && <span class="pill">{entry.data.readingTime}</span>}
-          </div>
-        </div>
-        <div class="meta-row" style="padding-left:0.35rem;">
-          {entry.data.tags.map((tag) => (
-            <a class="pill" href={`/tags/${slugifyTag(tag)}/`}>#{tag}</a>
-          ))}
-        </div>
-      </article>
-    ))}
+  <section class="post-list" aria-label="All notes">
+    {entries.map((entry) => <PostRow entry={entry} />)}
   </section>
 </BaseLayout>
