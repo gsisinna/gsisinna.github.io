@@ -4,7 +4,7 @@
 export const profile = {
   name: "Gabriele Sisinna",
   handle: "gsisinna",
-  role: "Robotics Software Engineer",
+  role: "Senior Robotics Software Engineer",
   location: "Bologna, Italy",
   headline: "I build robotics software that holds up outside the lab.",
   intro:
