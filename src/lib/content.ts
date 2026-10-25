@@ -5,6 +5,21 @@ export function isVisible({ data }: { data: { draft: boolean } }) {
   return import.meta.env.DEV || !data.draft;
 }
 
+/** Published posts only (never drafts, even in dev). Use for feeds, sitemap, and search. */
+export async function getPublishedPosts() {
+  const entries = await getCollection("journal", ({ data }) => !data.draft);
+  return entries.sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
+}
+
+/** Last meaningful change of a post: `updated` when set, otherwise the publish date. */
+export function getLastModified(entry: CollectionEntry<"journal">) {
+  return entry.data.updated ?? entry.data.date;
+}
+
+export function escapeXml(value: string) {
+  return value.replace(/[&<>"']/g, (char) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&apos;" })[char]!);
+}
+
 export async function getPublishedJournalEntries() {
   const entries = await getCollection("journal", isVisible);
   return entries.sort((a, b) => b.data.date.getTime() - a.data.date.getTime());

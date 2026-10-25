@@ -82,6 +82,17 @@ function initPostPage() {
     frame.append(header, pre);
   }
 
+  // Heading anchors: a "#" link next to each section title, for sharing deep links.
+  for (const heading of document.querySelectorAll<HTMLElement>(".prose :is(h2, h3)[id]")) {
+    if (heading.querySelector(".heading-anchor")) continue;
+    const anchor = document.createElement("a");
+    anchor.className = "heading-anchor";
+    anchor.href = `#${heading.id}`;
+    anchor.setAttribute("aria-label", `Link to section: ${heading.textContent ?? ""}`);
+    anchor.textContent = "#";
+    heading.append(anchor);
+  }
+
   // Table of contents: highlight the section currently being read
   // (the last heading that has scrolled past the top of the viewport).
   removeTocListener?.();

@@ -95,6 +95,10 @@ export default defineConfig({
   site: "https://gsisinna.github.io",
   // Preload pages on hover so client-side navigations feel instant.
   prefetch: { prefetchAll: true, defaultStrategy: "hover" },
+  vite: {
+    // Never inline bundled scripts, so the CSP can forbid inline scripts.
+    build: { assetsInlineLimit: 0 }
+  },
   markdown: {
     // Highlighting runs after sanitizing (below) so token colors survive.
     syntaxHighlight: false,

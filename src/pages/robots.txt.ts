@@ -1,6 +1,6 @@
 import type { APIRoute } from "astro";
 
-const SITE_URL = "https://gsisinna.github.io";
+const SITE_URL = import.meta.env.SITE;
 
 export const GET: APIRoute = () => {
   const body = [
@@ -8,8 +8,7 @@ export const GET: APIRoute = () => {
     "Allow: /",
     "Disallow: /search-index.json",
     "",
-    `Sitemap: ${new URL("/sitemap.xml", SITE_URL).toString()}`,
-    `Host: ${new URL("/", SITE_URL).host}`
+    `Sitemap: ${new URL("/sitemap.xml", SITE_URL).toString()}`
   ].join("\n");
 
   return new Response(body, {

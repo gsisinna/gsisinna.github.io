@@ -1,11 +1,9 @@
 import type { APIRoute } from "astro";
-import { getCollection } from "astro:content";
-import { getReadingTime } from "../lib/content";
+import { getPublishedPosts, getReadingTime } from "../lib/content";
 
 export const GET: APIRoute = async () => {
-  const posts = await getCollection("journal", ({ data }) => !data.draft);
+  const posts = await getPublishedPosts();
   const items = posts
-    .sort((a, b) => b.data.date.getTime() - a.data.date.getTime())
     .map((post) => ({
       id: post.id,
       title: post.data.title,

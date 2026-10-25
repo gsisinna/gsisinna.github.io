@@ -1,6 +1,8 @@
 // Site-wide behaviour. `astro:page-load` fires on the first load and after every
 // client-side navigation, so everything is (re)bound to the current page there.
 
+import { navigate } from "astro:transitions/client";
+
 const reduceMotion = () => window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
 let cleanup: Array<() => void> = [];
@@ -43,12 +45,14 @@ function setupThemeToggle() {
 function setupScrollEffects() {
   const header = document.querySelector<HTMLElement>("header.site");
   const progress = document.querySelector<HTMLElement>("[data-reading-progress]");
+  const toTop = document.querySelector<HTMLButtonElement>("[data-back-to-top]");
   const article = document.querySelector<HTMLElement>(".post");
   let frame = 0;
 
   const update = () => {
     frame = 0;
     header?.classList.toggle("is-scrolled", window.scrollY > 8);
+    toTop?.classList.toggle("is-visible", window.scrollY > window.innerHeight * 1.5);
     if (progress && article) {
       const start = article.offsetTop;
       const end = start + article.offsetHeight - window.innerHeight;
@@ -61,10 +65,17 @@ function setupScrollEffects() {
     if (!frame) frame = window.requestAnimationFrame(update);
   };
 
+  const scrollToTop = () => {
+    window.scrollTo({ top: 0, behavior: reduceMotion() ? "auto" : "smooth" });
+    document.querySelector<HTMLElement>("#main-content")?.focus({ preventScroll: true });
+  };
+
   update();
+  toTop?.addEventListener("click", scrollToTop);
   window.addEventListener("scroll", onScroll, { passive: true });
   window.addEventListener("resize", onScroll, { passive: true });
   cleanup.push(() => {
+    toTop?.removeEventListener("click", scrollToTop);
     window.removeEventListener("scroll", onScroll);
     window.removeEventListener("resize", onScroll);
     if (frame) window.cancelAnimationFrame(frame);
@@ -95,7 +106,38 @@ function setupReveal() {
   cleanup.push(() => observer.disconnect());
 }
 
+// Remote cover images can disappear; hide their frame instead of showing a broken image.
+const IMAGE_FRAMES = ".post-row-thumb, .featured-media, .post-cover, .related-card";
+function markBrokenImage(img: HTMLImageElement) {
+  const frame = img.closest<HTMLElement>(IMAGE_FRAMES);
+  if (frame) frame.classList.add("image-failed");
+}
+document.addEventListener(
+  "error",
+  (event) => {
+    if (event.target instanceof HTMLImageElement) markBrokenImage(event.target);
+  },
+  true
+);
+function checkLoadedImages() {
+  for (const img of document.querySelectorAll<HTMLImageElement>(`:is(${IMAGE_FRAMES}) img`)) {
+    if (img.complete && img.naturalWidth === 0 && img.currentSrc) markBrokenImage(img);
+  }
+}
+
+// Press "/" anywhere to search (like GitHub and many docs sites).
+document.addEventListener("keydown", (event) => {
+  if (event.key !== "/" || event.ctrlKey || event.metaKey || event.altKey) return;
+  const target = event.target as HTMLElement | null;
+  if (target?.closest("input, textarea, select, [contenteditable='true']")) return;
+  event.preventDefault();
+  const input = document.querySelector<HTMLInputElement>("#site-search-input");
+  if (input) input.focus();
+  else navigate("/search/");
+});
+
 document.addEventListener("astro:page-load", () => {
+  checkLoadedImages();
   setupThemeToggle();
   setupScrollEffects();
   setupReveal();

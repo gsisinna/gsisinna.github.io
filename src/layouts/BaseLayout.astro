@@ -1,5 +1,6 @@
 ---
 import "../styles/base.css";
+import { createHash } from "node:crypto";
 import { ClientRouter } from "astro:transitions";
 import { profile } from "../data/profile";
 
@@ -20,7 +21,7 @@ interface Props {
 const {
   title = profile.name,
   description = profile.siteDescription,
-  image = "/og-default.svg",
+  image = "/og-default.png",
   noindex = false,
   type = "website",
   publishedTime,
@@ -43,6 +44,30 @@ const currentYear = new Date().getFullYear();
 const pageKeywords = [...new Set(["robotics software", "C++", "Python", "software architecture", ...tags])]
   .filter(Boolean)
   .join(", ");
+// Runs before first paint: frame-busting, theme (no flash), and the `js` flag.
+// Re-applied after client-side navigation because the router replaces <html> attributes.
+const headScript = `
+if (window.top !== window.self) {
+  document.documentElement.style.display = "none";
+  try { window.top.location = window.self.location.href; } catch {}
+}
+(() => {
+  const applyTheme = () => {
+    let theme = null;
+    try { theme = localStorage.getItem("theme"); } catch {}
+    const root = document.documentElement;
+    if (theme === "light" || theme === "dark") root.dataset.theme = theme;
+    else delete root.dataset.theme;
+    root.classList.add("js");
+  };
+  applyTheme();
+  document.addEventListener("astro:after-swap", applyTheme);
+})();
+`;
+const headScriptHash = `'sha256-${createHash("sha256").update(headScript).digest("base64")}'`;
+// Production allows only bundled scripts plus the hashed head script.
+// Dev keeps 'unsafe-inline' because Vite injects inline scripts for HMR.
+const scriptSrc = import.meta.env.PROD ? `'self' ${headScriptHash}` : "'self' 'unsafe-inline'";
 const csp = [
   "default-src 'self'",
   "base-uri 'self'",
@@ -51,8 +76,8 @@ const csp = [
   "img-src 'self' https: data:",
   "font-src 'self' https://fonts.gstatic.com data:",
   "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
-  "script-src 'self' 'unsafe-inline'",
-  "connect-src 'self'",
+  `script-src ${scriptSrc}`,
+  "connect-src 'self' https://formspree.io",
   "upgrade-insecure-requests"
 ].join("; ");
 ---
@@ -71,11 +96,15 @@ const csp = [
     <meta name="google-site-verification" content="xqHM9Pytu8Nzeeh02WqNgvoUIfhEfE6DkoH_TF-TZ98" />
     <meta name="theme-color" content="#0b0d0f" media="(prefers-color-scheme: dark)" />
     <meta name="theme-color" content="#f6f7f5" media="(prefers-color-scheme: light)" />
+    <meta name="color-scheme" content="dark light" />
     <meta name="referrer" content="strict-origin-when-cross-origin" />
     <meta http-equiv="Content-Security-Policy" content={csp} />
     <link rel="canonical" href={canonicalUrl} />
     <link rel="alternate" type="application/rss+xml" title="Gabriele Sisinna · Notes" href="/rss.xml" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <link rel="manifest" href="/site.webmanifest" />
     <meta property="og:site_name" content="gsisinna" />
     <meta property="og:type" content={type} />
     <meta property="og:title" content={title} />
@@ -83,6 +112,8 @@ const csp = [
     <meta property="og:url" content={canonicalUrl} />
     <meta property="og:image" content={imageUrl} />
     <meta property="og:image:alt" content={title} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
     <meta property="og:locale" content="en_US" />
     {publishedTime && <meta property="article:published_time" content={publishedTime} />}
     {modifiedTime && <meta property="article:modified_time" content={modifiedTime} />}
@@ -92,22 +123,12 @@ const csp = [
     <meta name="twitter:description" content={description} />
     <meta name="twitter:image" content={imageUrl} />
     <meta name="twitter:image:alt" content={title} />
-    <link rel="dns-prefetch" href="//fonts.googleapis.com" />
-    <link rel="dns-prefetch" href="//fonts.gstatic.com" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
+      rel="stylesheet"
       href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;1,400&family=JetBrains+Mono:wght@400;600;700&display=swap"
-      rel="preload"
-      as="style"
-      onload="this.onload=null;this.rel='stylesheet'"
     />
-    <noscript>
-      <link
-        href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;1,400&family=JetBrains+Mono:wght@400;600;700&display=swap"
-        rel="stylesheet"
-      />
-    </noscript>
     {jsonLdItems.filter(Boolean).map((item) => (
       <script
         is:inline
@@ -116,28 +137,7 @@ const csp = [
       />
     ))}
     <!-- `frame-ancestors` is ignored in meta CSP. Enforce it via HTTP headers at the host/CDN. -->
-    <script is:inline>
-      if (window.top !== window.self) {
-        document.documentElement.style.display = "none";
-        try {
-          window.top.location = window.self.location.href;
-        } catch {}
-      }
-      // Theme + JS flag on <html>. Re-applied after every client-side navigation,
-      // because the router replaces <html> attributes with the new page's.
-      const applyTheme = () => {
-        let theme = null;
-        try {
-          theme = localStorage.getItem("theme");
-        } catch {}
-        const root = document.documentElement;
-        if (theme === "light" || theme === "dark") root.dataset.theme = theme;
-        else delete root.dataset.theme;
-        root.classList.add("js");
-      };
-      applyTheme();
-      document.addEventListener("astro:after-swap", applyTheme);
-    </script>
+    <script is:inline set:html={headScript} />
     <ClientRouter />
   </head>
   <body>
@@ -152,7 +152,8 @@ const csp = [
           <a
             href="/search/"
             class="nav-search"
-            aria-label="Search"
+            aria-label="Search (press /)"
+            title="Search (press /)"
             aria-current={pathName.startsWith("/search") ? "page" : undefined}
           >
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
@@ -173,7 +174,7 @@ const csp = [
       </div>
       {readingProgress && <div class="reading-progress" aria-hidden="true"><span data-reading-progress></span></div>}
     </header>
-    <main id="main-content" transition:animate="fade">
+    <main id="main-content" tabindex="-1" transition:animate="fade">
       <div class="container">
         <slot />
       </div>
@@ -190,6 +191,11 @@ const csp = [
         </nav>
       </div>
     </footer>
+    <button type="button" class="back-to-top" data-back-to-top aria-label="Back to top">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M12 19V5M6 11l6-6 6 6" />
+      </svg>
+    </button>
     <script src="../scripts/site.ts"></script>
   </body>
 </html>

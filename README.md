@@ -9,6 +9,8 @@ GitHub Pages.
 npm install
 npm run dev      # http://localhost:4321, drafts included
 npm run build    # production build in dist/, drafts excluded
+npm run preview  # serve the production build (strict CSP) locally
+npm run assets   # regenerate the social preview image and icons
 ```
 
 Pushing to `main` deploys automatically (`.github/workflows/deploy.yml`).
@@ -91,3 +93,12 @@ Inline HTML is sanitized: scripts, event handlers, and `style` attributes are re
 | Notes archive / post page | `src/pages/journal/` |
 | Topics | `src/pages/tags/` |
 | Markdown pipeline (sanitizer, syntax highlighting) | `astro.config.mjs` |
+| Social preview image and icons (`npm run assets`) | `scripts/generate-assets.mjs` |
+
+## Security notes
+
+- Production pages ship a Content Security Policy that allows only bundled scripts plus one
+  hashed inline script (theme + frame-busting) in `BaseLayout.astro`. Do not add inline
+  `<script>` tags or `on*=` attributes; put code in `src/scripts/` instead.
+- Markdown HTML is sanitized (no scripts, event handlers, or `style` attributes).
+- GitHub Pages cannot set HTTP headers, so `frame-ancestors` is emulated with a frame-busting check.

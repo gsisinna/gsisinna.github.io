@@ -35,7 +35,7 @@ const searchJsonLd = {
         placeholder="Titles, excerpts, tags..."
         autocomplete="off"
         spellcheck="false"
-        autofocus
+        enterkeyhint="search"
       />
     </label>
     <div id="search-empty" class="meta-row">
@@ -97,15 +97,6 @@ const searchJsonLd = {
 
     .search-box input::placeholder {
       color: var(--muted);
-    }
-
-    .sr-only {
-      position: absolute;
-      width: 1px;
-      height: 1px;
-      overflow: hidden;
-      clip: rect(0 0 0 0);
-      white-space: nowrap;
     }
 
     .search-chip {

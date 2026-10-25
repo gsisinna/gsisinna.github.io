@@ -189,6 +189,9 @@ function initSearchPage() {
     });
   }
 
+  // Focus the box on desktop; on touch devices this would pop up the keyboard unasked.
+  if (window.matchMedia("(pointer: fine)").matches) input.focus({ preventScroll: true });
+
   const params = new URLSearchParams(window.location.search);
   const initialQ = params.get("q") ?? "";
   if (initialQ) input.value = initialQ;

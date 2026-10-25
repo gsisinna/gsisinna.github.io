@@ -1,56 +1,44 @@
 import type { APIRoute } from "astro";
-import { getCollection } from "astro:content";
+import { escapeXml, getLastModified, getPublishedPosts } from "../lib/content";
+import { profile } from "../data/profile";
 
-const SITE_URL = "https://gsisinna.github.io";
+const SITE_URL = import.meta.env.SITE;
 const FEED_URL = new URL("/rss.xml", SITE_URL).toString();
 
-const XML_ESCAPES: Record<string, string> = {
-  "&": "&amp;",
-  "<": "&lt;",
-  ">": "&gt;",
-  '"': "&quot;",
-  "'": "&apos;"
-};
-
-function escapeXml(value: string) {
-  return value.replace(/[&<>"']/g, (char) => XML_ESCAPES[char]);
-}
-
 export const GET: APIRoute = async () => {
-  const posts = await getCollection("journal", ({ data }) => !data.draft);
-  const sorted = posts.sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
-  const buildDate = sorted[0]?.data.date?.toUTCString() ?? new Date().toUTCString();
+  const posts = await getPublishedPosts();
+  const lastBuild = posts.length > 0
+    ? new Date(Math.max(...posts.map((post) => getLastModified(post).getTime())))
+    : new Date();
 
-  const items = sorted
+  const items = posts
     .map((post) => {
       const postUrl = new URL(`/journal/${post.id}/`, SITE_URL).toString();
-      const excerpt = post.data.excerpt ?? "";
       return `    <item>
       <title>${escapeXml(post.data.title)}</title>
       <link>${escapeXml(postUrl)}</link>
       <guid isPermaLink="true">${escapeXml(postUrl)}</guid>
       <pubDate>${post.data.date.toUTCString()}</pubDate>
-      <description>${escapeXml(excerpt)}</description>
+      <description>${escapeXml(post.data.excerpt)}</description>
+${post.data.tags.map((tag) => `      <category>${escapeXml(tag)}</category>`).join("\n")}
     </item>`;
     })
     .join("\n");
 
   const body = `<?xml version="1.0" encoding="UTF-8"?>
-<rss version="2.0">
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>gsisinna notes</title>
+    <title>${escapeXml(`${profile.name} · Notes`)}</title>
     <link>${escapeXml(new URL("/", SITE_URL).toString())}</link>
-    <description>Robotics software notes, project updates, experiments, and practical learnings.</description>
+    <description>${escapeXml(profile.siteDescription)}</description>
     <language>en-us</language>
-    <lastBuildDate>${buildDate}</lastBuildDate>
-    <atom:link href="${escapeXml(FEED_URL)}" rel="self" type="application/rss+xml" xmlns:atom="http://www.w3.org/2005/Atom" />
+    <lastBuildDate>${lastBuild.toUTCString()}</lastBuildDate>
+    <atom:link href="${escapeXml(FEED_URL)}" rel="self" type="application/rss+xml" />
 ${items}
   </channel>
 </rss>`;
 
   return new Response(body, {
-    headers: {
-      "Content-Type": "application/rss+xml; charset=utf-8"
-    }
+    headers: { "Content-Type": "application/rss+xml; charset=utf-8" }
   });
 };

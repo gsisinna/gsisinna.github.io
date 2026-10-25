@@ -23,9 +23,40 @@ const notFoundJsonLd = {
     <p class="kicker">error</p>
     <h1>404: page not found</h1>
     <p class="lead">The page you requested doesn&apos;t exist, may have moved, or the URL is mistyped.</p>
+    <form class="search-404" action="/search/" method="get" role="search">
+      <label class="sr-only" for="search-404-input">Search notes</label>
+      <input id="search-404-input" type="search" name="q" placeholder="Search notes…" enterkeyhint="search" />
+      <button type="submit" class="button">Search</button>
+    </form>
     <div class="meta-row" style="gap:0.6rem; margin-top:0.5rem;">
       <a href="/" class="button button-primary">Go home</a>
       <a href="/journal/" class="button">Browse notes</a>
     </div>
   </section>
 </BaseLayout>
+
+<style>
+  .search-404 {
+    display: flex;
+    gap: 0.5rem;
+    max-width: 30rem;
+    margin-top: 0.5rem;
+  }
+
+  .search-404 input {
+    flex: 1;
+    min-width: 0;
+    padding: 0.65rem 0.85rem;
+    border: 1px solid var(--line-strong);
+    border-radius: 9px;
+    background: var(--surface);
+    color: var(--ink-strong);
+    font: inherit;
+  }
+
+  .search-404 input:focus {
+    outline: none;
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px var(--accent-dim);
+  }
+</style>

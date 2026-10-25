@@ -1,56 +1,31 @@
 import type { APIRoute } from "astro";
-import { getCollection } from "astro:content";
-import { stat } from "node:fs/promises";
-import { join } from "node:path";
-import { getPublishedTagSummaries } from "../lib/content";
+import { escapeXml, getLastModified, getPublishedPosts, slugifyTag } from "../lib/content";
 
-const SITE_URL = "https://gsisinna.github.io";
-const XML_ESCAPES: Record<string, string> = {
-  "&": "&amp;",
-  "<": "&lt;",
-  ">": "&gt;",
-  '"': "&quot;",
-  "'": "&apos;"
-};
-
-function escapeXml(value: string) {
-  return value.replace(/[&<>"']/g, (char) => XML_ESCAPES[char]);
-}
+const SITE_URL = import.meta.env.SITE;
 
 export const GET: APIRoute = async () => {
-  const pages = [
-    { path: "/", source: join(process.cwd(), "src/pages/index.astro") },
-    { path: "/journal/", source: join(process.cwd(), "src/pages/journal/index.astro") },
-    { path: "/contact/", source: join(process.cwd(), "src/pages/contact.astro") },
-    { path: "/privacy/", source: join(process.cwd(), "src/pages/privacy.astro") },
-    { path: "/terms/", source: join(process.cwd(), "src/pages/terms.astro") }
-  ];
-  const posts = await getCollection("journal", ({ data }) => !data.draft);
-  const tags = await getPublishedTagSummaries();
-  const staticPageEntries = await Promise.all(
-    pages.map(async (page) => {
-      const fileStats = await stat(page.source);
-      return {
-        loc: new URL(page.path, SITE_URL).toString(),
-        lastmod: fileStats.mtime.toISOString()
-      };
-    })
-  );
+  const posts = await getPublishedPosts();
+  const latest = (items: typeof posts) =>
+    items.length > 0 ? new Date(Math.max(...items.map((post) => getLastModified(post).getTime()))) : undefined;
+  const siteLastMod = latest(posts);
 
-  const urls = [
-    ...staticPageEntries,
-    ...posts.map((post) => ({
-      loc: new URL(`/journal/${post.id}/`, SITE_URL).toString(),
-      lastmod: post.data.date.toISOString()
-    })),
-    {
-      loc: new URL("/tags/", SITE_URL).toString(),
-      lastmod: new Date().toISOString()
-    },
-    ...tags.map((tag) => ({
-      loc: new URL(`/tags/${tag.slug}/`, SITE_URL).toString(),
-      lastmod: new Date().toISOString()
-    }))
+  const tagPosts = new Map<string, typeof posts>();
+  for (const post of posts) {
+    for (const tag of post.data.tags) {
+      const slug = slugifyTag(tag);
+      if (slug) tagPosts.set(slug, [...(tagPosts.get(slug) ?? []), post]);
+    }
+  }
+
+  const urls: Array<{ path: string; lastmod?: Date }> = [
+    { path: "/", lastmod: siteLastMod },
+    { path: "/journal/", lastmod: siteLastMod },
+    ...posts.map((post) => ({ path: `/journal/${post.id}/`, lastmod: getLastModified(post) })),
+    { path: "/tags/", lastmod: siteLastMod },
+    ...[...tagPosts].map(([slug, items]) => ({ path: `/tags/${slug}/`, lastmod: latest(items) })),
+    { path: "/contact/" },
+    { path: "/privacy/" },
+    { path: "/terms/" }
   ];
 
   const body = `<?xml version="1.0" encoding="UTF-8"?>
@@ -58,16 +33,15 @@ export const GET: APIRoute = async () => {
 ${urls
   .map(
     (url) => `  <url>
-    <loc>${escapeXml(url.loc)}</loc>
-    <lastmod>${url.lastmod}</lastmod>
+    <loc>${escapeXml(new URL(url.path, SITE_URL).toString())}</loc>${
+      url.lastmod ? `\n    <lastmod>${url.lastmod.toISOString()}</lastmod>` : ""
+    }
   </url>`
   )
   .join("\n")}
 </urlset>`;
 
   return new Response(body, {
-    headers: {
-      "Content-Type": "application/xml; charset=utf-8"
-    }
+    headers: { "Content-Type": "application/xml; charset=utf-8" }
   });
 };
