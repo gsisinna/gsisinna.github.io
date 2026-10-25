@@ -125,6 +125,21 @@ function checkLoadedImages() {
   }
 }
 
+// Fade images in once loaded (covers show a skeleton until then). Failed images are
+// revealed too, so their alt text stays visible.
+function setupImageLoading() {
+  const images = document.querySelectorAll<HTMLImageElement>(".cover img, .prose img");
+  for (const img of images) {
+    const target = img.closest<HTMLElement>(".cover") ?? img;
+    const done = () => target.classList.add("is-loaded");
+    if (img.complete) done();
+    else {
+      img.addEventListener("load", done, { once: true });
+      img.addEventListener("error", done, { once: true });
+    }
+  }
+}
+
 // Press "/" anywhere to search (like GitHub and many docs sites).
 document.addEventListener("keydown", (event) => {
   if (event.key !== "/" || event.ctrlKey || event.metaKey || event.altKey) return;
@@ -138,6 +153,7 @@ document.addEventListener("keydown", (event) => {
 
 document.addEventListener("astro:page-load", () => {
   checkLoadedImages();
+  setupImageLoading();
   setupThemeToggle();
   setupScrollEffects();
   setupReveal();

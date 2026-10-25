@@ -52,7 +52,10 @@ Set `draft: false`, commit, and push.
 | `date` | yes | `YYYY-MM-DD` publish date. |
 | `updated` | no | Set when you meaningfully revise a post. Shown as "Updated …". |
 | `tags` | no | Lowercase, e.g. `["ros 2", "cpp"]`. Each tag gets its own page. |
-| `image` | no | Cover image URL or `/images/name.jpg` (files go in `public/images/`). |
+| `image` | no | Cover image URL or `/images/name.jpg` (files go in `public/images/`). 16:9 works best. |
+| `imageAlt` | no | Describes the cover for screen readers. Defaults to the title. |
+| `imageFit` | no | `cover` (default) crops to fill, for photos. `contain` shows the whole image on a light card, for diagrams, screenshots, logos, and transparent PNGs. |
+| `imagePosition` | no | Focal point when cropping, e.g. `left`, `30% center`. |
 | `readingTime` | no | Computed automatically; set only to override. |
 | `draft` | no | `true` hides the post outside `npm run dev`. |
 
@@ -77,7 +80,9 @@ Callouts (`callout-note`, `callout-tip`, `callout-warn`), figures, and collapsib
 small HTML blocks; copy them from `templates/article.md` or use the VS Code snippets in
 `.vscode/blog.code-snippets` (`callout`, `figure`, `code`, `details`).
 
-Posts with three or more `##` headings get an automatic table of contents.
+Posts with three or more `##` headings get an automatic table of contents. Article images
+can be clicked to open full size; give each one a meaningful `alt` text and, when useful, a
+`<figcaption>`.
 
 Inline HTML is sanitized: scripts, event handlers, and `style` attributes are removed.
 
@@ -86,6 +91,8 @@ Inline HTML is sanitized: scripts, event handlers, and `style` attributes are re
 | What | Where |
 | --- | --- |
 | Bio, headline, experience, skills, links | `src/data/profile.ts` |
+| Profile photo (optimized automatically; use a square 800px+ image) | `src/assets/avatar.jpg` |
+| Icons | `src/components/Icon.astro` |
 | Global styles, light/dark theme tokens, animations | `src/styles/base.css` |
 | Theme toggle, scroll reveal (`data-reveal`), reading progress | `src/scripts/site.ts` |
 | Header, footer, SEO metadata | `src/layouts/BaseLayout.astro` |

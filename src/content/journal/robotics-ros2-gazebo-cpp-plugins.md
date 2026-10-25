@@ -5,6 +5,8 @@ date: 2026-07-27
 tags: ["robotics", "ros 2", "gazebo", "cpp", "simulation"]
 readingTime: "11 min read"
 image: "https://raw.githubusercontent.com/gazebosim/gz-sim/main/examples/worlds/thumbnails/OpenRobotics.Panda%20joint%20control%20world.png"
+imageAlt: "Panda robot arm in Gazebo Sim with joint position controls"
+imagePosition: "30% center"
 draft: false
 ---
 

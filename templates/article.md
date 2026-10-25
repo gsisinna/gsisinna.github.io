@@ -4,7 +4,10 @@ excerpt: "One or two sentences that sell the post. Shown in lists, search result
 date: {{date}}
 # updated: {{date}}          # uncomment when you meaningfully revise a published post
 tags: [{{tags}}]
-# image: "https://..."        # cover image (16:9 works best); also used for social previews
+# image: "/images/cover.jpg"  # cover image (16:9 works best); also used for social previews
+# imageAlt: "What the cover shows"   # for screen readers; defaults to the title
+# imageFit: "contain"          # "cover" (default, photos) or "contain" (diagrams, screenshots, logos)
+# imagePosition: "center"      # focal point for "cover", e.g. "left", "50% 30%"
 # readingTime: "8 min read"   # optional: computed automatically from the text
 draft: true                   # drafts show only in `npm run dev`; set to false to publish
 ---
@@ -67,9 +70,10 @@ Summary: 4 packages finished [12.3s]
 ### Images
 
 <figure>
-  <img src="/avatar-profile.jpg" alt="Describe what the image shows" loading="lazy" decoding="async" />
+  <img src="/og-default.png" alt="Describe what the image shows" loading="lazy" decoding="async" />
   <figcaption>Caption: what to notice, plus the image source if it is not yours. Put your own images in
-  <code>public/images/</code> and reference them as <code>/images/name.jpg</code>.</figcaption>
+  <code>public/images/</code> and reference them as <code>/images/name.jpg</code>. Readers can click
+  any article image to view it full size.</figcaption>
 </figure>
 
 ### Tables

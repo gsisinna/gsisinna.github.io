@@ -55,7 +55,7 @@ const avatarSize = 232;
 const avatarMask = Buffer.from(
   `<svg width="${avatarSize}" height="${avatarSize}"><circle cx="${avatarSize / 2}" cy="${avatarSize / 2}" r="${avatarSize / 2}"/></svg>`
 );
-const avatar = await sharp(pub("avatar-profile.jpg"))
+const avatar = await sharp(join(root, "src", "assets", "avatar.jpg"))
   .resize(avatarSize, avatarSize, { fit: "cover", position: "attention" })
   .composite([{ input: avatarMask, blend: "dest-in" }])
   .png()

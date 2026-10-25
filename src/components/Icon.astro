@@ -1,20 +1,33 @@
 ---
 interface Props {
-  name: "robot" | "layers" | "chip" | "github" | "linkedin" | "mail" | "rss" | "arrow";
+  name:
+    | "robot"
+    | "layers"
+    | "chip"
+    | "github"
+    | "linkedin"
+    | "mail"
+    | "rss"
+    | "arrow"
+    | "arrow-up"
+    | "search"
+    | "sun"
+    | "moon";
+  class?: string;
 }
 
-const { name } = Astro.props;
+const { name, class: className } = Astro.props;
 ---
 
 {name === "github" ? (
-  <svg viewBox="0 0 24 24" aria-hidden="true" class="icon">
+  <svg viewBox="0 0 24 24" aria-hidden="true" class:list={["icon", className]}>
     <path
       fill="currentColor"
       d="M12 2C6.48 2 2 6.58 2 12.23c0 4.52 2.87 8.36 6.84 9.71.5.1.68-.22.68-.5 0-.24-.01-1.03-.01-1.87-2.78.62-3.37-1.21-3.37-1.21-.46-1.2-1.11-1.52-1.11-1.52-.91-.64.07-.63.07-.63 1 .08 1.53 1.06 1.53 1.06.9 1.57 2.35 1.12 2.92.86.09-.67.35-1.12.64-1.38-2.22-.26-4.56-1.14-4.56-5.07 0-1.12.39-2.04 1.03-2.76-.1-.26-.45-1.31.1-2.74 0 0 .84-.28 2.75 1.05A9.3 9.3 0 0 1 12 6.84c.85 0 1.71.12 2.52.37 1.91-1.33 2.75-1.05 2.75-1.05.55 1.43.2 2.48.1 2.74.64.72 1.03 1.64 1.03 2.76 0 3.94-2.34 4.8-4.57 5.06.36.32.68.94.68 1.9 0 1.37-.01 2.47-.01 2.81 0 .28.18.61.69.5A10.26 10.26 0 0 0 22 12.23C22 6.58 17.52 2 12 2Z"
     />
   </svg>
 ) : name === "linkedin" ? (
-  <svg viewBox="0 0 24 24" aria-hidden="true" class="icon">
+  <svg viewBox="0 0 24 24" aria-hidden="true" class:list={["icon", className]}>
     <path
       fill="currentColor"
       d="M6.94 8.5A1.56 1.56 0 1 0 6.9 5.38a1.56 1.56 0 0 0 .04 3.12ZM5.6 9.67h2.62V18H5.6V9.67Zm4.27 0h2.51v1.14h.03c.35-.66 1.2-1.35 2.47-1.35 2.64 0 3.12 1.78 3.12 4.1V18h-2.61v-3.91c0-.93-.02-2.13-1.27-2.13-1.28 0-1.48 1.03-1.48 2.06V18H9.87V9.67Z"
@@ -24,7 +37,7 @@ const { name } = Astro.props;
   <svg
     viewBox="0 0 24 24"
     aria-hidden="true"
-    class="icon"
+    class:list={["icon", className]}
     fill="none"
     stroke="currentColor"
     stroke-width="1.7"
@@ -62,10 +75,24 @@ const { name } = Astro.props;
       </>
     )}
     {name === "arrow" && <path d="M5 12h14M13 6l6 6-6 6" />}
+    {name === "arrow-up" && <path d="M12 19V5M6 11l6-6 6 6" />}
+    {name === "search" && (
+      <>
+        <circle cx="11" cy="11" r="7" />
+        <path d="m20 20-3.5-3.5" />
+      </>
+    )}
+    {name === "sun" && (
+      <>
+        <circle cx="12" cy="12" r="4" />
+        <path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4" />
+      </>
+    )}
+    {name === "moon" && <path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5Z" />}
   </svg>
 )}
 
-<style>
+<style is:global>
   .icon {
     width: 1em;
     height: 1em;

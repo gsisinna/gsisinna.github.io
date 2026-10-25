@@ -5,6 +5,8 @@ date: 2026-02-25
 tags: ["performance", "astro", "frontend", "web vitals", "meta"]
 readingTime: "8 min read"
 image: "https://developer.chrome.com/static/docs/lighthouse/performance/performance-scoring/image/lighthouse-scoring-calcul-196f49058e387.png"
+imageAlt: "Lighthouse performance score calculator chart"
+imageFit: "contain"
 draft: false
 ---
 

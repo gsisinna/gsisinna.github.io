@@ -5,6 +5,7 @@ date: 2026-02-23
 tags: ["about", "blog", "notes"]
 readingTime: "4 min read"
 image: "https://upload.wikimedia.org/wikipedia/commons/7/7e/DEC_VT100_Terminal_%2816131954383%29.jpg"
+imageAlt: "A DEC VT100 computer terminal"
 draft: false
 ---
 

@@ -1,5 +1,6 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
+import { Image, getImage } from "astro:assets";
 import PostRow from "../components/PostRow.astro";
 import FeaturedPost from "../components/FeaturedPost.astro";
 import Icon from "../components/Icon.astro";
@@ -16,6 +17,7 @@ import {
 } from "../data/profile";
 
 const entries = await getPublishedJournalEntries();
+const avatarForSchema = await getImage({ src: profile.avatar, width: 200, format: "jpg" });
 const [featured, ...rest] = entries;
 const recent = rest.slice(0, 3);
 const siteUrl = Astro.site?.toString() ?? "https://gsisinna.github.io";
@@ -42,7 +44,7 @@ const homeJsonLd = [
     "@type": "Person",
     name: profile.name,
     url: homeUrl,
-    image: new URL(profile.avatar, siteUrl).toString(),
+    image: new URL(avatarForSchema.src, siteUrl).toString(),
     jobTitle: profile.role,
     description: profile.shortBio,
     address: {
@@ -90,13 +92,13 @@ const homeJsonLd = [
           Get in touch
         </a>
         <div class="hero-socials">
-          <a class="icon-button" href={profile.links.github} target="_blank" rel="noreferrer noopener" aria-label="GitHub">
+          <a class="icon-button" href={profile.links.github} target="_blank" rel="noreferrer noopener" aria-label="GitHub" title="GitHub">
             <Icon name="github" />
           </a>
-          <a class="icon-button" href={profile.links.linkedin} target="_blank" rel="noreferrer noopener" aria-label="LinkedIn">
+          <a class="icon-button" href={profile.links.linkedin} target="_blank" rel="noreferrer noopener" aria-label="LinkedIn" title="LinkedIn">
             <Icon name="linkedin" />
           </a>
-          <a class="icon-button" href={profile.links.rss} aria-label="RSS feed">
+          <a class="icon-button" href={profile.links.rss} aria-label="RSS feed" title="RSS feed">
             <Icon name="rss" />
           </a>
         </div>
@@ -104,14 +106,13 @@ const homeJsonLd = [
     </div>
     <div class="hero-visual">
       <figure class="hero-avatar">
-        <img
+        <Image
           src={profile.avatar}
           alt={profile.avatarAlt}
+          widths={[120, 200, 400]}
+          sizes="(max-width: 640px) 120px, 200px"
           loading="eager"
-          decoding="async"
           fetchpriority="high"
-          width="280"
-          height="280"
         />
       </figure>
       <p class="hero-status">
@@ -336,7 +337,8 @@ const homeJsonLd = [
     .hero-avatar {
       position: relative;
       margin: 0;
-      width: clamp(10rem, 24vw, 16rem);
+      /* Capped near the source size so the photo is never upscaled */
+      width: clamp(9rem, 20vw, 12.5rem);
       aspect-ratio: 1;
       border-radius: 50%;
       padding: 3px;

@@ -3,6 +3,8 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
 import { getCollection, getEntry, render } from "astro:content";
 import { formatDate, getReadingTime, isVisible, slugifyTag } from "../../lib/content";
 import { profile } from "../../data/profile";
+import CoverImage from "../../components/CoverImage.astro";
+import { Image } from "astro:assets";
 
 export async function getStaticPaths() {
   const entries = await getCollection("journal", isVisible);
@@ -112,7 +114,7 @@ const breadcrumbJsonLd = {
 
     {entry.data.image && (
       <figure class="post-cover" transition:name={`cover-${entry.id}`}>
-        <img src={entry.data.image} alt="" loading="eager" decoding="async" referrerpolicy="no-referrer" />
+        <CoverImage entry={entry} eager />
       </figure>
     )}
 
@@ -139,7 +141,7 @@ const breadcrumbJsonLd = {
     </div>
 
     <aside class="post-author" aria-label="About the author" data-reveal>
-      <img src={profile.avatar} alt="" loading="lazy" decoding="async" width="64" height="64" />
+      <Image src={profile.avatar} alt="" width={64} height={64} densities={[1, 2]} loading="lazy" />
       <div class="post-author-body">
         <p class="post-author-name">Written by <a href="/">{profile.name}</a></p>
         <p class="muted">{profile.shortBio}</p>
@@ -163,7 +165,7 @@ const breadcrumbJsonLd = {
         {relatedPosts.map(({ post }) => (
           <a href={`/journal/${post.id}/`} class="related-card lift">
             {post.data.image && (
-              <img src={post.data.image} alt="" loading="lazy" decoding="async" referrerpolicy="no-referrer" />
+              <span class="related-media"><CoverImage entry={post} decorative /></span>
             )}
             <div class="related-body">
               <span class="meta-line">{formatDate(post.data.date)}</span>
@@ -294,11 +296,12 @@ const breadcrumbJsonLd = {
     background: var(--surface);
   }
 
-  .post-cover img {
-    width: 100%;
+  .post-cover :global(.cover) {
     aspect-ratio: 16 / 9;
-    object-fit: cover;
-    display: block;
+  }
+
+  .post-cover :global(.cover-contain) {
+    aspect-ratio: 2 / 1;
   }
 
   .post-author {
@@ -369,12 +372,14 @@ const breadcrumbJsonLd = {
     color: var(--accent);
   }
 
-  .related-card img {
-    width: 100%;
-    aspect-ratio: 16 / 9;
-    object-fit: cover;
+  .related-media {
     display: block;
+    aspect-ratio: 16 / 9;
     border-bottom: 1px solid var(--line);
+  }
+
+  .related-media :global(.cover) {
+    height: 100%;
   }
 
   .related-body {

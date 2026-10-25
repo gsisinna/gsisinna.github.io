@@ -1,6 +1,8 @@
 // Single source of truth for everything the site says about me.
 // Edit this file to update the home page, author byline, and metadata.
 
+import avatar from "../assets/avatar.jpg";
+
 export const profile = {
   name: "Gabriele Sisinna",
   handle: "gsisinna",
@@ -13,7 +15,8 @@ export const profile = {
     "Robotics software engineer in Bologna, working on C++, Python, simulation, control, and system integration.",
   siteDescription:
     "Gabriele Sisinna, robotics software engineer in Bologna. Notes on ROS 2, simulation, C++, Python, and software architecture for real robots.",
-  avatar: "/avatar-profile.jpg",
+  // Replace src/assets/avatar.jpg with a larger square photo (800px+) for sharper results.
+  avatar,
   avatarAlt: "Gabriele Sisinna working on a humanoid robot",
   links: {
     github: "https://github.com/gsisinna",

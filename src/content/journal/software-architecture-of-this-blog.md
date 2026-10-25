@@ -5,6 +5,8 @@ date: 2026-02-24
 tags: ["software architecture", "astro", "blog", "meta", "frontend", "seo"]
 readingTime: "10 min read"
 image: "https://opengraph.githubassets.com/1/withastro/astro"
+imageAlt: "Astro GitHub repository card"
+imageFit: "contain"
 draft: false
 ---
 

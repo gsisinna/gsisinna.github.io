@@ -1,6 +1,58 @@
 // Re-run on every page load: the client-side router swaps pages without reloading scripts.
 let removeTocListener: (() => void) | null = null;
 
+// Click (or Enter/Space) on an article image to view it full size.
+function setupLightbox() {
+  const images = Array.from(document.querySelectorAll<HTMLImageElement>(".prose img")).filter(
+    (img) => !img.closest("a")
+  );
+  if (images.length === 0) return;
+
+  let dialog = document.querySelector<HTMLDialogElement>("dialog.lightbox");
+  if (!dialog) {
+    dialog = document.createElement("dialog");
+    dialog.className = "lightbox";
+    dialog.setAttribute("aria-label", "Image viewer");
+    dialog.innerHTML = `
+      <button type="button" class="lightbox-close" aria-label="Close image">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg>
+      </button>
+      <figure><img alt="" /><figcaption></figcaption></figure>`;
+    document.body.append(dialog);
+    dialog.addEventListener("click", (event) => {
+      const target = event.target as HTMLElement;
+      if (target === dialog || target.closest(".lightbox-close")) dialog?.close();
+    });
+  }
+
+  const view = dialog.querySelector("img")!;
+  const caption = dialog.querySelector("figcaption")!;
+  const open = (img: HTMLImageElement) => {
+    view.src = img.currentSrc || img.src;
+    view.alt = img.alt;
+    const text = img.closest("figure")?.querySelector("figcaption")?.textContent?.trim() ?? "";
+    caption.textContent = text;
+    caption.hidden = text === "";
+    dialog?.showModal();
+  };
+
+  for (const img of images) {
+    if (img.dataset.zoom) continue;
+    img.dataset.zoom = "true";
+    img.classList.add("zoomable");
+    img.tabIndex = 0;
+    img.setAttribute("role", "button");
+    img.setAttribute("aria-label", `View full size${img.alt ? `: ${img.alt}` : ""}`);
+    img.addEventListener("click", () => open(img));
+    img.addEventListener("keydown", (event) => {
+      if (event.key === "Enter" || event.key === " ") {
+        event.preventDefault();
+        open(img);
+      }
+    });
+  }
+}
+
 function initPostPage() {
   const copyIcon =
     '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg>';
@@ -81,6 +133,8 @@ function initPostPage() {
     pre.before(frame);
     frame.append(header, pre);
   }
+
+  setupLightbox();
 
   // Heading anchors: a "#" link next to each section title, for sharing deep links.
   for (const heading of document.querySelectorAll<HTMLElement>(".prose :is(h2, h3)[id]")) {

@@ -5,6 +5,8 @@ date: 2026-03-17
 tags: ["java", "spring boot", "backend", "learning", "gradle", "software architecture"]
 readingTime: "12 min read"
 image: "https://opengraph.githubassets.com/1/spring-projects/spring-boot"
+imageAlt: "Spring Boot GitHub repository card"
+imageFit: "contain"
 draft: false
 ---
 

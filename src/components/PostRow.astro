@@ -1,5 +1,6 @@
 ---
 import type { CollectionEntry } from "astro:content";
+import CoverImage from "./CoverImage.astro";
 import { formatDate, getReadingTime, slugifyTag } from "../lib/content";
 
 interface Props {
@@ -39,7 +40,7 @@ const href = `/journal/${entry.id}/`;
   </div>
   {showImage && entry.data.image && (
     <a class="post-row-thumb" href={href} tabindex="-1" aria-hidden="true" transition:name={`cover-${entry.id}`}>
-      <img src={entry.data.image} alt="" loading="lazy" decoding="async" referrerpolicy="no-referrer" />
+      <CoverImage entry={entry} decorative />
     </a>
   )}
 </article>

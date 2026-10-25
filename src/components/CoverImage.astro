@@ -1,0 +1,27 @@
+---
+import type { CollectionEntry } from "astro:content";
+
+interface Props {
+  entry: CollectionEntry<"journal">;
+  /** Decorative copies (next to a visible title) should pass decorative to get alt="". */
+  decorative?: boolean;
+  eager?: boolean;
+  sizes?: string;
+}
+
+const { entry, decorative = false, eager = false } = Astro.props;
+const { image, imageAlt, imageFit, imagePosition, title } = entry.data;
+---
+
+{image && (
+  <span class:list={["cover", `cover-${imageFit}`]} style={`--cover-position: ${imagePosition}`}>
+    <img
+      src={image}
+      alt={decorative ? "" : (imageAlt ?? title)}
+      loading={eager ? "eager" : "lazy"}
+      fetchpriority={eager ? "high" : "auto"}
+      decoding="async"
+      referrerpolicy="no-referrer"
+    />
+  </span>
+)}

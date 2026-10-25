@@ -669,19 +669,63 @@ main:focus {
   border-radius: 10px;
   overflow: hidden;
   border: 1px solid var(--line);
-  background: var(--surface);
 }
 
-.post-row-thumb img {
+.post-row-thumb .cover {
+  height: 100%;
+}
+
+.post-row:hover .post-row-thumb .cover-cover img {
+  transform: scale(1.04);
+}
+
+/* Cover images (src/components/CoverImage.astro) */
+
+.cover {
+  position: relative;
+  display: block;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background: var(--surface-2);
+}
+
+.cover img {
+  display: block;
   width: 100%;
   height: 100%;
   object-fit: cover;
-  display: block;
-  transition: transform 300ms ease;
+  object-position: var(--cover-position, center);
+  transition: opacity 400ms ease, transform 500ms var(--ease-out);
 }
 
-.post-row:hover .post-row-thumb img {
-  transform: scale(1.03);
+/* Whole image on a light card: diagrams, screenshots, transparent PNGs, social cards */
+.cover-contain {
+  background: #f3f4f1;
+}
+
+.cover-contain img {
+  object-fit: contain;
+  padding: 6%;
+}
+
+/* Loading skeleton until site.ts marks the image as loaded (JS only, so no-JS still shows images) */
+html.js .cover:not(.is-loaded) img {
+  opacity: 0;
+}
+
+html.js .cover:not(.is-loaded)::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(100deg, transparent 20%, var(--hover-strong) 50%, transparent 80%);
+  background-size: 200% 100%;
+  animation: shimmer 1.4s linear infinite;
+}
+
+@keyframes shimmer {
+  from { background-position: 150% 0; }
+  to { background-position: -50% 0; }
 }
 
 /* Footer */
@@ -776,6 +820,16 @@ footer.site .container {
 
 .prose a:hover {
   text-decoration-color: currentColor;
+}
+
+/* Mark links that leave the site */
+.prose a[href^="http"]:not([href^="https://gsisinna.github.io"]):not(:has(img))::after {
+  content: "97";
+  display: inline-block;
+  margin-left: 0.15em;
+  font-size: 0.75em;
+  text-decoration: none;
+  opacity: 0.7;
 }
 
 .prose strong {
@@ -976,18 +1030,133 @@ footer.site .container {
 }
 
 .prose :where(img, video, iframe) {
+  display: block;
+  max-width: 100%;
   height: auto;
+  margin-inline: auto;
   border-radius: 10px;
 }
 
+.prose img {
+  border: 1px solid var(--line);
+  background: var(--surface-2);
+  transition: opacity 400ms ease, box-shadow 200ms ease, border-color 200ms ease;
+}
+
+html.js .prose img:not(.is-loaded) {
+  opacity: 0;
+}
+
+.prose img.zoomable {
+  cursor: zoom-in;
+}
+
+.prose img.zoomable:hover {
+  border-color: var(--accent-line);
+  box-shadow: var(--shadow);
+}
+
 .prose figure {
-  margin-inline: 0;
+  margin: 2em 0;
+}
+
+.prose figure img {
+  width: 100%;
 }
 
 .prose figcaption {
-  margin-top: 0.5rem;
+  margin-top: 0.65rem;
+  padding-left: 0.75rem;
+  border-left: 2px solid var(--line-strong);
   color: var(--muted);
-  font-size: 0.82rem;
+  font-size: 0.85rem;
+  line-height: 1.5;
+}
+
+/* Full-size image viewer (src/scripts/post-page.ts) */
+.lightbox {
+  width: min(96vw, 1400px);
+  max-width: none;
+  max-height: 94vh;
+  margin: auto;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  overflow: visible;
+}
+
+.lightbox::backdrop {
+  background: rgba(5, 7, 9, 0.86);
+  backdrop-filter: blur(4px);
+}
+
+.lightbox figure {
+  display: grid;
+  justify-items: center;
+  gap: 0.75rem;
+  margin: 0;
+}
+
+.lightbox img {
+  max-width: 100%;
+  max-height: 84vh;
+  object-fit: contain;
+  border-radius: 10px;
+  background: #f3f4f1;
+}
+
+.lightbox figcaption {
+  max-width: 70ch;
+  color: #d9dfdb;
+  font-size: 0.9rem;
+  text-align: center;
+}
+
+.lightbox-close {
+  position: fixed;
+  top: max(1rem, env(safe-area-inset-top));
+  right: max(1rem, env(safe-area-inset-right));
+  display: grid;
+  place-items: center;
+  width: 2.75rem;
+  height: 2.75rem;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 50%;
+  background: rgba(17, 20, 23, 0.8);
+  color: #f2f5f3;
+  cursor: pointer;
+}
+
+.lightbox-close:hover {
+  border-color: rgba(255, 255, 255, 0.45);
+}
+
+.lightbox-close svg {
+  width: 1.2rem;
+  height: 1.2rem;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .lightbox[open] {
+    animation: zoom-in 240ms var(--ease-out);
+  }
+
+  .lightbox[open]::backdrop {
+    animation: fade 240ms ease;
+  }
+}
+
+@keyframes zoom-in {
+  from {
+    opacity: 0;
+    transform: scale(0.96);
+  }
+}
+
+@keyframes fade {
+  from {
+    opacity: 0;
+  }
 }
 
 .prose table {

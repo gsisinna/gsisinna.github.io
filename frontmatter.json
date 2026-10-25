@@ -55,6 +55,27 @@
           "type": "string"
         },
         {
+          "title": "Cover alt text",
+          "name": "imageAlt",
+          "type": "string"
+        },
+        {
+          "title": "Cover fit",
+          "name": "imageFit",
+          "type": "choice",
+          "choices": [
+            "cover",
+            "contain"
+          ],
+          "default": "cover"
+        },
+        {
+          "title": "Cover focal point",
+          "name": "imagePosition",
+          "type": "string",
+          "default": "center"
+        },
+        {
           "title": "Reading time (optional override)",
           "name": "readingTime",
           "type": "string"
