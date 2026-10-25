@@ -93,6 +93,8 @@ const transformerCodeFrame = () => ({
 
 export default defineConfig({
   site: "https://gsisinna.github.io",
+  // Preload pages on hover so client-side navigations feel instant.
+  prefetch: { prefetchAll: true, defaultStrategy: "hover" },
   markdown: {
     // Highlighting runs after sanitizing (below) so token colors survive.
     syntaxHighlight: false,

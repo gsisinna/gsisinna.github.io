@@ -84,7 +84,8 @@ Inline HTML is sanitized: scripts, event handlers, and `style` attributes are re
 | What | Where |
 | --- | --- |
 | Bio, headline, experience, skills, links | `src/data/profile.ts` |
-| Global styles and design tokens | `src/styles/base.css` |
+| Global styles, light/dark theme tokens, animations | `src/styles/base.css` |
+| Theme toggle, scroll reveal (`data-reveal`), reading progress | `src/scripts/site.ts` |
 | Header, footer, SEO metadata | `src/layouts/BaseLayout.astro` |
 | Home page | `src/pages/index.astro` |
 | Notes archive / post page | `src/pages/journal/` |

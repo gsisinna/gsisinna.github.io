@@ -21,7 +21,7 @@ const href = `/journal/${entry.id}/`;
       <time datetime={entry.data.date.toISOString()}>{formatDate(entry.data.date)}</time>
       <span>{getReadingTime(entry)}</span>
     </div>
-    <Heading><a href={href}>{entry.data.title}</a></Heading>
+    <Heading transition:name={`title-${entry.id}`}><a href={href}>{entry.data.title}</a></Heading>
     <p class="muted">{entry.data.excerpt}</p>
     {entry.data.tags.length > 0 && (
       <div class="meta-row">
@@ -38,7 +38,7 @@ const href = `/journal/${entry.id}/`;
     )}
   </div>
   {showImage && entry.data.image && (
-    <a class="post-row-thumb" href={href} tabindex="-1" aria-hidden="true">
+    <a class="post-row-thumb" href={href} tabindex="-1" aria-hidden="true" transition:name={`cover-${entry.id}`}>
       <img src={entry.data.image} alt="" loading="lazy" decoding="async" referrerpolicy="no-referrer" />
     </a>
   )}

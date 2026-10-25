@@ -6,7 +6,7 @@ const searchUrl = new URL("/search/", siteUrl).toString();
 const searchJsonLd = {
   "@context": "https://schema.org",
   "@type": "SearchResultsPage",
-  name: "Search | gsisinna",
+  name: "Search · Gabriele Sisinna",
   url: searchUrl,
   description: "Search notes and articles on gsisinna.github.io.",
   inLanguage: "en"
@@ -14,7 +14,7 @@ const searchJsonLd = {
 ---
 
 <BaseLayout
-  title="Search | gsisinna"
+  title="Search · Gabriele Sisinna"
   description="Search notes, architecture write-ups, and project posts."
   noindex={true}
   jsonLd={searchJsonLd}
@@ -115,7 +115,7 @@ const searchJsonLd = {
 
     .search-chip:hover {
       color: var(--ink-strong);
-      border-color: rgba(94, 230, 160, 0.4);
+      border-color: var(--accent-line);
     }
 
     .search-results:empty {

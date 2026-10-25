@@ -86,11 +86,12 @@ const breadcrumbJsonLd = {
   modifiedTime={updatedIso}
   tags={entry.data.tags}
   jsonLd={[postJsonLd, breadcrumbJsonLd]}
+  readingProgress
 >
   <article class="post">
     <header class="post-header fade-in">
       <a href="/journal/" class="text-link">← All notes</a>
-      <h1>{entry.data.title}</h1>
+      <h1 transition:name={`title-${entry.id}`}>{entry.data.title}</h1>
       <p class="post-lead">{entry.data.excerpt}</p>
       <div class="meta-line">
         {entry.data.draft && <span class="draft-badge">Draft · only visible locally</span>}
@@ -110,7 +111,7 @@ const breadcrumbJsonLd = {
     </header>
 
     {entry.data.image && (
-      <figure class="post-cover">
+      <figure class="post-cover" transition:name={`cover-${entry.id}`}>
         <img src={entry.data.image} alt="" loading="eager" decoding="async" referrerpolicy="no-referrer" />
       </figure>
     )}
@@ -137,7 +138,7 @@ const breadcrumbJsonLd = {
       )}
     </div>
 
-    <aside class="post-author" aria-label="About the author">
+    <aside class="post-author" aria-label="About the author" data-reveal>
       <img src={profile.avatar} alt="" loading="lazy" decoding="async" width="64" height="64" />
       <div class="post-author-body">
         <p class="post-author-name">Written by <a href="/">{profile.name}</a></p>
@@ -158,9 +159,9 @@ const breadcrumbJsonLd = {
         <h2 id="related-title">Related notes</h2>
         <a href="/journal/" class="text-link">All notes →</a>
       </div>
-      <div class="related-grid">
+      <div class="related-grid" data-reveal="stagger">
         {relatedPosts.map(({ post }) => (
-          <a href={`/journal/${post.id}/`} class="related-card">
+          <a href={`/journal/${post.id}/`} class="related-card lift">
             {post.data.image && (
               <img src={post.data.image} alt="" loading="lazy" decoding="async" referrerpolicy="no-referrer" />
             )}
@@ -362,11 +363,6 @@ const breadcrumbJsonLd = {
     background: var(--surface);
     overflow: hidden;
     text-decoration: none;
-    transition: border-color 140ms ease;
-  }
-
-  .related-card:hover {
-    border-color: rgba(94, 230, 160, 0.4);
   }
 
   .related-card:hover h3 {

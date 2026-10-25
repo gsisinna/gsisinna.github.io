@@ -11,9 +11,9 @@ const { entry, label = "Latest" } = Astro.props;
 const href = `/journal/${entry.id}/`;
 ---
 
-<article class="featured">
+<article class="featured lift" data-reveal>
   {entry.data.image && (
-    <a class="featured-media" href={href} tabindex="-1" aria-hidden="true">
+    <a class="featured-media" href={href} tabindex="-1" aria-hidden="true" transition:name={`cover-${entry.id}`}>
       <img src={entry.data.image} alt="" loading="eager" decoding="async" referrerpolicy="no-referrer" />
     </a>
   )}
@@ -23,7 +23,7 @@ const href = `/journal/${entry.id}/`;
       <time datetime={entry.data.date.toISOString()}>{formatDate(entry.data.date)}</time>
       <span>{getReadingTime(entry)}</span>
     </div>
-    <h3><a href={href}>{entry.data.title}</a></h3>
+    <h3 transition:name={`title-${entry.id}`}><a href={href}>{entry.data.title}</a></h3>
     <p class="muted">{entry.data.excerpt}</p>
     <a class="text-link" href={href} aria-hidden="true" tabindex="-1">Read the note →</a>
   </div>
@@ -38,11 +38,6 @@ const href = `/journal/${entry.id}/`;
     border-radius: var(--radius);
     background: var(--surface);
     overflow: hidden;
-    transition: border-color 160ms ease;
-  }
-
-  .featured:hover {
-    border-color: rgba(94, 230, 160, 0.35);
   }
 
   .featured-media {

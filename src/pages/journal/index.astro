@@ -71,9 +71,9 @@ const notesJsonLd = [
   {featured && <FeaturedPost entry={featured} />}
 
   {years.map(([year, yearEntries]) => (
-    <section class="year-group" aria-labelledby={`year-${year}`}>
+    <section class="year-group" aria-labelledby={`year-${year}`} data-reveal>
       <h2 id={`year-${year}`} class="year-title">{year}</h2>
-      <div class="post-list">
+      <div class="post-list" data-reveal="stagger">
         {yearEntries.map((entry) => <PostRow entry={entry} />)}
       </div>
     </section>

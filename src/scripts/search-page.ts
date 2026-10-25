@@ -1,4 +1,5 @@
-(() => {
+// Re-run on every page load: the client-side router swaps pages without reloading scripts.
+function initSearchPage() {
   const input = document.getElementById("site-search-input");
   const status = document.getElementById("search-status");
   const results = document.getElementById("search-results");
@@ -204,4 +205,6 @@
       ready = true;
       if (status) status.textContent = "Search index unavailable";
     });
-})();
+}
+
+document.addEventListener("astro:page-load", initSearchPage);

@@ -39,9 +39,9 @@ const tagsJsonLd = [
   {tags.length === 0 ? (
     <p class="muted">No topics yet.</p>
   ) : (
-    <ul class="tag-grid" aria-label="All topics">
+    <ul class="tag-grid" aria-label="All topics" data-reveal="stagger">
       {tags.map((tag) => (
-        <li class="tag-card">
+        <li class="tag-card lift">
           <div class="tag-top">
             <a class="tag-name" href={`/tags/${tag.slug}/`}>#{tag.name}</a>
             <span class="tag-count">{tag.count} note{tag.count === 1 ? "" : "s"}</span>
@@ -75,11 +75,6 @@ const tagsJsonLd = [
     border: 1px solid var(--line);
     border-radius: 10px;
     background: var(--surface);
-    transition: border-color 140ms ease;
-  }
-
-  .tag-card:hover {
-    border-color: rgba(94, 230, 160, 0.4);
   }
 
   .tag-top {

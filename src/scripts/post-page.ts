@@ -1,4 +1,7 @@
-(() => {
+// Re-run on every page load: the client-side router swaps pages without reloading scripts.
+let removeTocListener: (() => void) | null = null;
+
+function initPostPage() {
   const copyIcon =
     '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg>';
   const checkIcon =
@@ -79,25 +82,41 @@
     frame.append(header, pre);
   }
 
-  // Table of contents: highlight the section currently being read.
+  // Table of contents: highlight the section currently being read
+  // (the last heading that has scrolled past the top of the viewport).
+  removeTocListener?.();
+  removeTocListener = null;
   const tocLinks = Array.from(document.querySelectorAll<HTMLAnchorElement>("[data-toc-link]"));
-  if (tocLinks.length === 0 || !("IntersectionObserver" in window)) return;
+  if (tocLinks.length === 0) return;
 
-  const byId = new Map(tocLinks.map((link) => [decodeURIComponent(link.hash.slice(1)), link]));
-  const headings = Array.from(byId.keys())
-    .map((id) => document.getElementById(id))
-    .filter((el): el is HTMLElement => el !== null);
+  const sections = tocLinks
+    .map((link) => ({ link, heading: document.getElementById(decodeURIComponent(link.hash.slice(1))) }))
+    .filter((item): item is { link: HTMLAnchorElement; heading: HTMLElement } => item.heading !== null);
 
-  const setActive = (id: string) => {
-    for (const link of tocLinks) link.classList.toggle("is-active", link === byId.get(id));
+  let frame = 0;
+  const update = () => {
+    frame = 0;
+    let active = sections[0];
+    for (const item of sections) {
+      if (item.heading.getBoundingClientRect().top < 140) active = item;
+      else break;
+    }
+    for (const item of sections) item.link.classList.toggle("is-active", item === active);
+  };
+  const onScroll = () => {
+    if (!frame) frame = window.requestAnimationFrame(update);
   };
 
-  const observer = new IntersectionObserver(
-    (entries) => {
-      const visible = entries.filter((entry) => entry.isIntersecting);
-      if (visible.length > 0) setActive(visible[0].target.id);
-    },
-    { rootMargin: "-80px 0px -70% 0px" }
-  );
-  for (const heading of headings) observer.observe(heading);
-})();
+  update();
+  window.addEventListener("scroll", onScroll, { passive: true });
+  removeTocListener = () => {
+    window.removeEventListener("scroll", onScroll);
+    if (frame) window.cancelAnimationFrame(frame);
+  };
+}
+
+document.addEventListener("astro:page-load", initPostPage);
+document.addEventListener("astro:before-swap", () => {
+  removeTocListener?.();
+  removeTocListener = null;
+});

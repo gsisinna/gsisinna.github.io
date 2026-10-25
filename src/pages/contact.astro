@@ -6,7 +6,7 @@ const contactUrl = new URL("/contact/", siteUrl).toString();
 const contactJsonLd = {
   "@context": "https://schema.org",
   "@type": "ContactPage",
-  name: "Contact | Gabriele Sisinna",
+  name: "Contact · Gabriele Sisinna",
   url: contactUrl,
   description: "Contact page for project inquiries, collaborations, and robotics/software architecture work.",
   inLanguage: "en"
@@ -14,7 +14,7 @@ const contactJsonLd = {
 ---
 
 <BaseLayout
-  title="Contact | Gabriele Sisinna"
+  title="Contact · Gabriele Sisinna"
   description="Get in touch about robotics software, architecture support, prototyping, or collaboration."
   jsonLd={contactJsonLd}
 >
@@ -159,7 +159,7 @@ const contactJsonLd = {
   }
 
   .field :where(input, textarea)::placeholder {
-    color: #5f6964;
+    color: var(--faint);
   }
 
   .field :where(input, textarea):focus {

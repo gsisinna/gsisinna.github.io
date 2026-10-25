@@ -68,7 +68,7 @@ const tagJsonLd = [
     )}
   </header>
 
-  <section class="post-list" aria-label={`Notes about ${tagName}`}>
+  <section class="post-list" aria-label={`Notes about ${tagName}`} data-reveal="stagger">
     {entries.map((entry) => <PostRow entry={entry} activeTag={tag} />)}
   </section>
 </BaseLayout>
