@@ -51,7 +51,7 @@ export const facts = [
 export const experience = [
   {
     period: "2024 – now",
-    role: "Robotics Software Engineer",
+    role: "Senior Robotics Software Engineer",
     place: "FlexLink · Bologna",
     note: "Modular C++/Python software for autonomous and collaborative robotics: reusable components, CI/CD, and system integration."
   },
