@@ -18,7 +18,57 @@
       "previewPath": "'journal'",
       "pageBundle": false,
       "clearEmpty": true,
-      "fields": []
+      "fields": [
+        {
+          "title": "Title",
+          "name": "title",
+          "type": "string",
+          "required": true
+        },
+        {
+          "title": "Excerpt",
+          "name": "excerpt",
+          "type": "string",
+          "required": true
+        },
+        {
+          "title": "Published",
+          "name": "date",
+          "type": "datetime",
+          "default": "{{now}}",
+          "isPublishDate": true
+        },
+        {
+          "title": "Updated",
+          "name": "updated",
+          "type": "datetime",
+          "isModifiedDate": true
+        },
+        {
+          "title": "Tags",
+          "name": "tags",
+          "type": "tags"
+        },
+        {
+          "title": "Cover image",
+          "name": "image",
+          "type": "string"
+        },
+        {
+          "title": "Reading time (optional override)",
+          "name": "readingTime",
+          "type": "string"
+        },
+        {
+          "title": "Draft",
+          "name": "draft",
+          "type": "draft",
+          "default": true
+        }
+      ]
     }
-  ]
+  ],
+  "frontMatter.templates.enabled": true,
+  "frontMatter.templates.folder": "templates",
+  "frontMatter.taxonomy.dateFormat": "yyyy-MM-dd"
 }

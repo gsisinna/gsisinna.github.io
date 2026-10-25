@@ -1,10 +1,11 @@
 ---
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import { getCollection, getEntry, render } from "astro:content";
-import { formatDate, slugifyTag } from "../../lib/content";
+import { formatDate, getReadingTime, isVisible, slugifyTag } from "../../lib/content";
+import { profile } from "../../data/profile";
 
 export async function getStaticPaths() {
-  const entries = await getCollection("journal", ({ data }) => !data.draft);
+  const entries = await getCollection("journal", isVisible);
   return entries.map((entry) => ({ params: { slug: entry.id } }));
 }
 
@@ -16,20 +17,21 @@ if (!slug) {
 
 const entry = await getEntry("journal", slug);
 
-if (!entry || entry.data.draft) {
+if (!entry || !isVisible(entry)) {
   return Astro.redirect("/journal/");
 }
 
-const { Content } = await render(entry);
+const { Content, headings } = await render(entry);
+const toc = headings.filter((heading) => heading.depth === 2);
+const showToc = toc.length >= 3;
 const siteUrl = Astro.site?.toString() ?? "https://gsisinna.github.io";
 const postUrl = new URL(`/journal/${entry.id}/`, siteUrl).toString();
 const homeUrl = new URL("/", siteUrl).toString();
-const githubUrl = "https://github.com/gsisinna";
-const linkedInUrl = "https://www.linkedin.com/in/gabriele-sisinna-4a6081109/";
 const publishedIso = entry.data.date.toISOString();
+const updatedIso = entry.data.updated?.toISOString() ?? publishedIso;
 const postImage = entry.data.image ?? "/og-article-default.svg";
 const postImageUrl = new URL(postImage, siteUrl).toString();
-const allPosts = await getCollection("journal", ({ data }) => !data.draft);
+const allPosts = await getCollection("journal", isVisible);
 const relatedPosts = allPosts
   .filter((post) => post.id !== entry.id)
   .map((post) => {
@@ -48,7 +50,7 @@ const postJsonLd = {
   headline: entry.data.title,
   description: entry.data.excerpt,
   datePublished: publishedIso,
-  dateModified: publishedIso,
+  dateModified: updatedIso,
   url: postUrl,
   mainEntityOfPage: postUrl,
   inLanguage: "en",
@@ -56,11 +58,12 @@ const postJsonLd = {
   image: postImageUrl,
   author: {
     "@type": "Person",
-    name: "Gabriele Sisinna"
+    name: profile.name,
+    url: homeUrl
   },
   publisher: {
     "@type": "Person",
-    name: "Gabriele Sisinna"
+    name: profile.name
   }
 };
 const breadcrumbJsonLd = {
@@ -75,12 +78,12 @@ const breadcrumbJsonLd = {
 ---
 
 <BaseLayout
-  title={`${entry.data.title} | gsisinna`}
+  title={`${entry.data.title} · ${profile.name}`}
   description={entry.data.excerpt}
   image={postImage}
   type="article"
   publishedTime={publishedIso}
-  modifiedTime={publishedIso}
+  modifiedTime={updatedIso}
   tags={entry.data.tags}
   jsonLd={[postJsonLd, breadcrumbJsonLd]}
 >
@@ -90,8 +93,12 @@ const breadcrumbJsonLd = {
       <h1>{entry.data.title}</h1>
       <p class="post-lead">{entry.data.excerpt}</p>
       <div class="meta-line">
+        {entry.data.draft && <span class="draft-badge">Draft · only visible locally</span>}
         <time datetime={publishedIso}>{formatDate(entry.data.date)}</time>
-        {entry.data.readingTime && <span>{entry.data.readingTime}</span>}
+        <span>{getReadingTime(entry)}</span>
+        {entry.data.updated && (
+          <span>Updated <time datetime={updatedIso}>{formatDate(entry.data.updated)}</time></span>
+        )}
       </div>
       {entry.data.tags.length > 0 && (
         <div class="meta-row" aria-label="Tags">
@@ -108,22 +115,38 @@ const breadcrumbJsonLd = {
       </figure>
     )}
 
-    <div class="prose">
-      <Content />
+    <div class:list={["post-body", showToc && "has-toc"]}>
+      {showToc && (
+        <details class="toc toc-mobile">
+          <summary>On this page</summary>
+          <ol>
+            {toc.map((heading) => <li><a href={`#${heading.slug}`}>{heading.text}</a></li>)}
+          </ol>
+        </details>
+      )}
+      <div class="prose">
+        <Content />
+      </div>
+      {showToc && (
+        <nav class="toc toc-desktop" aria-label="On this page">
+          <p class="toc-title">On this page</p>
+          <ol>
+            {toc.map((heading) => <li><a href={`#${heading.slug}`} data-toc-link>{heading.text}</a></li>)}
+          </ol>
+        </nav>
+      )}
     </div>
 
     <aside class="post-author" aria-label="About the author">
-      <img src="/avatar-profile.jpg" alt="" loading="lazy" decoding="async" width="64" height="64" />
+      <img src={profile.avatar} alt="" loading="lazy" decoding="async" width="64" height="64" />
       <div class="post-author-body">
-        <p class="post-author-name">Written by Gabriele Sisinna</p>
-        <p class="muted">
-          Robotics software engineer working on C++, Python, simulation, control, and system integration.
-        </p>
+        <p class="post-author-name">Written by <a href="/">{profile.name}</a></p>
+        <p class="muted">{profile.shortBio}</p>
         <div class="post-author-links">
-          <a href="/rss.xml">RSS</a>
-          <a href={githubUrl} target="_blank" rel="noreferrer noopener">GitHub</a>
-          <a href={linkedInUrl} target="_blank" rel="noreferrer noopener">LinkedIn</a>
-          <a href="/contact/">Contact</a>
+          <a href={profile.links.rss}>RSS</a>
+          <a href={profile.links.github} target="_blank" rel="noreferrer noopener">GitHub</a>
+          <a href={profile.links.linkedin} target="_blank" rel="noreferrer noopener">LinkedIn</a>
+          <a href={profile.links.contact}>Contact</a>
         </div>
       </div>
     </aside>
@@ -152,7 +175,94 @@ const breadcrumbJsonLd = {
   )}
 </BaseLayout>
 
+<script src="../../scripts/post-page.ts"></script>
+
 <style>
+  .post-body {
+    min-width: 0;
+  }
+
+  .toc ol {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 0.45rem;
+  }
+
+  .toc a {
+    color: var(--muted);
+    font-size: 0.86rem;
+    line-height: 1.35;
+    text-decoration: none;
+    transition: color 140ms ease;
+  }
+
+  .toc a:hover,
+  .toc a.is-active {
+    color: var(--accent);
+  }
+
+  .toc-mobile {
+    max-width: 70ch;
+    margin-bottom: 2rem;
+    padding: 0.85rem 1rem;
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    background: var(--surface);
+  }
+
+  .toc-mobile summary {
+    cursor: pointer;
+    color: var(--ink-strong);
+    font-family: var(--font-mono);
+    font-size: 0.85rem;
+  }
+
+  .toc-mobile ol {
+    margin-top: 0.85rem;
+  }
+
+  .toc-desktop {
+    display: none;
+  }
+
+  .toc-title {
+    margin-bottom: 0.85rem;
+    color: var(--ink-strong);
+    font-family: var(--font-mono);
+    font-size: 0.78rem;
+  }
+
+  @media (min-width: 1000px) {
+    .post-body.has-toc {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 13.5rem;
+      gap: 3rem;
+      align-items: start;
+    }
+
+    .toc-mobile {
+      display: none;
+    }
+
+    .toc-desktop {
+      display: block;
+      position: sticky;
+      top: 5.5rem;
+      padding-left: 1rem;
+      border-left: 1px solid var(--line);
+    }
+  }
+
+  .post-author-name a {
+    text-decoration: none;
+  }
+
+  .post-author-name a:hover {
+    color: var(--accent);
+  }
+
   .post {
     display: grid;
     gap: 2.25rem;

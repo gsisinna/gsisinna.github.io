@@ -1,6 +1,6 @@
 ---
 import type { CollectionEntry } from "astro:content";
-import { formatDate, slugifyTag } from "../lib/content";
+import { formatDate, getReadingTime, slugifyTag } from "../lib/content";
 
 interface Props {
   entry: CollectionEntry<"journal">;
@@ -17,8 +17,9 @@ const href = `/journal/${entry.id}/`;
 <article class="post-row">
   <div class="post-row-body">
     <div class="meta-line">
+      {entry.data.draft && <span class="draft-badge">Draft</span>}
       <time datetime={entry.data.date.toISOString()}>{formatDate(entry.data.date)}</time>
-      {entry.data.readingTime && <span>{entry.data.readingTime}</span>}
+      <span>{getReadingTime(entry)}</span>
     </div>
     <Heading><a href={href}>{entry.data.title}</a></Heading>
     <p class="muted">{entry.data.excerpt}</p>

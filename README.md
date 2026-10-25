@@ -1,74 +1,92 @@
 # gsisinna.github.io
 
-Personal blog built with Astro, styled like a Linux terminal app.
+Personal site and blog of Gabriele Sisinna, built with [Astro](https://astro.build) and deployed to
+GitHub Pages.
 
-## Stack
-
-- Astro
-- Markdown content (Astro content collections)
-- GitHub Pages (via GitHub Actions)
-
-## Local Development
+## Quick start
 
 ```bash
 npm install
-npm run dev
+npm run dev      # http://localhost:4321, drafts included
+npm run build    # production build in dist/, drafts excluded
 ```
 
-Build locally:
+Pushing to `main` deploys automatically (`.github/workflows/deploy.yml`).
+
+## Writing a post
+
+### 1. Create it from a template
 
 ```bash
-npm run build
+npm run new -- "My post title"
+npm run new -- "Fixing colcon caching" --template note --tags "ros 2, tooling"
 ```
 
-## Content
+This creates `src/content/journal/<slug>.md` with today's date and `draft: true`.
 
-Posts live in:
+| Template | Use it for |
+| --- | --- |
+| `templates/article.md` | Long-form posts. Contains an example of every building block (callouts, code, images, tables). |
+| `templates/note.md` | Short notes: one problem, one fix. |
 
-- `src/content/journal/`
+The [Front Matter](https://frontmatter.codes) VS Code extension also picks these templates up
+(`frontmatter.json`).
 
-Current setup is intentionally minimal and keeps a single article explaining the blog's purpose and style.
+### 2. Preview while you write
 
-## Editing the Main Article
+Run `npm run dev` and open `http://localhost:4321/journal/<slug>/`. Drafts show a yellow
+"Draft" label and never appear in the production build, RSS, sitemap, or search.
 
-Update:
+### 3. Publish
 
-- `src/content/journal/first-week-reset.md`
+Set `draft: false`, commit, and push.
 
-You can change:
+### Front matter
 
-- `title`
-- `excerpt`
-- `date`
-- `tags`
-- markdown body content
+| Field | Required | Notes |
+| --- | --- | --- |
+| `title` | yes | |
+| `excerpt` | yes | 1–2 sentences. Used in lists, search, RSS, and link previews. |
+| `date` | yes | `YYYY-MM-DD` publish date. |
+| `updated` | no | Set when you meaningfully revise a post. Shown as "Updated …". |
+| `tags` | no | Lowercase, e.g. `["ros 2", "cpp"]`. Each tag gets its own page. |
+| `image` | no | Cover image URL or `/images/name.jpg` (files go in `public/images/`). |
+| `readingTime` | no | Computed automatically; set only to override. |
+| `draft` | no | `true` hides the post outside `npm run dev`. |
 
-## Design / UI
+### Building blocks
 
-Main terminal-style UI and theme live in:
+Code blocks are highlighted by language ([Shiki](https://shiki.style), `vitesse-dark` theme) and
+get a header with the language and a copy button.
 
-- `src/layouts/BaseLayout.astro`
+````md
+```cpp title="node.cpp" showLineNumbers {3}
+// title → file label, showLineNumbers → line numbers, {3} → highlight line 3
+```
 
-Pages:
+```ts
+const a = 1; // [!code --]
+const a = 2; // [!code ++]
+const b = 3; // [!code highlight]
+```
+````
 
-- Home: `src/pages/index.astro`
-- Notes list: `src/pages/journal/index.astro`
-- Post page: `src/pages/journal/[slug].astro`
+Callouts (`callout-note`, `callout-tip`, `callout-warn`), figures, and collapsible sections use
+small HTML blocks; copy them from `templates/article.md` or use the VS Code snippets in
+`.vscode/blog.code-snippets` (`callout`, `figure`, `code`, `details`).
 
-## Deployment (GitHub Pages)
+Posts with three or more `##` headings get an automatic table of contents.
 
-This repo is configured to deploy with GitHub Actions:
+Inline HTML is sanitized: scripts, event handlers, and `style` attributes are removed.
 
-- Workflow: `.github/workflows/deploy.yml`
+## Editing the site
 
-Requirements:
-
-1. Repository name is `gsisinna.github.io`
-2. GitHub Pages source is set to `GitHub Actions`
-3. Push to `main` branch
-
-## Notes
-
-- `astro.config.mjs` uses `site: "https://gsisinna.github.io"` (correct for a user/org Pages site)
-- No `base` path is needed for `gsisinna.github.io`
-
+| What | Where |
+| --- | --- |
+| Bio, headline, experience, skills, links | `src/data/profile.ts` |
+| Global styles and design tokens | `src/styles/base.css` |
+| Header, footer, SEO metadata | `src/layouts/BaseLayout.astro` |
+| Home page | `src/pages/index.astro` |
+| Notes archive / post page | `src/pages/journal/` |
+| Topics | `src/pages/tags/` |
+| Markdown pipeline (sanitizer, syntax highlighting) | `astro.config.mjs` |

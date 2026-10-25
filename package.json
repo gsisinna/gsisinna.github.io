@@ -7,6 +7,7 @@
     "prebuild": "node -e \"try{require('node:fs').rmSync('.astro',{recursive:true,force:true})}catch(e){}\"",
     "dev": "astro dev",
     "start": "astro dev",
+    "new": "node scripts/new-post.mjs",
     "build": "astro build",
     "perf": "npm run build && node scripts/perf-report.mjs",
     "perf:report": "node scripts/perf-report.mjs",
@@ -15,6 +16,8 @@
   },
   "devDependencies": {
     "@astrojs/check": "^0.9.6",
+    "@shikijs/rehype": "^3.22.0",
+    "@shikijs/transformers": "^3.22.0",
     "@types/node": "^25.3.0",
     "astro": "^5.0.0",
     "rehype-raw": "^7.0.0",

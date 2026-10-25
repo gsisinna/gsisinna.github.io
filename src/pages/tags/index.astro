@@ -1,6 +1,6 @@
 ---
 import BaseLayout from "../../layouts/BaseLayout.astro";
-import { getPublishedTagSummaries } from "../../lib/content";
+import { formatDate, getPublishedTagSummaries } from "../../lib/content";
 
 const tags = await getPublishedTagSummaries();
 const siteUrl = Astro.site?.toString() ?? "https://gsisinna.github.io";
@@ -9,9 +9,9 @@ const tagsJsonLd = [
   {
     "@context": "https://schema.org",
     "@type": "CollectionPage",
-    name: "Tags | gsisinna",
+    name: "Topics · Gabriele Sisinna",
     url: tagsUrl,
-    description: "Browse notes by topic tags.",
+    description: "Browse notes by topic: robotics, ROS 2, simulation, C++, software architecture, and more.",
     inLanguage: "en"
   },
   {
@@ -26,26 +26,30 @@ const tagsJsonLd = [
 ---
 
 <BaseLayout
-  title="Tags | gsisinna"
-  description="Browse notes by tag."
+  title="Topics · Gabriele Sisinna"
+  description="Browse notes by topic: robotics, ROS 2, simulation, C++, software architecture, and more."
   jsonLd={tagsJsonLd}
 >
   <header class="page-head fade-in">
     <p class="kicker">ls ~/tags</p>
-    <h1>Tags</h1>
-    <p class="lead">Browse notes by topic.</p>
+    <h1>Topics</h1>
+    <p class="lead">Every topic I've written about, most covered first. Pick one to see all related notes.</p>
   </header>
 
   {tags.length === 0 ? (
-    <p class="muted">No tags yet.</p>
+    <p class="muted">No topics yet.</p>
   ) : (
-    <ul class="tag-grid" aria-label="All tags">
+    <ul class="tag-grid" aria-label="All topics">
       {tags.map((tag) => (
-        <li>
-          <a class="tag-card" href={`/tags/${tag.slug}/`}>
-            <span class="tag-name">#{tag.name}</span>
-            <span class="tag-count">{tag.count}</span>
-          </a>
+        <li class="tag-card">
+          <div class="tag-top">
+            <a class="tag-name" href={`/tags/${tag.slug}/`}>#{tag.name}</a>
+            <span class="tag-count">{tag.count} note{tag.count === 1 ? "" : "s"}</span>
+          </div>
+          <p class="tag-latest">
+            <span class="muted">Latest · {formatDate(tag.latest.data.date)}</span>
+            <span>{tag.latest.data.title}</span>
+          </p>
         </li>
       ))}
     </ul>
@@ -58,41 +62,68 @@ const tagsJsonLd = [
     margin: 0;
     padding: 0;
     display: grid;
-    gap: 0.6rem;
-    grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
+    gap: 0.75rem;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
   }
 
   .tag-card {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
+    position: relative;
+    display: grid;
+    align-content: start;
     gap: 0.75rem;
-    padding: 0.8rem 1rem;
+    padding: 1rem 1.1rem;
     border: 1px solid var(--line);
     border-radius: 10px;
     background: var(--surface);
-    text-decoration: none;
-    transition: border-color 140ms ease, color 140ms ease;
+    transition: border-color 140ms ease;
   }
 
   .tag-card:hover {
     border-color: rgba(94, 230, 160, 0.4);
   }
 
-  .tag-card:hover .tag-name {
-    color: var(--accent);
+  .tag-top {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 0.75rem;
   }
 
   .tag-name {
     color: var(--ink-strong);
     font-family: var(--font-mono);
-    font-size: 0.9rem;
+    font-weight: 600;
+    text-decoration: none;
     overflow-wrap: anywhere;
   }
 
+  /* Whole card is clickable via the tag link */
+  .tag-name::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+  }
+
+  .tag-card:hover .tag-name {
+    color: var(--accent);
+  }
+
   .tag-count {
+    flex-shrink: 0;
     color: var(--muted);
     font-family: var(--font-mono);
-    font-size: 0.78rem;
+    font-size: 0.75rem;
+  }
+
+  .tag-latest {
+    display: grid;
+    gap: 0.15rem;
+    font-size: 0.88rem;
+    line-height: 1.4;
+  }
+
+  .tag-latest .muted {
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
   }
 </style>

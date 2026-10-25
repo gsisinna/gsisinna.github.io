@@ -1,0 +1,40 @@
+{
+  // Type the prefix in a Markdown post and press Tab.
+  // Markdown snippets need "editor.quickSuggestions" or Ctrl+Space to show up.
+  "Callout": {
+    "scope": "markdown",
+    "prefix": "callout",
+    "body": [
+      "<aside class=\"callout callout-${1|note,tip,warn|}\">",
+      "  <p class=\"callout-title\">${2:Title}</p>",
+      "  <p>${3:Text}</p>",
+      "</aside>",
+      "$0"
+    ],
+    "description": "Highlighted note, tip, or warning box"
+  },
+  "Figure": {
+    "scope": "markdown",
+    "prefix": "figure",
+    "body": [
+      "<figure>",
+      "  <img src=\"${1:/images/name.jpg}\" alt=\"${2:What the image shows}\" loading=\"lazy\" decoding=\"async\" />",
+      "  <figcaption>${3:Caption}</figcaption>",
+      "</figure>",
+      "$0"
+    ],
+    "description": "Image with caption"
+  },
+  "Code block": {
+    "scope": "markdown",
+    "prefix": "code",
+    "body": ["```${1|cpp,python,bash,ts,json,yaml,cmake,xml,java|} title=\"${2:file}\"", "$0", "```"],
+    "description": "Syntax-highlighted code block with a file title"
+  },
+  "Details": {
+    "scope": "markdown",
+    "prefix": "details",
+    "body": ["<details class=\"callout\">", "  <summary>${1:Summary}</summary>", "  <p>${2:Hidden content}</p>", "</details>", "$0"],
+    "description": "Collapsible section"
+  }
+}

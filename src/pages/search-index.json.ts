@@ -1,5 +1,6 @@
 import type { APIRoute } from "astro";
 import { getCollection } from "astro:content";
+import { getReadingTime } from "../lib/content";
 
 export const GET: APIRoute = async () => {
   const posts = await getCollection("journal", ({ data }) => !data.draft);
@@ -11,7 +12,7 @@ export const GET: APIRoute = async () => {
       excerpt: post.data.excerpt,
       tags: post.data.tags,
       date: post.data.date.toISOString(),
-      readingTime: post.data.readingTime ?? "",
+      readingTime: getReadingTime(post),
       image: post.data.image ?? null
     }));
 
