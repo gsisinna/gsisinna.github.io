@@ -302,10 +302,46 @@ auto    grip open    boxes 3  stack 3</pre>
     .hero {
       position: relative;
       display: grid;
-      grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-      gap: clamp(1.5rem, 4vw, 3rem);
+      grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.15fr);
+      gap: clamp(1.5rem, 3vw, 2.5rem);
       align-items: center;
-      padding-top: clamp(0.5rem, 3vw, 2rem);
+      padding-top: clamp(0.5rem, 2vw, 1.25rem);
+    }
+
+    /* Wide screens: the robot stage grows and bleeds to the right edge of the window */
+    @media (min-width: 901px) {
+      .hero .robot-scene {
+        --bleed: max(var(--gutter), (100vw - var(--max)) / 2);
+        width: calc(100% + var(--bleed));
+        max-width: none;
+        height: clamp(28rem, 72vh, 42rem);
+        aspect-ratio: auto;
+        margin-right: calc(-1 * var(--bleed));
+        border-right: 0;
+        border-radius: calc(var(--radius) + 4px) 0 0 calc(var(--radius) + 4px);
+      }
+    }
+
+    /* Tablet: full-width stage under the intro */
+    @media (max-width: 900px) {
+      .hero {
+        grid-template-columns: 1fr;
+      }
+
+      .hero .robot-scene {
+        aspect-ratio: 4 / 3;
+      }
+    }
+
+    .hero h1 {
+      font-size: clamp(2rem, 3.6vw, 2.6rem);
+      white-space: nowrap;
+    }
+
+    @media (max-width: 380px) {
+      .hero h1 {
+        white-space: normal;
+      }
     }
 
     .hero-id {
@@ -896,7 +932,7 @@ auto    grip open    boxes 3  stack 3</pre>
         grid-template-columns: 1fr;
       }
 
-      .robot-scene {
+      .hero .robot-scene {
         aspect-ratio: 1;
       }
 
