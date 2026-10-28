@@ -46,7 +46,8 @@ function setupScrollEffects() {
   const header = document.querySelector<HTMLElement>("header.site");
   const progress = document.querySelector<HTMLElement>("[data-reading-progress]");
   const toTop = document.querySelector<HTMLButtonElement>("[data-back-to-top]");
-  const article = document.querySelector<HTMLElement>(".post");
+  // Posts measure the article; other pages with a progress bar measure the whole page.
+  const article = document.querySelector<HTMLElement>(".post") ?? document.querySelector<HTMLElement>("main");
   let frame = 0;
 
   const update = () => {
@@ -106,6 +107,45 @@ function setupReveal() {
   cleanup.push(() => observer.disconnect());
 }
 
+// Subtle 3D tilt with a soft highlight that follows the pointer ([data-tilt] cards).
+function setupTilt() {
+  if (reduceMotion() || !window.matchMedia("(hover: hover) and (pointer: fine)").matches) return;
+
+  for (const card of document.querySelectorAll<HTMLElement>("[data-tilt]")) {
+    let frame = 0;
+    let last: PointerEvent | null = null;
+
+    const apply = () => {
+      frame = 0;
+      if (!last) return;
+      const rect = card.getBoundingClientRect();
+      const x = (last.clientX - rect.left) / rect.width;
+      const y = (last.clientY - rect.top) / rect.height;
+      card.style.transform = `perspective(900px) rotateX(${((0.5 - y) * 5).toFixed(2)}deg) rotateY(${((x - 0.5) * 7).toFixed(2)}deg) translateY(-3px)`;
+      card.style.setProperty("--gx", `${(x * 100).toFixed(1)}%`);
+      card.style.setProperty("--gy", `${(y * 100).toFixed(1)}%`);
+    };
+    const onMove = (event: PointerEvent) => {
+      last = event;
+      if (!frame) frame = requestAnimationFrame(apply);
+    };
+    const onLeave = () => {
+      last = null;
+      if (frame) cancelAnimationFrame(frame);
+      frame = 0;
+      card.style.transform = "";
+    };
+
+    card.addEventListener("pointermove", onMove);
+    card.addEventListener("pointerleave", onLeave);
+    cleanup.push(() => {
+      card.removeEventListener("pointermove", onMove);
+      card.removeEventListener("pointerleave", onLeave);
+      onLeave();
+    });
+  }
+}
+
 // Remote cover images can disappear; hide their frame instead of showing a broken image.
 const IMAGE_FRAMES = ".post-row-thumb, .featured-media, .post-cover, .related-card";
 function markBrokenImage(img: HTMLImageElement) {
@@ -157,6 +197,7 @@ document.addEventListener("astro:page-load", () => {
   setupThemeToggle();
   setupScrollEffects();
   setupReveal();
+  setupTilt();
 });
 
 document.addEventListener("astro:before-swap", () => {

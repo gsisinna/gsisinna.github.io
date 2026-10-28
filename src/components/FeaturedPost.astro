@@ -12,7 +12,7 @@ const { entry, label = "Latest" } = Astro.props;
 const href = `/journal/${entry.id}/`;
 ---
 
-<article class="featured lift" data-reveal>
+<article class="featured lift" data-reveal data-tilt>
   {entry.data.image && (
     <a class="featured-media" href={href} tabindex="-1" aria-hidden="true" transition:name={`cover-${entry.id}`}>
       <CoverImage entry={entry} decorative eager />

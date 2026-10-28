@@ -16,7 +16,7 @@ const statusLabel = { active: "Active", completed: "Completed", experiment: "Exp
 const primaryHref = links.repo ?? links.demo ?? (links.post ? `/journal/${links.post}/` : undefined);
 ---
 
-<article class:list={["project-card", "lift", large && "project-card-large", image && "has-image"]}>
+<article class:list={["project-card", "lift", large && "project-card-large", image && "has-image"]} data-tilt>
   {image && (
     <div class="project-media">
       <CoverImage entry={project} />
