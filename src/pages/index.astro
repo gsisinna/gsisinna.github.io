@@ -1,11 +1,9 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
 import { Image, getImage } from "astro:assets";
-import PostRow from "../components/PostRow.astro";
-import FeaturedPost from "../components/FeaturedPost.astro";
 import ProjectCard from "../components/ProjectCard.astro";
 import Icon from "../components/Icon.astro";
-import { getProjects, getPublishedJournalEntries } from "../lib/content";
+import { getProjects } from "../lib/content";
 import {
   profile,
   focusAreas,
@@ -17,10 +15,7 @@ import {
   hobbies
 } from "../data/profile";
 
-const entries = await getPublishedJournalEntries();
 const avatarForSchema = await getImage({ src: profile.avatar, width: 200, format: "jpg" });
-const [featured, ...rest] = entries;
-const recent = rest.slice(0, 3);
 const projects = await getProjects();
 const featuredProjects = projects.filter((project) => project.data.featured).slice(0, 2);
 
@@ -29,7 +24,6 @@ const chapters = [
   { id: "top", label: "whoami" },
   { id: "work", label: "work" },
   ...(featuredProjects.length > 0 ? [{ id: "projects", label: "projects" }] : []),
-  ...(featured ? [{ id: "writing", label: "writing" }] : []),
   { id: "experience", label: "experience" },
   { id: "skills", label: "skills" },
   { id: "about", label: "life" },
@@ -131,8 +125,8 @@ const homeJsonLd = [
       <p class="hero-headline">{profile.headline}</p>
       <p class="hero-intro">{profile.intro}</p>
       <div class="hero-actions">
-        <a href="/journal/" class="button button-primary">
-          Read my notes
+        <a href="/projects/" class="button button-primary">
+          See my projects
           <Icon name="arrow" />
         </a>
         <a class="button" href={profile.links.contact}>
@@ -155,12 +149,13 @@ const homeJsonLd = [
     <figure class="robot-scene" data-robot-scene aria-hidden="true">
       <canvas></canvas>
       <figcaption>
-        <pre class="robot-readout" data-robot-readout>q0 +000.0°  q1 +000.0°  q2 +000.0°
+        <pre class="robot-readout" data-robot-readout>q1 +000.0°  q2 +000.0°  q3 +000.0°
+q4 +000.0°  q5 +000.0°  q6 +000.0°
 tcp +0.00 +0.00 +0.00
-grip open    parts 0</pre>
+auto    grip open    boxes 3  stack 3</pre>
         <p class="robot-hint">
-          <span class="hint-pointer">hover to steer · click to pick &amp; place</span>
-          <span class="hint-touch">tap to steer and pick &amp; place</span>
+          <span class="hint-pointer">click a box to pick · click to place or stack · click the floor to add</span>
+          <span class="hint-touch">tap a box · tap to place · tap the floor to add</span>
         </p>
       </figcaption>
     </figure>
@@ -204,25 +199,6 @@ grip open    parts 0</pre>
       <div class="home-projects" data-reveal="stagger">
         {featuredProjects.map((project) => <ProjectCard project={project} />)}
       </div>
-    </section>
-  )}
-
-  {featured && (
-    <section id="writing" class="section" aria-labelledby="writing-title" data-reveal>
-      <div class="section-head">
-        <div>
-          <p class="kicker">ls ~/notes</p>
-          <h2 id="writing-title">Writing</h2>
-          <p class="section-lead">Long-form notes on robotics software, architecture, and the projects I build.</p>
-        </div>
-        <a href="/journal/" class="text-link">All {entries.length} notes →</a>
-      </div>
-      <FeaturedPost entry={featured} />
-      {recent.length > 0 && (
-        <div class="post-list" data-reveal="stagger">
-          {recent.map((entry) => <PostRow entry={entry} headingLevel="h3" showImage={false} />)}
-        </div>
-      )}
     </section>
   )}
 
@@ -921,7 +897,18 @@ grip open    parts 0</pre>
       }
 
       .robot-scene {
-        aspect-ratio: 4 / 3;
+        aspect-ratio: 1;
+      }
+
+      .robot-readout {
+        top: 0.6rem;
+        left: 0.75rem;
+        font-size: 0.56rem;
+      }
+
+      .robot-hint {
+        bottom: 0.5rem;
+        font-size: 0.62rem;
       }
 
       .hero-status {
