@@ -308,17 +308,11 @@ auto    grip open    boxes 3  stack 3</pre>
       padding-top: clamp(0.5rem, 2vw, 1.25rem);
     }
 
-    /* Wide screens: the robot stage grows and bleeds to the right edge of the window */
+    /* Wide screens: a taller stage that stays inside the page column */
     @media (min-width: 901px) {
       .hero .robot-scene {
-        --bleed: max(var(--gutter), (100vw - var(--max)) / 2);
-        width: calc(100% + var(--bleed));
-        max-width: none;
-        height: clamp(28rem, 72vh, 42rem);
+        height: clamp(26rem, 68vh, 36rem);
         aspect-ratio: auto;
-        margin-right: calc(-1 * var(--bleed));
-        border-right: 0;
-        border-radius: calc(var(--radius) + 4px) 0 0 calc(var(--radius) + 4px);
       }
     }
 

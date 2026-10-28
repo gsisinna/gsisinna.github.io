@@ -194,7 +194,8 @@ export function mountRobotScene(root: HTMLElement): () => void {
   const horizontalForward = (az: number): Vec3 => [Math.cos(az), 0, Math.sin(az)];
 
   const updateCamera = () => {
-    const look = add(mul(horizontalRight(azimuth), 0.8), [0, 0.7, 0]);
+    // Centre of the useful workspace: from just left of the base to the arm's reach.
+    const look = add(mul(horizontalRight(azimuth), 0.62), [0, 0.75, 0]);
     const f = norm([Math.cos(PITCH) * Math.cos(azimuth), -Math.sin(PITCH), Math.cos(PITCH) * Math.sin(azimuth)]);
     const r = norm(cross(f, UP));
     cam = { pos: sub(look, mul(f, DIST)), f, r, u: cross(r, f) };
@@ -655,15 +656,19 @@ export function mountRobotScene(root: HTMLElement): () => void {
     if (width === 0) return;
     const scale = clamp(Math.min(width, height) / 420, 0.7, 1.4);
 
-    // Round floor grid
+    // Floor grid that fades out with distance, so the frame never shows a hard cut edge
+    const floorStep = 0.25;
     for (let c = -1.5; c <= 1.5; c += 0.5) {
-      const half = Math.sqrt(Math.max(0, FLOOR_RADIUS * FLOOR_RADIUS - c * c));
-      const fade = 0.5 - Math.abs(c) * 0.2;
-      strokeLine([c, 0, -half], [c, 0, half], palette.line, 1, fade);
-      strokeLine([-half, 0, c], [half, 0, c], palette.line, 1, fade);
+      for (let k = -FLOOR_RADIUS; k < FLOOR_RADIUS; k += floorStep) {
+        for (const [a, b] of [
+          [[c, 0, k], [c, 0, k + floorStep]],
+          [[k, 0, c], [k + floorStep, 0, c]]
+        ] as [Vec3, Vec3][]) {
+          const mid = Math.hypot((a[0] + b[0]) / 2, (a[2] + b[2]) / 2) / FLOOR_RADIUS;
+          if (mid < 1) strokeLine(a, b, palette.line, 1, 0.55 * (1 - mid * mid));
+        }
+      }
     }
-    ring([0, 0, 0], UP, FLOOR_RADIUS, palette.line, 0.6, 1, 80);
-    ring([0, 0, 0], UP, REACH_MAX, palette.accent, 0.12, 1, 80);
 
     // Demo tower spots
     for (const spot of [spotA, spotB]) ring([spot[0], 0.002, spot[2]], UP, H * 1.3, palette.muted, 0.35, 1, 28);
@@ -711,7 +716,8 @@ export function mountRobotScene(root: HTMLElement): () => void {
     canvas.width = Math.round(width * dpr);
     canvas.height = Math.round(height * dpr);
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-    focal = DIST * Math.min((0.9 * width) / 3.1, (0.88 * height) / 2.5);
+    // Fit ~2.4 units across (base to full reach) and ~2.45 units tall, whichever is tighter.
+    focal = DIST * Math.min((0.94 * width) / 2.4, (0.88 * height) / 2.45);
     updateCamera();
     if (!running) draw(performance.now());
   };
